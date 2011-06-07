@@ -1,15 +1,14 @@
-ccafsMPoints <- function(ref.t, poi.t, ref.w, poi.w, z=2) {
-  # Computes distance between one reference point and many other points
-  #
-  # Args:
-  #  ref.t: vector with values of vars at reference point
-  #  poi.t: matrix with values of vars at poi
-  #  ref.w: vector with values of weights at reference point
-  #  poi.w: matrix with values of weights at poi
-  #  z: number parameter (default 2, equal to euclidean distance)
-  # Returns:
-  #  A vector of length nrow(poi.t), containing dissimilarity
+#' Calculate ccafs dissimilarity between points with climate information
+#'
+#' @param ref.t: vector with values of vars at reference point
+#' @param poi.t: matrix with values of vars at poi
+#' @param ref.w: vector with values of weights at reference point
+#' @param poi.w: matrix with values of weights at poi
+#' @param z: number parameter (default 2, equal to euclidean distance)
+#' @return A vector of length nrow(poi.t), containing dissimilarity
+#' @export
 
+ccafsMPoints <- function(ref.t, poi.t, ref.w, poi.w, z=2) {
   # Packages
   require(stringr)  # for enhance string operations
   
