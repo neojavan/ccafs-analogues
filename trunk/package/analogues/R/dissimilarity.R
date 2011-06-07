@@ -107,7 +107,7 @@ dissimilarity <- function(params,training, weights) {
   }
   
 # ---------------------------------------------------------------------------- #  
-  if (is.na(params$to)) {
+  if (!is.matrix(params$to)) {
   if (params$method == "ccafs") {
     if (params$keep.lag) {
       # make rasters again3
@@ -156,7 +156,7 @@ from, to, roll, poi.where=NA) {
       this.poi.t <- poi.t[which(params$idx.gcms==from)]
       
       if (is.matrix(params$to)) {
-        this.poi.t <- lapply(poi.t, function(x) x[poi.where,])
+        this.poi.t <- lapply(poi.t, function(x) x[poi.where, , drop=FALSE])
       }
       
       
@@ -170,7 +170,7 @@ from, to, roll, poi.where=NA) {
         this.poi.w <- poi.w[which(params$idx.gcms==from)]
         
           if (is.matrix(params$to)) {
-            this.poi.w <- lapply(poi.w, function(x) x[poi.where,])
+            this.poi.w <- lapply(poi.w, function(x) x[poi.where, , drop=FALSE])
           }
       
         this.z <- params$z
