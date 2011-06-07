@@ -9,7 +9,7 @@
 #' ccafs_params <- dissimilarity(x, z, )
 
 
-applyThreshold <- function(results,range=NA,best=NA){
+applyThreshold <- function(results,range=NA,best=NA) {
   
   if (!is.na(range) & !is.na(best))
     exit("range and best are mutually exclusive, one needs to be NA")

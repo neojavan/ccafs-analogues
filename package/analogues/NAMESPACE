@@ -1,6 +1,7 @@
 export(applyThreshold)
 export(createParameters)
 export(cropInteractive)
+export(dissimilarity)
 export(radMPoints)
 export(loadDataGRASS)
 export(loadWeightsGRASS)

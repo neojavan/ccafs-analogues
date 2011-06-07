@@ -4,41 +4,36 @@
 #' Here all parameters for the later analysis are set. The initial 
 #' parameters can be changed later. Make sure clmate data are name properly. 
 #'
-#' @param x coordinate of site under analysis
-#' @param y coodrinate of site under analysis
+#' @param x coordinate of point under analysis.
+#' @param y coodrinate of point under analysis
 #' @param to coordinates for which dissimilarity should be caluclated as matrix with. A \code{matrix} 
-#' with two columns: x and y. If is set to \code{NA} dissimilarities are calculated for the whole grid. 
-#' @param method select the method that is going to be use, either ccafs or hallegate
-#' @param hal_rad maximum tolerable relative annual difference for hellegate method. A vector of \code{length(vars)}, 
-#' if thre is a var that should not be considered, substitute the number with \code{NA}. 
-#' @param hal_mad maximum tollerable difference in annual precipitation. A vector of \code{length(vars)}, 
-#' if thre is a var that should not be considered, substitute the number with \code{NA}.
-#' @param hal_mrd mean absolute difference between months difference. A vector of \code{length(vars)}, 
-#' if thre is a var that should not be considered, substitute the number with \code{NA}.
-#' @param hal_ncond specify how many of the above condition need to be true
-#' @param screnario specify the SRES (e.g. A1B, A2..)
-#' @param gcms which gcm model should be used (e.g. bccr_bcm2_0,cccma_cgcm3_1_t47)
-#' @param year specify the year for which the dissimilarity should be calculated
+#' with two columns: x and y. If is set to \code{NA} dissimilarities are calculated for the whole raster. 
+#' @param method select the method that is going to be use, either ccafs or hal for hallegate
+#' @param hal.rad maximum tolerable relative annual difference for hellegate method. A vector of \code{length(vars)}, 
+#' if variables should not be considered, substitute the number with \code{NA}. 
+#' @param hal.mad maximum tollerable difference in annual precipitation. A vector of \code{length(vars)}, 
+#' if variables should not be considered, substitute the number with \code{NA}.
+#' @param hal.mrd mean absolute difference between months difference. A vector of \code{length(vars)}, 
+#' if variables should not be considered, substitute the number with \code{NA}.
+#' @param hal.ncond specify how many of the above condition need to be true in order that a sites is similiar.
+#' @param gcms which gcm model should be used. If comparisions are made with the current climate, the first
+#  scenario needs to be the current one (e.g. current,a1b_2030_bccr_bcm2_0,a1b_2030_cccma_cgcm3_1_t47).
 #' @param vars specify which variables are being used in the calculation (e.g. tmean, precipitation)
 #' @param weights specify how the variables are weighted. This can either be a \code{rasterLayer}
 #' or a single number. Provide a list with the name of the raster or a value for weighting.
-#' @param ndivision define how many devision the variables have per year (e.g. for monthly data use 12).
-#' @param climate_data define directory where the climate data is located
-#' @param ext Extension of raster format (must be supported by gdal)
+#' @param ndivision define how many devision all variables have per year (e.g. for monthly data use 12).
+#' @param climate_data define directory where the climate data is located.
+#' @param ext Extension of raster format (must be supported by gdal).
 #' @param direction which direction should the dissimilarity be calculated. Available 
-#' options are forward, backward and current.
-#' @param growing_season define the growing season of the crop that is to be modelled.
-#' @param accross_year should the analogue method be looked accross years (i.e. should time lag be 
+#' options are forward, backward and none (to calculate dissimilarity within the first gcm).
+#' @param growing_season define the growing season of the crop that is to be modelled, provide the number 
+#' for each division the plant is growing as a \code{vector}.
+#' @param accross.year should the analogue method be looked accross years (i.e. should time lag be 
 #' used to account for differences in seasons
 #' @param normalise should the rasater be normalised to a mean of 0 and sd of 1 when being loaded.
-#' @param keep_lag specify whether or not grids for each lag should be kept
-#' @param ... expressions evaluated in the context of \code{df} and 
-#'   then fed to \code{\link{order}}
-#' @keywords manip
+#' @param keepllag specify whether or not grids for each lag should be kept
 #' @return an object of AnalogueParameters
 #' @export
-#' @examples
-#' ccafs_params <- createParams(x, z, )
 
 createParameters <- function(x=10,   
   y=48, 
