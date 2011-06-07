@@ -22,6 +22,10 @@ dissimilarity <- function(params,training, weights) {
   nlayers <- nlayers(training[[1]])
   ref.where <- cellFromXY(training[[1]], cbind(params$x, params$y))
   
+  if (is.matrix(params$to)) {
+    poi.where <- cellFromXY(training[[1]], params$to)
+  }
+  
   # -------------------------------------------------------------------------- #
   # Create roll for lags
   roll.v <- c()
@@ -62,13 +66,13 @@ dissimilarity <- function(params,training, weights) {
   }}
 
 
-if (params$normalise) {
-  cat("Normalising training data \n")
-  poi.t <- lapply(poi.t, scale)
-  
-  cat("Normalising weight \n")
-  poi.w <- lapply(poi.w, scale)
-}
+  if (params$normalise) {
+    cat("Normalising training data \n")
+    poi.t <- lapply(poi.t, scale)
+    
+    cat("Normalising weight \n")
+    poi.w <- lapply(poi.w, scale)
+  }
 
   # -------------------------------------------------------------------------- #
   # Call function
@@ -81,7 +85,7 @@ if (params$normalise) {
       
       # project from gcm to 1 (ie current)
       res.all[[(gcm - 1)]] <- callDissimilarity(params, ref.where,
-        poi.t, poi.w, from=gcm, to=1, roll)
+        poi.t, poi.w, from=gcm, to=1, roll, poi.where)
     }
 
 
@@ -90,20 +94,20 @@ if (params$normalise) {
     
     for (gcm in 2:ngcms) {
      res.all[[(gcm - 1)]] <-  callDissimilarity(params, ref.where, 
-        poi.t, poi.w, from=1, to=gcm, roll)
+        poi.t, poi.w, from=1, to=gcm, roll,poi.where)
     }
     
   } else if (params$direction=="no" | params$direction=="none" | params$direction==NA) {
       
       res.all[[1]] <- callDissimilarity(params, ref.where, 
-        poi.t, poi.w, from=1, to=1, roll)
+        poi.t, poi.w, from=1, to=1, roll, poi.where)
     
   } else { 
       stop("no directions was chosen") 
   }
   
 # ---------------------------------------------------------------------------- #  
-  
+  if (is.na(params$to)) {
   if (params$method == "ccafs") {
     if (params$keep.lag) {
       # make rasters again3
@@ -134,12 +138,13 @@ if (params$normalise) {
       res.all <- lapply(res.all, function(x) setValues(training[[1]],x))
     }
   }
+  }
   return(res.all)
 }
 
 # ---------------------------------------------------------------------------- #
 callDissimilarity <- function(params, ref.where, poi.t, poi.w, 
-from, to, roll) {
+from, to, roll, poi.where=NA) {
         
       this.res <- c()
       nvars <- length(params$vars)
@@ -150,6 +155,11 @@ from, to, roll) {
       
       this.poi.t <- poi.t[which(params$idx.gcms==from)]
       
+      if (is.matrix(params$to)) {
+        this.poi.t <- lapply(poi.t, function(x) x[poi.where,])
+      }
+      
+      
       # Weights are only needed for ccafs method
       if (params$method == "ccafs") {
          
@@ -158,6 +168,10 @@ from, to, roll) {
         })
       
         this.poi.w <- poi.w[which(params$idx.gcms==from)]
+        
+          if (is.matrix(params$to)) {
+            this.poi.w <- lapply(poi.w, function(x) x[poi.where,])
+          }
       
         this.z <- params$z
         
