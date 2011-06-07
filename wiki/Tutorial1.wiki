@@ -45,7 +45,7 @@ params <- createParameters(x=10,
   hal.mrd=c(1,NA),           
   hal.ncond=2,
   z=2,
-  gcms=c("current", "a1b_2020_2049_miroc3_2_hires", "a1b_2040_2069_gfdl_cm2_1"),
+  gcms=c("current", "a1b_2020_2049_miroc3_2_hires", "a1b_2020_2049_gfdl_cm2_1"),
   vars=c("tmean", "prec"),        
   weights=c("dtr",1),
   ndivisions=12,                  
@@ -137,3 +137,8 @@ res1_sum_mean_cropped_th5p <- applyThreshold(res1_sum_mean_cropped, best=0.05)
 }}}
 
 == Creating a report ==
+Once we have run one or more models, we can create a report. The report function takes a list of models. Each model consists of params, training data, results, caption of the model and caption of each results). 
+
+{{{
+model1 <- list(params=params, training=training, results=list(res1_sum$mean, res1_sum_mean_cropped_th5p, res1_sum_mean_cropped), m.lab="2030", r.lab=c("mean", "cropped: 5% best", "only cropped"))
+report(list(model1), "report1.pdf")
