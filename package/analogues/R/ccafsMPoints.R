@@ -32,9 +32,21 @@ ccafsMPoints <- function(ref.t, poi.t, ref.w, poi.w, z=2) {
   # 2. to the power z
   tmp <- lapply(tmp, function(x) x^z)
 
-  # 3. devide weights
-  wei <- lapply(1:nvars, function(x) t(poi.w[[x]]) / ref.w[[x]])
+  # 3.  Weights, if all weights are the same, so nothing, just assign the weight
+  #     the weight as it is, if they are different, devide project by base
+  wei <- list()
 
+  for (x in 1:nvars) {  
+  
+    # 3a. devide weights
+    if (!all(poi.w[[x]] == ref.w[[x]])) {
+      wei[[x]] <- t(poi.w[[x]]) / ref.w[[x]]
+    } else {
+     # 3b.  leave it as it is
+      wei[[x]] <- poi.w[[x]]
+    }
+  }
+ 
   # 4. multiply by weights
   tmp <- lapply(1:nvars, function(x) tmp[[x]] * wei[[x]])
 

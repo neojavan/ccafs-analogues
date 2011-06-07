@@ -70,8 +70,16 @@ dissimilarity <- function(params,training, weights) {
     cat("Normalising training data \n")
     poi.t <- lapply(poi.t, scale)
     
-    cat("Normalising weight \n")
-    poi.w <- lapply(poi.w, scale)
+    # if all weights are the same, standardisation will result in NaN
+    cat("Normalising weight \n")    
+    poi.w <- lapply(poi.w, function(x) {
+      if (all(x[1,1] == x)) {
+        x[,] <- x[1,1]
+        return(x)
+      } else {
+        return(scale(x))
+      }
+    })
   }
 
   # -------------------------------------------------------------------------- #
