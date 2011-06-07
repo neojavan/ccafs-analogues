@@ -13,7 +13,7 @@
 #----------------------------------------------------------------------------------------------#
 # Create Report
 #----------------------------------------------------------------------------------------------#
-report <- function(models=list(list(params, training, results)), pdf.name="test.pdf") {
+report <- function(models=list(list(params, training, results, r.lab, m.lab)), pdf.name="test.pdf") {
 
     width   <- 8.3
     height  <- 11.7
@@ -41,17 +41,16 @@ report <- function(models=list(list(params, training, results)), pdf.name="test.
       upViewport()
       upViewport()
       
-#       # get logo
-#       ccafs.logo <- get(".ccafs_logo", env=globalenv())
-#       ciat.logo <- get(".ciat_logo", env=globalenv())
-#       
-#       pushViewport(viewport(layout.pos.col=1, layout.pos.row=3))
-#         grid.raster(ccafs.logo, x=0.7,y=0.5,width=0.3,height=0.3)
-#         grid.raster(ciat.logo, x=0.3,y=0.5, width=.3,height=0.3)
-#         grid.text("Provided by",x=0.5,y=0.9, gp=gpar(cex=1, fontfamily="serif"))
-#       upViewport()
-  
-    grid.text(paste("Date:", date()),y=.1)
+       # get logo
+       ccafs.logo <- get(".ccafs_logo", env=globalenv())
+       ciat.logo <- get(".ciat_logo", env=globalenv())
+       
+       pushViewport(viewport(layout.pos.col=1, layout.pos.row=3))
+         grid.raster(ccafs.logo, x=0.7,y=0.5,width=0.3,height=0.3)
+         grid.raster(ciat.logo, x=0.3,y=0.5, width=.3,height=0.3)
+         grid.text("Provided by",x=0.5,y=0.9, gp=gpar(cex=1, fontfamily="serif"))
+         grid.text(paste("Date:", date()),y=1, gp=gpar(fontfamily="serif"))
+       upViewport()
     
     upViewport()
    
@@ -91,9 +90,8 @@ report <- function(models=list(list(params, training, results)), pdf.name="test.
       wprast <- data.frame(rast=1:length(this.results),which.page=wprast)
     
       # for each page with variables    
-      for (page in 1:npvars) {
-        
       if (!is.na(this.training)) {  
+      for (page in 1:npvars) {
         # start on a new page
         grid.newpage()
         pushViewport(viewport(layout=grid.layout(8,4,
@@ -131,14 +129,15 @@ report <- function(models=list(list(params, training, results)), pdf.name="test.
         pushViewport(viewport(layout.pos.col=3, layout.pos.row=rowpos))
         mdl()
       
-        cfplot(params,this.ref.t, var)
+        cfplot(this.params,this.ref.t, var)
         
         rowpos <- rowpos + 1
       }
       glegend(7)
       footer(8,c.page,t.page,params)
       c.page <- c.page + 1
-    } else if (!is.na(this.results)) {
+      }
+    }# else if (length(this.results > 0)) {
       for (page in 1:nprast) {
         grid.newpage()
         pushViewport(viewport(layout=grid.layout(6, 4,
@@ -161,8 +160,8 @@ report <- function(models=list(list(params, training, results)), pdf.name="test.
         c.page <- c.page + 1
       }
     }
-   }
-  }
+  #}
+  
   dev.off()
 }
 
@@ -223,7 +222,7 @@ mdl   <- function() grid.lines(c(0,1), c(0,0), gp=gpar(col="grey85"))
 # current vs future plot
 cfplot <- function(params, ref.t, var){
   
-  if (this.params$ndivisions > 1) {
+  if (params$ndivisions > 1) {
     require(akima)    
     # points for interpolation
     ipoints <- with(params,seq(12/params$ndivisions,12,length.out=ndivisions))

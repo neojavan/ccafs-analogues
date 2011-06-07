@@ -1,7 +1,7 @@
 Package: analogues
 Type: Package
 Title: Calculate climate analogues
-Version: 0.01
+Version: 0.0.2
 Date: 2011-06-07
 Author: Josh Hooker, Julian Ramirez, Johannes Signer
 Maintainer: Johannes Signer <jmsigner@gmail.com>

@@ -1,15 +1,15 @@
+#' Computes distance between one reference point and one other points
+#'
+#' @param params an object of class AnaloguesParameters
+#' @param training a list containing all training rasters, created
+#' with \code{loadData()}. 
+#' @param training a list containing all weight rasters or values, created
+#' with \code{loadWeights()}. 
+#' @value A list of RasterLayers or RasterStacks, depending if lags are kept or not
+#' @export
+
 dissimilarity <- function(params,training, weights) {
-  # Computes distance between one reference point and one other points
-  #
-  # Args:
-  #  params: list specifying all parameters (createParams)
-  #  training: list of vectors and matrices with the data at ref and poi.
-  #  weights: list of vectors and matrices with the data at ref and poi.
-  #  .tmpRast: a rasterlayer, to create raster layers again
-  #
-  # Returns:
-  #  A list of RasterLayers or RasterStacks, depending if lags are kept or not
-  
+
   # constants
   ngcms <- length(params$gcms)  # number of gcms
   res.all <- list()  # list with results
@@ -93,7 +93,7 @@ if (params$normalise) {
         poi.t, poi.w, from=1, to=gcm, roll)
     }
     
-  } else if (params$direction=="current") {
+  } else if (params$direction=="no" | params$direction=="none" | params$direction==NA) {
       
       res.all[[1]] <- callDissimilarity(params, ref.where, 
         poi.t, poi.w, from=1, to=1, roll)
@@ -179,13 +179,13 @@ from, to, roll) {
         cat("calculating hal starting with: ")
         for (i in 1:nrow(roll)) {
           cat(roll[i,1], " ")
-          mad <- applyThreshold(madMPoints(
+          mad <- applyHalThreshold(madMPoints(
             lapply(1:nvars, function(x) this.ref.t[[x]][roll[i,]]), this.poi.t), 
             params$hal.mad)
-          mrd <- applyThreshold(mrdMPoints(
+          mrd <- applyHalThreshold(mrdMPoints(
             lapply(1:nvars, function(x) this.ref.t[[x]][roll[i,]]), this.poi.t), 
             params$hal.mrd)
-          rad <- applyThreshold(radMPoints(
+          rad <- applyHalThreshold(radMPoints(
             lapply(1:nvars, function(x) this.ref.t[[x]][roll[i,]]), this.poi.t), 
             params$hal.rad)
           
@@ -199,7 +199,7 @@ from, to, roll) {
 
 # ---------------------------------------------------------------------------- #
 
-applyThreshold <- function(obj, th) {
+applyHalThreshold <- function(obj, th) {
   for (i in 1:length(obj)) {
     if (!is.na(th[[i]])) {
       obj[[i]] <- obj[[i]] <= th[[i]]
