@@ -9,6 +9,7 @@
 #' @param to coordinates for which dissimilarity should be caluclated as matrix with. A \code{matrix} 
 #' with two columns: x and y. If is set to \code{NA} dissimilarities are calculated for the whole raster. 
 #' @param method select the method that is going to be use, either ccafs or hal for hallegate
+#' @param z exponent for ccafs dissimilarity, default is 2.
 #' @param hal.rad maximum tolerable relative annual difference for hellegate method. A vector of \code{length(vars)}, 
 #' if variables should not be considered, substitute the number with \code{NA}. 
 #' @param hal.mad maximum tollerable difference in annual precipitation. A vector of \code{length(vars)}, 
