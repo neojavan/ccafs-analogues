@@ -27,5 +27,5 @@ R CMD INSTALL -l localRlib ${PACKAGE}_${VERSION}.tar.gz
 cd localRlib
 zip -r $PACKAGE $PACKAGE
 cd ..
-mv localRlib/$PACKAGE.zip .
+mv localRlib/${PACKAGE}_${VERSION}.zip .
 

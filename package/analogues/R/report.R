@@ -109,20 +109,28 @@ report <- function(models=list(list(params, training, results, r.lab, m.lab)), p
           pushViewport(viewport(layout.pos.col=2, layout.pos.row=rowpos))
           mtbg()
           
-          textbox(str_c("Summary for ",this.params$vars[var]), 
+	        if (length(this.params$gcms) > 2) {
+            textbox(str_c("Summary for ",this.params$vars[var]), 
+              str_c("current mean: ", 
+              round(mean(this.ref.t[[which(this.params$idx.vars==var & this.params$idx.gcms==1)]]),2), 
+              "\ncurrent sd: ", 
+              round(sd(this.ref.t[[which(this.params$idx.vars==var & this.params$idx.gcms==1)]]),2),
+              "\n",
+              "\nfuture mean: ", 
+              round(mean(sapply(2:length(this.params$gcms), 
+              function(x) mean(this.ref.t[[which(this.params$idx.vars==var & params$idx.gcms==x)]]))),2),
+              "\nfuture sd: ", round(mean(sapply(2:length(params$gcms), 
+              function(x) sd(this.ref.t[[which(params$idx.vars==var & params$idx.gcms==x)]]))),2),
+              "\nfuture sd among gcms: ", round(sd(sapply(2:length(this.params$gcms), 
+              function(x) mean(this.ref.t[[which(this.params$idx.vars==var & this.params$idx.gcms==x)]]))),2)
+            ))
+        } else {
+           textbox(str_c("Summary for ",this.params$vars[var]), 
             str_c("current mean: ", 
             round(mean(this.ref.t[[which(this.params$idx.vars==var & this.params$idx.gcms==1)]]),2), 
             "\ncurrent sd: ", 
-            round(sd(this.ref.t[[which(this.params$idx.vars==var & this.params$idx.gcms==1)]]),2),
-            "\n",
-            "\nfuture mean: ", 
-            round(mean(sapply(2:length(this.params$gcms), 
-            function(x) mean(this.ref.t[[which(this.params$idx.vars==var & params$idx.gcms==x)]]))),2),
-            "\nfuture sd: ", round(mean(sapply(2:length(params$gcms), 
-            function(x) sd(this.ref.t[[which(params$idx.vars==var & params$idx.gcms==x)]]))),2),
-            "\nfuture sd among gcms: ", round(sd(sapply(2:length(this.params$gcms), 
-            function(x) mean(this.ref.t[[which(this.params$idx.vars==var & this.params$idx.gcms==x)]]))),2)
-          ))
+            round(sd(this.ref.t[[which(this.params$idx.vars==var & this.params$idx.gcms==1)]]),2)))
+        }
         upViewport()
             
         # plot tmp.plot
@@ -196,12 +204,16 @@ glegend <- function(row) {
   upViewport()
 }
 
+# ---------------------------------------------------------------------------- #
+
 ## header
 header <- function(x) {
   pushViewport(viewport(layout.pos.col=3, layout.pos.row=1, height=0.9))
     grid.text(x)
   upViewport()
 }
+
+# ---------------------------------------------------------------------------- #
 
 ## footer
 footer <- function(row,current,of,params) {
@@ -213,11 +225,17 @@ footer <- function(row,current,of,params) {
   upViewport()
 }
 
+# ---------------------------------------------------------------------------- #
+
 # make grey background
 mtbg  <- function() grid.rect(gp=gpar(fill="grey85", col="white"))
 
+# ---------------------------------------------------------------------------- #
+
 # make lines
 mdl   <- function() grid.lines(c(0,1), c(0,0), gp=gpar(col="grey85"))
+
+# ---------------------------------------------------------------------------- #
 
 # current vs future plot
 cfplot <- function(params, ref.t, var){
@@ -230,48 +248,63 @@ cfplot <- function(params, ref.t, var){
     # extract futur climate
     res <- data.frame(x=rep(NA,200))
     
-      for (i in 2:length(params$gcms)) {
-        ll <- aspline(y=ref.t[[which(params$idx.vars==var & params$idx.gcms==i)]],x=ipoints,n=200)
-     
-        res[,1] <- ll$x
-        res[,i] <- ll$y
-      }
-    
-      l <- ncol(res)
-    
-      # get min, min and mean for each month
-      if ( l > 2) {
-        res$min   <- apply(res[,2:l],1,min)
-        res$max   <- apply(res[,2:l],1,max)
-        res$mean  <- apply(res[,2:l],1,mean)
+      if (length(params$gcms) > 1) {
+        has.future=TRUE
       } else {
-        res$min   <- res[,2]
-        res$max   <- res[,2]
-        res$mean  <- res[,2]
+        has.future=FALSE
+      }     
+
+      
+      if (has.future) {
+        for (i in 2:length(params$gcms)) {
+          ll <- aspline(y=ref.t[[which(params$idx.vars==var & params$idx.gcms==i)]],x=ipoints,n=200)
+        
+          res[,1] <- ll$x
+          res[,i] <- ll$y
+        }
+        
+        l <- ncol(res)
+
+        # get min, min and mean for each month
+        if ( l > 2) {
+          res$min   <- apply(res[,2:l],1,min)
+          res$max   <- apply(res[,2:l],1,max)
+          res$mean  <- apply(res[,2:l],1,mean)
+        } else {
+          res$min   <- res[,2]
+          res$max   <- res[,2]
+          res$mean  <- res[,2]
+        }
       }
     
       cur <- aspline(y=ref.t[[which(params$idx.vars==var & params$idx.gcms==1)]],x=ipoints,n=200)
+
+      if (has.future) {
+        ymin <- min(c(res$min,cur$y))
+        ymax <- max(c(res$max,cur$y))
+      } else {
+        ymin <- min(cur$y)
+        ymax <- max(cur$y)
+      }
       
-      ymin <- min(c(res$min,cur$y))
-      ymax <- max(c(res$max,cur$y))
-    
       # create plot region
       pushViewport(plotViewport(margins=c(2.5,2.5,0.9,0.5)))
-      pushViewport(dataViewport(res[,1],c(ymin,ymax)))
-    
+      pushViewport(dataViewport(cur$x,c(ymin,ymax)))
       # plot x and y axis
       grid.yaxis(gp=gpar(cex=0.8))
       grid.xaxis(gp=gpar(cex=0.8), at=1:12, label=c("J","F","M","A","M","J","J","A","S","O","N","D"))
    
-      # plot variation of models
-      grid.polygon(x=c(res[,1],rev(res[,1])), y=c(res$min, rev(res$max)), default.units="native", gp=gpar(fill="grey90",col="grey90"))
-      
-      # plot mean
-      grid.lines(x=res[,1],y=res$mean, default.units="native", gp=gpar(lty=2))
-      
-      # plot points
-      for (x in 1:12) grid.points(x,res$mean[which(floor(res[,1])==x)][1], gp=gpar(cex=0.6), pch=20)
-      
+      if (has.future) {
+        # plot variation of models
+        grid.polygon(x=c(res[,1],rev(res[,1])), y=c(res$min, rev(res$max)), default.units="native", gp=gpar(fill="grey90",col="grey90"))
+        
+        # plot mean
+        grid.lines(x=res[,1],y=res$mean, default.units="native", gp=gpar(lty=2))
+        
+        # plot points
+        for (x in 1:12) grid.points(x,res$mean[which(floor(res[,1])==x)][1], gp=gpar(cex=0.6), pch=20)
+      }      
+
       # plot current
       grid.lines(x=cur$x, y=cur$y, default.units="native")
       
@@ -289,9 +322,51 @@ cfplot <- function(params, ref.t, var){
       
       upViewport(3)
   } else {
-   cat("not yet implemented \n")  
+
+    # we arrive here, if ndivisions is <= 1, thta means we only plot points and not diagramm
+
+    # check whether deviation in the future needs to be plotted
+    
+    if (length(params$gcms) > 1) {
+      has.future=TRUE
+    } else {
+      has.future=FALSE
+    } 
+
+    cur.y <- ref.t[[which(params$idx.vars==var & params$idx.gcms==1)]]
+    
+    if (has.future) {
+      ymin <- min(ref.t[which(params$idx.vars==var)])
+      ymax <- max(ref.t[which(params$idx.vars==var)])
+    } else {
+      ymin <- cur$y * 0.8
+      ymax <- cur$y * 1.1
+    }
+    
+    # create plot region
+    print("here 1")    
+    pushViewport(plotViewport(margins=c(2.5,2.5,0.9,0.5)))
+    pushViewport(dataViewport(c(-1,1),c(ymin, ymax)))
+    print("here 2")
+    # plot x and y axis
+    grid.yaxis(gp=gpar(cex=0.8))
+    grid.xaxis(gp=gpar(cex=0.8), at=c(-0.5,.5), label=c("current","future"))
+   
+    if (has.future) {
+      # plot mean
+      for (i in 2:length(ref.t)) {
+        grid.points(x=(jitter(0.5)),y=55, default.units="native", gp=gpar(lty=2))
+      }
+    }
+    print("here 3")  
+    # plot current
+    grid.points(x=-.5, y=60, default.units="native")
+    print("here 4")
+   upViewport(3)
   }
 }
+
+# ---------------------------------------------------------------------------- #
 
 ## plot a raster
 rast.plot <- function(r,params, r.lab, rowpos){
@@ -418,6 +493,7 @@ textbox <- function(title, text){
   upViewport()
 }
 
+# ---------------------------------------------------------------------------- #
 
 # to plot a raster (see also murell 2006)
 grid.image <- function(nrow, ncol, cols, byrow=T) {
@@ -439,6 +515,8 @@ grid.image <- function(nrow, ncol, cols, byrow=T) {
     gp=gpar(col=NA,fill=cols),
     name="image")
 }
+
+# ---------------------------------------------------------------------------- #
 
 grid.world <- function(m) {
   pushViewport(
