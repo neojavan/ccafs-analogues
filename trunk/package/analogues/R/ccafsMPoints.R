@@ -43,7 +43,7 @@ ccafsMPoints <- function(ref.t, poi.t, ref.w, poi.w, z=2) {
       wei[[x]] <- t(poi.w[[x]]) / ref.w[[x]]
     } else {
      # 3b.  leave it as it is
-      wei[[x]] <- poi.w[[x]]
+      wei[[x]] <- t(poi.w[[x]])
     }
   }
  
