@@ -120,7 +120,7 @@ dissimilarity <- function(params,training, weights) {
     if (params$keep.lag) {
       # make rasters again3
       cat("creating rasters \n")
-      res.all <- lapply(res.all, function(x) setValues(training[[1]],x))
+      res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))
       
     } else {
       # TODO make function dynamic
@@ -129,13 +129,13 @@ dissimilarity <- function(params,training, weights) {
       
       # make rasters again
       cat("creating rasters\n")
-      res.all <- lapply(res.all, function(x) setValues(training[[1]],x))
+      res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))
     }
   } else if (params$method == "hal") {
     if (params$keep.lag) {
       # make rasters again3
       cat("creating rasters\n")
-      res.all <- lapply(res.all, function(x) setValues(training[[1]],x))      
+      res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))      
     } else {
       # TODO make function dynamic
       cat("aggregating lag\n")
@@ -143,7 +143,7 @@ dissimilarity <- function(params,training, weights) {
       res.all <- lapply(res.all, function(x) ifelse(x > 0,1,0))
       # make rasters again
       cat("creating rasters\n")
-      res.all <- lapply(res.all, function(x) setValues(training[[1]],x))
+      res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))
     }
   }
   }
@@ -185,14 +185,21 @@ from, to, roll, poi.where=NA) {
         
         cat("calc dissimilarity starting with ")
         
-        this.res <- apply(roll, 1, function(x) {
-          cat(x[1]," ")
-          ccafsMPoints(ref.t=lapply(this.ref.t, function(y) y[x]), 
+        
+	      this.res <- matrix(rep(NA, (params$ndivisions * nrow(this.poi.t[[1]]))), ncol=params$ndivisions)
+
+	      for (i in 1:params$ndivisions) { 
+	
+          cat(roll[i, 1], " ")
+          
+          this.roll <- roll[i,]          
+          
+  	      this.res[,i] <- ccafsMPoints(ref.t=lapply(this.ref.t, function(y) y[this.roll]), 
                 poi.t=lapply(this.poi.t, function(y) y[,params$growing.season]), 
-                ref.w=lapply(this.ref.w, function(y) y[x]), 
+                ref.w=lapply(this.ref.w, function(y) y[this.roll]), 
                 poi.w=lapply(this.poi.w, function(y) y[,params$growing.season]), 
                 params$z) 
-        })
+        }
         
          cat("\n")
         
