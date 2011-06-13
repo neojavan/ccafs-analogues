@@ -116,37 +116,63 @@ dissimilarity <- function(params,training, weights) {
   
 # ---------------------------------------------------------------------------- #  
   if (!is.matrix(params$to)) {
-  if (params$method == "ccafs") {
-    if (params$keep.lag) {
-      # make rasters again3
-      cat("creating rasters \n")
-      res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))
-      
-    } else {
-      # TODO make function dynamic
-      cat("looking for min dissimilarity \n")
-      res.all <- lapply(res.all, function(x) apply(x,1,min))
-      
-      # make rasters again
-      cat("creating rasters\n")
-      res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))
+    if (params$method == "ccafs") {
+      if (params$keep.lag) {
+        # make rasters again3
+        cat("creating rasters \n")
+        res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))
+        
+      } else {
+        # TODO make function dynamic
+        cat("looking for min dissimilarity \n")
+        res.all <- lapply(res.all, function(x) apply(x,1,min))
+        
+        # make rasters again
+        cat("creating rasters\n")
+        res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))
+      }
+    } else if (params$method == "hal") {
+      if (params$keep.lag) {
+        # make rasters again3
+        cat("creating rasters\n")
+        res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))      
+      } else {
+        # TODO make function dynamic
+        cat("aggregating lag\n")
+        res.all <- lapply(res.all, function(x) apply(x,1,sum))
+        res.all <- lapply(res.all, function(x) ifelse(x > 0,1,0))
+        # make rasters again
+        cat("creating rasters\n")
+        res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))
+      }
     }
-  } else if (params$method == "hal") {
-    if (params$keep.lag) {
-      # make rasters again3
-      cat("creating rasters\n")
-      res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))      
-    } else {
-      # TODO make function dynamic
-      cat("aggregating lag\n")
-      res.all <- lapply(res.all, function(x) apply(x,1,sum))
-      res.all <- lapply(res.all, function(x) ifelse(x > 0,1,0))
-      # make rasters again
-      cat("creating rasters\n")
-      res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))
+  } else {
+    if (params$method == "ccafs") {
+        if (params$keep.lag) {
+        
+          return(res.all)
+          
+        } else {
+          # TODO make function dynamic
+          cat("looking for min dissimilarity \n")
+          res.all <- lapply(res.all, function(x) apply(x,1,min))
+          
+          return(res.all)
+          
+        }
+      } else if (params$method == "hal") {
+        if (params$keep.lag) {
+          # make rasters again3
+          return(res.all)
+        } else {
+          # TODO make function dynamic
+          cat("aggregating lag\n")
+          res.all <- lapply(res.all, function(x) apply(x,1,sum))
+          res.all <- lapply(res.all, function(x) ifelse(x > 0,1,0))
+          return(res.all)
+        }
+      }
     }
-  }
-  }
   return(res.all)
 }
 
@@ -164,7 +190,7 @@ from, to, roll, poi.where=NA) {
       this.poi.t <- poi.t[which(params$idx.gcms==from)]
       
       if (is.matrix(params$to)) {
-        this.poi.t <- lapply(poi.t, function(x) x[poi.where, , drop=FALSE])
+        this.poi.t <- lapply(poi.t[which(params$idx.gcms==to)], function(x) x[poi.where, , drop=FALSE])
       }
       
       
@@ -178,7 +204,7 @@ from, to, roll, poi.where=NA) {
         this.poi.w <- poi.w[which(params$idx.gcms==from)]
         
           if (is.matrix(params$to)) {
-            this.poi.w <- lapply(poi.w, function(x) x[poi.where, , drop=FALSE])
+            this.poi.w <- lapply(poi.w[which(params$idx.gcms==to)], function(x) x[poi.where, , drop=FALSE])
           }
       
         this.z <- params$z
