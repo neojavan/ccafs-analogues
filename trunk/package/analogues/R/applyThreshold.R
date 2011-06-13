@@ -9,21 +9,33 @@
 #' ccafs_params <- dissimilarity(x, z, )
 
 
-applyThreshold <- function(results,range=NA,best=NA) {
+applyThreshold <- function(results,range,best) {
   
-  if (!is.na(range) & !is.na(best))
+  if (!missing(range) & !missing(best))
     exit("range and best are mutually exclusive, one needs to be NA")
   
-  results.v <- results.n <- getValues(results)
+  results.v <- getValues(results)
   
-  if (!is.na(range)) {
+  if (!missing(range)) {
     results.n <- ifelse(results.v >= range[1] & results.v <= range[2], results.v,NA)
   }
   
-  if (!is.na(best)) {
-    best <- best[order(best)]
-    probs <- quantile(results.v,probs=best,na.rm=T)
-    results.n <- ifelse(results.v >= 0 & results.v <= probs[1], results.v,NA)
+  if (!missing(best)) {
+
+    if (best > 1) {
+      cat("Fraction was probably provided in %, I will devide it by 100")
+      
+      best <- best/100
+    }    
+
+    # order the results
+    results.v.o <- results.v[order(results.v)]
+    
+    # figure out where to break
+    where.break	<- ceiling(length(results.v) * best)
+    threshold <- results.v.o[where.break]
+
+    results.n <- ifelse(results.v >= 0 & results.v <= threshold, results.v,NA)
   }
   
   results <- setValues(results,results.n)

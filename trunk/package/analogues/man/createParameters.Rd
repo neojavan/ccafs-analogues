@@ -171,11 +171,21 @@ createParameters(x=10, y=48, to=NA, method="ccafs", hal.rad=c(NA, 0.15), hal.mad
     vars=c("tmean", "prec"), weights=c("dtr", 1), ndivisions=12,
     climate.data=".", ext="asc", direction="backwd",
     growing.season=1:12, across.year=T, keep.lag=F, normalise=F)
+createParameters(x=10, y=48, to=NA, method="ccafs", hal.rad=c(NA, 0.15), hal.mad=c(NA,
+    0.3), hal.mrd=c(1, NA), hal.ncond=2, z=2, gcms=c("current"),
+    vars=c("tmean", "prec"), weights=c("dtr", 1), ndivisions=12,
+    climate.data=".", ext="asc", direction="backwd",
+    growing.season=1:12, across.year=T, keep.lag=F, normalise=F)
 }
 \description{Initiate parameters for analogue dissimilarity analysis.}
 \details{This function is the first step too find analogue climate sites.
 Here all parameters for the later analysis are set. The initial 
 parameters can be changed later. Make sure clmate data are name properly.\code{createParameters}: This function is the first step too find analogue climate sites.
+Here all parameters for the later analysis are set. The initial 
+parameters can be changed later. Make sure clmate data are name properly.
+
+
+\code{createParameters}: This function is the first step too find analogue climate sites.
 Here all parameters for the later analysis are set. The initial 
 parameters can be changed later. Make sure clmate data are name properly.
 
@@ -441,6 +451,9 @@ parameters can be changed later. Make sure clmate data are name properly.
 \code{createParameters}: an object of AnalogueParameters
 
 
+\code{createParameters}: an object of AnalogueParameters
+
+
 }
 \arguments{\item{x}{coordinate of site under analysis}
 \item{y}{coodrinate of site under analysis}
@@ -497,6 +510,8 @@ used to account for differences in seasons}
 
 \alias{createParameters}
 \keyword{manip}
+
+\alias{createParameters}
 
 \alias{createParameters}
 

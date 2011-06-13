@@ -101,7 +101,7 @@ dissimilarity <- function(params,training, weights) {
     # projecting from the current (first grid) to all futur gcms 
     
     for (gcm in 2:ngcms) {
-     res.all[[(gcm - 1)]] <-  callDissimilarity(params, ref.where, 
+     res.all[[(gcm - 1)]] <- callDissimilarity(params, ref.where, 
         poi.t, poi.w, from=1, to=gcm, roll,poi.where)
     }
     
