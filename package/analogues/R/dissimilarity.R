@@ -68,9 +68,21 @@ dissimilarity <- function(params,training, weights) {
 
   if (params$normalise) {
     cat("Normalising training data \n")
-    poi.t <- lapply(poi.t, function(x) matrix(scale(as.vector(x)), ncol=params$ndivision, byrow=FALSE))
-    
-    # poi.t <- lapply(poi.t, function(x) x + 10)
+    # poi.t <- lapply(poi.t, function(x) matrix(scale(as.vector(x)), ncol=params$ndivision, byrow=FALSE))
+
+    poi.tt <- list()    
+        
+    for (i in 1:length(params$vars)) {
+      a <- scale(unlist(poi.t[which(params$idx.vars==i)]))
+  
+      which.put <- which(params$idx.vars==i)
+      where.start <- seq(1,by=length(a)/length(which.put), length.out=length(which.put))
+
+      for (j in 1:length(which.put)) {
+        poi.tt[[which.put[j]]] <- matrix(a[where.start[j]:(where.start[j]+(length(a)/length(which.put)-1)), ], ncol=params$ndivisions, byrow=FALSE)
+      }
+    }
+
     
     # if all weights are the same, standardisation will result in NaN
     # cat("Normalising weight \n")    
