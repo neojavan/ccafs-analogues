@@ -42,9 +42,21 @@ loadDataGRASS(params)
 loadDataGRASS(params)
 loadDataGRASS(params)
 loadDataGRASS(params)
+loadDataGRASS(params)
+loadDataGRASS(params)
+loadDataGRASS(params)
 }
 \description{Extract reference values from rasters}
 \value{an object of AnalogueResults\code{loadDataGRASS}: an object of AnalogueResults
+
+
+\code{loadDataGRASS}: an object of AnalogueResults
+
+
+\code{loadDataGRASS}: an object of AnalogueResults
+
+
+\code{loadDataGRASS}: an object of AnalogueResults
 
 
 \code{loadDataGRASS}: an object of AnalogueResults
@@ -168,7 +180,13 @@ loadDataGRASS(params)
 \arguments{\item{params}{an object of the class AnalogueParameters}
 \item{...}{an object of the class AnalogueTraining, AnalogueTraining}
 }
-\examples{load <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xy}
+\examples{load <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xyload <- xy}
+
+\alias{loadDataGRASS}
+
+\alias{loadDataGRASS}
+
+\alias{loadDataGRASS}
 
 \alias{loadDataGRASS}
 
