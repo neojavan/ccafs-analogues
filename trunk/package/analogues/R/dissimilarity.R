@@ -36,7 +36,7 @@ dissimilarity <- function(params,training, weights) {
   roll <- matrix(data=roll.v, ncol=length(months), byrow=TRUE)
   
   # cut roll to the actual growin period
-  roll <- roll[ , params$growing.season]
+  roll <- roll[ , params$growing.season, drop=FALSE]
   
   # only keep first row, if accross the years is false
   if (!params$across.year & length(roll)>1) {
