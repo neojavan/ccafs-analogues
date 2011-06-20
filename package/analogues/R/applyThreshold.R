@@ -23,16 +23,17 @@ applyThreshold <- function(results,range,best) {
   if (!missing(best)) {
 
     if (best > 1) {
-      cat("Fraction was probably provided in %, I will devide it by 100")
+      cat("Fraction was probably provided in %, I will devide it by 100\n")
       
       best <- best/100
     }    
 
     # order the results
-    results.v.o <- results.v[order(results.v)]
+    results.v.o <- results.v[is.numeric(results.v)]    
+    results.v.o <- results.v[order(results.v.o)]
     
     # figure out where to break
-    where.break	<- ceiling(length(results.v) * best)
+    where.break	<- ceiling(length(results.v.o) * best)
     threshold <- results.v.o[where.break]
 
     results.n <- ifelse(results.v >= 0 & results.v <= threshold, results.v,NA)
