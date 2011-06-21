@@ -29,8 +29,8 @@ applyThreshold <- function(results,range,best) {
     }    
 
     # order the results
-    results.v.o <- results.v[is.numeric(results.v)]    
-    results.v.o <- results.v[order(results.v.o)]
+    results.v.o <- results.v[!is.na(results.v)]    
+    results.v.o <- results.v.o[order(results.v.o)]
     
     # figure out where to break
     where.break	<- ceiling(length(results.v.o) * best)
