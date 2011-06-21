@@ -194,7 +194,7 @@ dissimilarity <- function(params,training, weights) {
 callDissimilarity <- function(params, ref.where, poi.t, poi.w, 
 from, to, roll, poi.where=NA) {
         
-      this.res <- c()
+      this.res <- matrix(NA, ncol=nrow(roll), nrow=nrow(poi.t[[1]]))
       nvars <- length(params$vars)
       
       this.ref.t <- lapply(poi.t[which(params$idx.gcms==to)], function(x) {
@@ -228,7 +228,7 @@ from, to, roll, poi.where=NA) {
         
 	      this.res <- matrix(rep(NA, (params$ndivisions * nrow(this.poi.t[[1]]))), ncol=params$ndivisions)
 
-	      for (i in 1:params$ndivisions) { 
+	      for (i in 1:nrow(roll)) { 
 	
           cat(roll[i, 1], " ")
           
