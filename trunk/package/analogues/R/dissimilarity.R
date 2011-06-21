@@ -130,7 +130,7 @@ dissimilarity <- function(params,training, weights) {
   
 # ---------------------------------------------------------------------------- #  
   if (!is.matrix(params$to)) {
-    if (params$method == "ccafs") {
+    if (params$method == "ccafs" | params$method == "ccafsp1") {
       if (params$keep.lag) {
         # make rasters again3
         cat("creating rasters \n")
@@ -209,7 +209,7 @@ from, to, roll, poi.where=NA) {
       
       
       # Weights are only needed for ccafs method
-      if (params$method == "ccafs") {
+      if (params$method == "ccafs" | params$method == "ccafsp1") {
          
         this.ref.w <- lapply(poi.w[which(params$idx.gcms==to)], function(x) {
           as.vector(x[ref.where,])
@@ -234,11 +234,21 @@ from, to, roll, poi.where=NA) {
           
           this.roll <- roll[i,]          
           
+          if (params$method == "ccafs") {
+          
   	      this.res[,i] <- ccafsMPoints(ref.t=lapply(this.ref.t, function(y) y[this.roll]), 
                 poi.t=lapply(this.poi.t, function(y) y[,params$growing.season]), 
                 ref.w=lapply(this.ref.w, function(y) y[this.roll]), 
                 poi.w=lapply(this.poi.w, function(y) y[,params$growing.season]), 
                 params$z) 
+          } else {
+            this.res[,i] <- ccafsMPointsPercentDiff(ref.t=lapply(this.ref.t, function(y) y[this.roll]), 
+                poi.t=lapply(this.poi.t, function(y) y[,params$growing.season]), 
+                ref.w=lapply(this.ref.w, function(y) y[this.roll]), 
+                poi.w=lapply(this.poi.w, function(y) y[,params$growing.season]), 
+                params$z) 
+                
+          }
         }
         
          cat("\n")
@@ -262,7 +272,8 @@ from, to, roll, poi.where=NA) {
           this.res <- cbind(this.res,ifelse(this.res.tmp >= params$hal.ncond, 1,0))
         }
       cat("\n")
-      }
+      } 
+      
       return(this.res)    
 }
 
