@@ -68,7 +68,18 @@ createParameters <- function(x=10,
   require(rimage)
 
   
-  # check wether point is terrestrial or not (waiting)
+  # check wether point is terrestrial or not
+  
+  # growing season needs to be <= ndivisions
+  if (length(growing.season) > ndivisions) {
+    stop("Growing season > ndivision")
+  }
+  
+  # each variable needs a weight
+  if (length(weights) != length(vars)) {
+    stop("Variables and weights don't match")
+  }
+  
   
   # Make a list with all parameters
   params <- list(x=x,
