@@ -54,6 +54,7 @@ report <- function(models=list(list(params, training, results, r.lab, m.lab)), p
     
     upViewport()
    
+   print('ok1')
     # figure out how many pages are needed for variables and for rasters
     
     # total no pages
@@ -66,6 +67,7 @@ report <- function(models=list(list(params, training, results, r.lab, m.lab)), p
     
     # for each model in models plot first variables and then results
     
+print('ok2')
     for (model in models) {
       
       this.params <- model$params
@@ -89,6 +91,7 @@ report <- function(models=list(list(params, training, results, r.lab, m.lab)), p
       wprast <- rep(1:nprast,each=3)[1:length(this.results)]
       wprast <- data.frame(rast=1:length(this.results),which.page=wprast)
     
+print('ok3')
       # for each page with variables    
       if (!is.na(this.training)) {  
       for (page in 1:npvars) {
@@ -137,7 +140,9 @@ report <- function(models=list(list(params, training, results, r.lab, m.lab)), p
         pushViewport(viewport(layout.pos.col=3, layout.pos.row=rowpos))
         mdl()
       
+print('ok4')
         cfplot(this.params,this.ref.t, var)
+print('ok5')
         
         rowpos <- rowpos + 1
       }
@@ -240,6 +245,7 @@ mdl   <- function() grid.lines(c(0,1), c(0,0), gp=gpar(col="grey85"))
 # current vs future plot
 cfplot <- function(params, ref.t, var){
   
+print('entered cok')
   if (params$ndivisions > 1) {
     require(akima)    
     # points for interpolation
@@ -257,6 +263,7 @@ cfplot <- function(params, ref.t, var){
       
       if (has.future) {
         for (i in 2:length(params$gcms)) {
+          # inter polate future
           ll <- aspline(y=ref.t[[which(params$idx.vars==var & params$idx.gcms==i)]],x=ipoints,n=200)
         
           res[,1] <- ll$x
@@ -277,7 +284,9 @@ cfplot <- function(params, ref.t, var){
         }
       }
     
+print('cok 1')
       cur <- aspline(y=ref.t[[which(params$idx.vars==var & params$idx.gcms==1)]],x=ipoints,n=200)
+print('cok 2')
 
       if (has.future) {
         ymin <- min(c(res$min,cur$y))
@@ -332,6 +341,7 @@ cfplot <- function(params, ref.t, var){
     } else {
       has.future=FALSE
     } 
+    print('cok12')
 
     cur.y <- ref.t[[which(params$idx.vars==var & params$idx.gcms==1)]]
     
@@ -339,8 +349,8 @@ cfplot <- function(params, ref.t, var){
       ymin <- min(ref.t[which(params$idx.vars==var)])
       ymax <- max(ref.t[which(params$idx.vars==var)])
     } else {
-      ymin <- cur$y * 0.8
-      ymax <- cur$y * 1.1
+      ymin <- cur.y * 0.8
+      ymax <- cur.y * 1.1
     }
     
     # create plot region
@@ -360,7 +370,7 @@ cfplot <- function(params, ref.t, var){
     }
     print("here 3")  
     # plot current
-    grid.points(x=-.5, y=60, default.units="native")
+    grid.points(x=-.5, y=cur.y, default.units="native")
     print("here 4")
    upViewport(3)
   }
