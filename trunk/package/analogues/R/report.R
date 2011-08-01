@@ -54,7 +54,6 @@ report <- function(models=list(list(params, training, results, r.lab, m.lab)), p
     
     upViewport()
    
-   print('ok1')
     # figure out how many pages are needed for variables and for rasters
     
     # total no pages
@@ -67,7 +66,6 @@ report <- function(models=list(list(params, training, results, r.lab, m.lab)), p
     
     # for each model in models plot first variables and then results
     
-print('ok2')
     for (model in models) {
       
       this.params <- model$params
@@ -91,9 +89,8 @@ print('ok2')
       wprast <- rep(1:nprast,each=3)[1:length(this.results)]
       wprast <- data.frame(rast=1:length(this.results),which.page=wprast)
     
-print('ok3')
       # for each page with variables    
-      if (!is.na(this.training)) {  
+      if (any(!is.na(this.training))) {  
       for (page in 1:npvars) {
         # start on a new page
         grid.newpage()
@@ -139,18 +136,14 @@ print('ok3')
         # plot tmp.plot
         pushViewport(viewport(layout.pos.col=3, layout.pos.row=rowpos))
         mdl()
-      
-print('ok4')
         cfplot(this.params,this.ref.t, var)
-print('ok5')
-        
         rowpos <- rowpos + 1
       }
       glegend(7)
       footer(8,c.page,t.page,params)
       c.page <- c.page + 1
       }
-    }# else if (length(this.results > 0)) {
+    }
       for (page in 1:nprast) {
         grid.newpage()
         pushViewport(viewport(layout=grid.layout(6, 4,
@@ -159,22 +152,17 @@ print('ok5')
     
         # plot header
         header(this.m.lab)
-   
         rowpos <- 2
    
         for (rast in wprast[wprast$which.page==page,'rast']) {
           # plot ccafs.text
-  
           rast.plot(this.results[[rast]], params, this.r.lab[rast], rowpos)
-          
           rowpos <- rowpos + 1
         }
         footer(6,c.page,t.page,params)
         c.page <- c.page + 1
       }
     }
-  #}
-  
   dev.off()
 }
 
@@ -224,9 +212,7 @@ header <- function(x) {
 footer <- function(row,current,of,params) {
   pushViewport(viewport(layout.pos.col=3, layout.pos.row=row, width=0.9, 
     height=0.9))
-      grid.text(str_c("Year: ", params$year, ", SRES ",
-        params$scenario, ", GCMS", str_c(params$gcms, collapse=", "),
-      "\n Page ", current, " of ", of), gp=gpar(cex=0.7), x=1, just="right")
+      grid.text(str_c("Page ", current, " of ", of), gp=gpar(cex=0.7), x=1, just="right")
   upViewport()
 }
 
@@ -245,7 +231,6 @@ mdl   <- function() grid.lines(c(0,1), c(0,0), gp=gpar(col="grey85"))
 # current vs future plot
 cfplot <- function(params, ref.t, var){
   
-print('entered cok')
   if (params$ndivisions > 1) {
     require(akima)    
     # points for interpolation
@@ -284,9 +269,7 @@ print('entered cok')
         }
       }
     
-print('cok 1')
       cur <- aspline(y=ref.t[[which(params$idx.vars==var & params$idx.gcms==1)]],x=ipoints,n=200)
-print('cok 2')
 
       if (has.future) {
         ymin <- min(c(res$min,cur$y))
@@ -322,7 +305,7 @@ print('cok 2')
   
   
       # plot growing season
-      if (with(params, growing.season[1] < growing.season[length(growing.season)])) {
+      if (with(params, growing.season[1] <= growing.season[length(growing.season)])) {
         with(params,grid.lines(x=c(growing.season[1],growing.season[length(growing.season)]), y=c(ymin,ymin), default.units="native", gp=gpar(lwd=2, col="darkgreen")))
       } else {
         with(params,grid.lines(x=c(growing.season[1],12), y=c(ymin,ymin), default.units="native", gp=gpar(lwd=2, col="darkgreen")))
@@ -341,7 +324,6 @@ print('cok 2')
     } else {
       has.future=FALSE
     } 
-    print('cok12')
 
     cur.y <- ref.t[[which(params$idx.vars==var & params$idx.gcms==1)]]
     
@@ -354,10 +336,8 @@ print('cok 2')
     }
     
     # create plot region
-    print("here 1")    
     pushViewport(plotViewport(margins=c(2.5,2.5,0.9,0.5)))
     pushViewport(dataViewport(c(-1,1),c(ymin, ymax)))
-    print("here 2")
     # plot x and y axis
     grid.yaxis(gp=gpar(cex=0.8))
     grid.xaxis(gp=gpar(cex=0.8), at=c(-0.5,.5), label=c("current","future"))
@@ -368,10 +348,8 @@ print('cok 2')
         grid.points(x=(jitter(0.5)),y=55, default.units="native", gp=gpar(lty=2))
       }
     }
-    print("here 3")  
     # plot current
     grid.points(x=-.5, y=cur.y, default.units="native")
-    print("here 4")
    upViewport(3)
   }
 }
@@ -422,6 +400,16 @@ rast.plot <- function(r,params, r.lab, rowpos){
   
   # match colors and values
   cols <- co[match(rr$values, co$or.values),'colors']
+
+  # reverse colors if method is hal
+  if (params$method == "hal") {
+    co$colors <- rev(terrain.colors(nrow(co)))
+  
+    # match colors and values
+    cols <- co[match(rr$values, co$or.values),'colors']
+    lcols <- co[ceiling(seq(1,nrow(co),length.out=2)),'colors']
+  }
+    
   
   # get colors for the raster legend
   lcols <- co[ceiling(seq(1,nrow(co),length.out=11)),'colors']
@@ -453,23 +441,34 @@ rast.plot <- function(r,params, r.lab, rowpos){
     
     # plot rast legend
     pushViewport(viewport(width=0.7,height=0.1,y=0.13, x=0.5))
-      grid.rect(x=seq(0,1,length.out=11),y=0.5,width=1/11, height=0.4,just=c("center","top"),
+      len_boxes <- 11
+      len_labels <- 6
+      width_boxes <- 1/11
+      where <- seq(0, 1, length.out=len_boxes)
+
+      if (params$method == "hal") {
+        len_boxes <- 2
+        len_labels <- 2
+        where <- seq(0, 1, length.out=10)[1:2]
+      }
+
+      grid.rect(x=where,y=0.5,width=width_boxes, height=0.4,just=c("center","top"),
       gp=gpar(col=NA,fill=lcols),name="image")
-      
+
       # labels
-      grid.text(ceiling(seq(min(r.vu),max(r.vu),length.out=6)), 
-        x=seq(0,1,length.out=6),
+      grid.text(ceiling(seq(min(r.vu),max(r.vu),length.out=len_labels)), 
+        x=where,
         y=0.6,just=c("center","bottom"),
         gp=gpar(cex=0.7))
   upViewport(2)
       
-  # plot the actual raster map     
+  # push the actual raster map     
   pushViewport(viewport(layout.pos.col=3, layout.pos.row=rowpos))
     
     # set the plotting region
     pushViewport(plotViewport(margins=c(2.5,2.5,0.9,0.5)))
       
-      # plot the data region 
+      # push the data region 
       pushViewport(dataViewport(xscale=c(xmin,(xmin+xrange)),yscale=c(ymin,(ymin+yrange))))
       
         # axis
