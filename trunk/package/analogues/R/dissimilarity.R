@@ -110,7 +110,6 @@ dissimilarity <- function(params,training, weights) {
         poi.t, poi.w, from=gcm, to=1, roll, poi.where)
     }
 
-
   } else if (params$direction=="forwd" | params$direction=="forward"){
     # projecting from the current (first grid) to all futur gcms 
     
@@ -138,8 +137,13 @@ dissimilarity <- function(params,training, weights) {
         
       } else {
         # TODO make function dynamic
+        
         cat("looking for min dissimilarity \n")
-        res.all <- lapply(res.all, function(x) apply(x,1,min))
+        if (length(params$growing.season) > 1) {
+          res.all <- lapply(res.all, function(x) apply(x,1,min))
+        } else {
+          res.all <- lapply(res.all, function(x) x[,1])
+        }
         
         # make rasters again
         cat("creating rasters\n")
@@ -152,9 +156,11 @@ dissimilarity <- function(params,training, weights) {
         res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))      
       } else {
         # TODO make function dynamic
-        cat("aggregating lag\n")
-        res.all <- lapply(res.all, function(x) apply(x,1,sum))
-        res.all <- lapply(res.all, function(x) ifelse(x > 0,1,0))
+        if (length(roll) > 1) {
+          cat("aggregating lag\n")
+          res.all <- lapply(res.all, function(x) apply(x,1,sum))
+          res.all <- lapply(res.all, function(x) ifelse(x > 0,1,0))
+        }
         # make rasters again
         cat("creating rasters\n")
         res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))
@@ -181,8 +187,10 @@ dissimilarity <- function(params,training, weights) {
         } else {
           # TODO make function dynamic
           cat("aggregating lag\n")
-          res.all <- lapply(res.all, function(x) apply(x,1,sum))
-          res.all <- lapply(res.all, function(x) ifelse(x > 0,1,0))
+          if (length(roll) > 1) {
+             res.all <- lapply(res.all, function(x) apply(x,1,sum))
+             res.all <- lapply(res.all, function(x) ifelse(x > 0,1,0))
+          }
           return(res.all)
         }
       }
@@ -240,7 +248,7 @@ from, to, roll, poi.where=NA) {
                 poi.t=lapply(this.poi.t, function(y) y[,params$growing.season]), 
                 ref.w=lapply(this.ref.w, function(y) y[this.roll]), 
                 poi.w=lapply(this.poi.w, function(y) y[,params$growing.season]), 
-                params$z) 
+                params$z)   
           } else {
             this.res[,i] <- ccafsMPointsPercentDiff(ref.t=lapply(this.ref.t, function(y) y[this.roll]), 
                 poi.t=lapply(this.poi.t, function(y) y[,params$growing.season]), 
@@ -257,19 +265,26 @@ from, to, roll, poi.where=NA) {
         
         cat("calculating hal starting with: ")
         for (i in 1:nrow(roll)) {
-          cat(roll[i,1], " ")
+          cat(roll[i, 1], " ")
           mad <- applyHalThreshold(madMPoints(
-            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i,]]), this.poi.t), 
+            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), this.poi.t), 
             params$hal.mad)
           mrd <- applyHalThreshold(mrdMPoints(
-            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i,]]), this.poi.t), 
+            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), this.poi.t), 
             params$hal.mrd)
           rad <- applyHalThreshold(radMPoints(
-            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i,]]), this.poi.t), 
+            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), this.poi.t), 
             params$hal.rad)
           
-          this.res.tmp <- do.call('+',mad) + do.call('+',mrd) + do.call('+',rad)
-          this.res <- cbind(this.res,ifelse(this.res.tmp >= params$hal.ncond, 1,0))
+          # Sum everything up
+          this.res.tmp <- do.call('+', mad) + do.call('+', mrd) + do.call('+', rad)
+          # cbind each step to the total
+          if (i > 1) {
+            this.res <- cbind(this.res,ifelse(this.res.tmp >= params$hal.ncond, 1,0))
+          } else {
+            this.res <- ifelse(this.res.tmp >= params$hal.ncond, 1,0)
+          }
+
         }
       cat("\n")
       } 
@@ -282,10 +297,12 @@ from, to, roll, poi.where=NA) {
 applyHalThreshold <- function(obj, th) {
   for (i in 1:length(obj)) {
     if (!is.na(th[[i]])) {
-      obj[[i]] <- obj[[i]] <= th[[i]]
+      obj[[i]] <- ifelse(obj[[i]] <= th[[i]], 1, 0)
     } else {
-      obj[[i]] <- 0
+      obj[[i]] <- ifelse(is.na(obj[[i]]), NA, 0)
+
     }
   }
   return(obj)
+
 }
