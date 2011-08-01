@@ -25,6 +25,13 @@ radMPoints <- function(ref.t, poi.t) {
   return(rad)
 }
  
+#' Method after Hallegatte
+#'
+#' @param params an object of the class AnalogueParameters
+#' @param ... more to come
+#' @export
+#' @examples
+#' ccafs_params <- dissimilarity(x, z, )
 mrdMPoints <- function(ref.t, poi.t) {
   nvars <- length(ref.t)
   # 2. Mean relative difference between months
@@ -49,6 +56,13 @@ mrdMPoints <- function(ref.t, poi.t) {
   return(mrd)
 }
 
+#' Method after Hallegatte
+#'
+#' @param params an object of the class AnalogueParameters
+#' @param ... more to come
+#' @export
+#' @examples
+#' ccafs_params <- dissimilarity(x, z, )
 madMPoints <- function(ref.t, poi.t) {
   
   # mean absolute difference
