@@ -11,7 +11,7 @@
 loadGridsFromFiles <- function(path,params) {
 
   cat(str_c("loading ",str_sub(path,1,-2)," \n"))
-  grid <- do.call(stack,lapply(str_c(path, 1:params$ndivisions, ".",params$ext),
+  grid <- do.call(stack,lapply(str_c(path, 1:params$ndivisions, params$ext),
     raster))
   
   return(grid)
