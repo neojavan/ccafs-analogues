@@ -1,0 +1,160 @@
+= Comparing multiple points =
+== Requirements ==
+  * Understood tutorial 1
+  * Some familiarity with R
+  * Not affraid of `*`pply
+
+== Preparing Data ==
+
+
+{{{
+library(analogues)
+
+sites  <- read.csv('data/IBYAN236.csv')
+
+str(sites)
+head(sites)
+}}}
+
+Make use of the analogues model
+
+{{{
+params <- createParameters(x=76.9, y=29.7, to=NA,
+   method="ccafs", hal.rad=c(NA, 0.15),
+   hal.mad=c(NA,0.3), hal.mrd=c(1, NA), z=2,
+   gcms=c("current","a1b_2020_2049_ukmo_hadgem1","a1b_2020_2049_miroc3_2_hires", "a1b_2020_2049_ipsl_cm4"),
+   vars=c("tmean", "prec"), weights=c("dtr",1), ndivisions=12,
+   climate.data="/media/38A5902177E72B8A/CIAT/analogues_data/current_a1b_2030", ext=".asc", direction="backwd",
+   growing.season=1:12, across.year=T, keep.lag=F, normalise=F)
+}}}
+
+== Load data ==
+   
+We can load the training data now
+{{{
+training_data <- loadData(params)
+}}}
+It is likely that some sites will have coordinates that are not covered with our raster, we want to get rid of those sites
+
+{{{
+nrow(sites)
+
+sites <- sites[!is.na(extract(training_data[[1]][[1]], as.matrix(sites[, c("Long", "Lat")]))), ]
+
+nrow(sites)
+}}}
+
+Extract the climate data at our pts of interest
+{{{
+poi_training <- lapply(training_data, function(x) extract(x, as.matrix(sites[, c("Long", "Lat")])))
+}}}
+
+This returns a list of matrixes. Each matrix has the dimension of number of points `*` 12, the list has length 9, because we have 4 gcms and two variables (2 `*` 8)
+
+loading the weights, this is slightly more complicated
+{{{
+weights_data <- loadWeights(params)
+
+poi_weights <- list()
+
+for (i in 1:length(weights_data)) {
+  if (is.numeric(weights_data[[i]]) | is.character(weights_data[[i]])) {
+    poi_weights[[i]] <- matrix(rep(as.numeric(weights_data[[i]]), (nrow(sites) * nlayers(training_data[[1]]))), ncol=nlayers(training_data[[1]]))
+  } else {
+    poi_weights[[i]] <- extract(weights_data[[i]],as.matrix(sites[, c("Long", "Lat")]))
+  }
+}
+}}}
+== Current disimilarity for one point ==
+To calculate current dissimilaritiy, we can make use of the underlying ccafsMPoints() function
+
+E.g. to calculate dissimilarities from the first point to all points
+{{{
+dis_from_pt_1 <- ccafsMPoints(ref.t=lapply(poi_training[1:2], function(x) x[1,]), 
+ poi.t=poi_training[1:2],  
+ ref.w=lapply(poi_weights[1:2], function(x) x[1,]),
+ poi.w=poi_training[1:2],
+ z=2)
+}}}
+== Current dissimilarity for many points ==
+we can easily apply this function to all points 
+
+{{{
+dis_current <- lapply(1:nrow(sites), function(pt) ccafsMPoints(ref.t=lapply(poi_training[1:2], function(x) x[pt,]), 
+ poi.t=poi_training[1:2],  
+ ref.w=lapply(poi_weights[1:2], function(x) x[pt,]),
+ poi.w=poi_training[1:2],
+ z=2))
+}}}
+ 
+we can obtain the dissimilarities from point n to all other points by:
+{{{
+dis_current[[n]]
+}}}
+e.g.
+{{{
+dis_current[[23]]
+}}}
+and it should have a dissimilarity of 0 to with itself
+{{{
+dis_current[[23]][23] == 0
+}}}
+we can quickly check that this applies for all points
+{{{
+all(sapply(1:nrow(sites), function(x) dis_current[[x]][x] == 0))
+}}}
+== Current dissimilarities for many points with a lag ==
+
+We can extent out analysis by comparing months not only as its, but during the years for doing that we will roll over reference points, i.e. start with the first devision, second division until the last division.
+from each run we will take the minimum, we m
+
+first we create a 'roll', which we will use a template 
+
+=== roll ===
+{{{
+roll.v <- c()
+months <- 1:params$ndivisions
+for (i in 1:length(months)) {
+   roll.v <- c(roll.v,(months[c(i:length(months),0:(i-1))]))  
+}
+roll <- matrix(data=roll.v, ncol=length(months), byrow=TRUE)
+  
+# cut roll to the actual growin period
+roll <- roll[ , params$growing.season]
+}}}
+
+=== Function for dissimilarities ===
+
+We will write a simple function to run ccafsMPoints for point over the roll and summarises it by taking the min
+
+{{{
+ccafsMPoints_rolled <- function(pt, poi_training, poi_w, roll) {
+  this_res <- matrix(rep(NA, nrow(roll) * nrow(poi_training[[1]])), ncol=nrow(roll))
+  for (i in 1:nrow(roll)) {
+    this_res[,i] <- ccafsMPoints(ref.t=lapply(poi_training[1:2], function(x) x[pt,roll[i,]]), 
+    poi.t=poi_training[1:2],  
+    ref.w=lapply(poi_weights[1:2], function(x) x[pt,roll[i,]]),
+    poi.w=poi_training[1:2],
+    z=2)
+  }
+  return(apply(this_res, 1, min))
+}
+}}}
+
+now we just put a for loop arround the 
+{{{
+dis_current_rolled <- lapply(1:nrow(sites), function(pt) ccafsMPoints_rolled(pt, poi_training, poi_w, roll))
+}}}
+
+we can test again the results for consitency
+all(sapply(1:nrow(sites), function(x) dis_current_rolled[[x]][x] == 0))
+
+we can plot the rolled vs not rolled
+
+{{{
+plot(dis_current[[1]], dis_current_rolled[[1]])
+}}}
+
+and see that there are some differences
+
+Finally we want to apply, everything to different futur scenarios to do so we modify our function
