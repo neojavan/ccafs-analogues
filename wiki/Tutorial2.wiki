@@ -236,10 +236,19 @@ ccafsMPoints_rolled_future <- function(pt, poi_training, poi_w, roll, from, to) 
   return(apply(this_res, 1, min))
 }
 }}}
-
+== Backward ==
 {{{ 
-dis_future_rolled <- list()
+dis_future_rolled_bckwd <- list()
 for (from in 2:length(params$gcms)) {
- dis_future_rolled[[from - 1]] <- lapply(1:nrow(sites), function(pt) ccafsMPoints_rolled_future(pt, poi_training, poi_w, roll, from=from, to=1))
+ dis_future_rolled_bckwd[[from - 1]] <- lapply(1:nrow(sites), function(pt) ccafsMPoints_rolled_future(pt, poi_training, poi_w, roll, from=from, to=1))
+}
+}}}
+This returns a list of length three (three gcms) and each list contains an other list of length 95 (95 points of interest).
+
+== Forward ==
+{{{ 
+dis_future_rolled_fwd <- list()
+for (to in 2:length(params$gcms)) {
+ dis_future_rolled_fwd[[from - 1]] <- lapply(1:nrow(sites), function(pt) ccafsMPoints_rolled_future(pt, poi_training, poi_w, roll, from=1, to=to))
 }
 }}}
