@@ -15,11 +15,22 @@
 
 {{{
 library(analogues)
-
-sites  <- read.csv('data/IBYAN236.csv')
+sites <- read.csv("http://ccafs-analogues.googlecode.com/files/crops.csv")
 
 str(sites)
+'data.frame':	100 obs. of  3 variables:
+ $ Lat  : num  39.7 10.3 -13.1 -25.8 34.7 ...
+ $ Long : num  22.6 -84.3 -76.2 -65 32 ...
+ $ yield: int  46 163 85 44 69 43 129 141 5 142 ...
+
 head(sites)
+        Lat       Long yield
+1  39.66667   22.58333    46
+2  10.26667  -84.26667   163
+3 -13.11667  -76.20000    85
+4 -25.80000  -64.96667    44
+5  34.71667   32.05000    69
+6  20.68333 -103.33333    43
 }}}
 
 Make use of the analogues model
@@ -30,24 +41,28 @@ params <- createParameters(x=76.9, y=29.7, to=NA,
    hal.mad=c(NA,0.3), hal.mrd=c(1, NA), z=2,
    gcms=c("current","a1b_2020_2049_ukmo_hadgem1","a1b_2020_2049_miroc3_2_hires", "a1b_2020_2049_ipsl_cm4"),
    vars=c("tmean", "prec"), weights=c("dtr",1), ndivisions=12,
-   climate.data="/media/38A5902177E72B8A/CIAT/analogues_data/current_a1b_2030", ext=".asc", direction="backwd",
+   climate.data="../analogues_data/current_a1b_2030", ext=".asc", direction="backwd",
    growing.season=1:12, across.year=T, keep.lag=F, normalise=F)
 }}}
 
-== Load data ==
-   
-We can load the training data now
+== Load climate data ==
+It is a lot faster we load the climate data only once at the beginning of the analysis and reuse it again afterwards. 
+
+Since have already created a _params_ object, we can take advante of the _loadData()_ function from the analogues package.
 {{{
 training_data <- loadData(params)
 }}}
-It is likely that some sites will have coordinates that are not covered with our raster, we want to get rid of those sites
+It is likely that some sites will have coordinates that are not covered with our raster, we want to eliminate those sites
 
 {{{
 nrow(sites)
-
+[1] 100
+}}}
+For each site we check whether or not a value is available for the first grid. If there is a value available for the first gird, all other grids should be fine too, since they all have the same extent.
+{{{
 sites <- sites[!is.na(extract(training_data[[1]][[1]], as.matrix(sites[, c("Long", "Lat")]))), ]
-
 nrow(sites)
+[1] 95
 }}}
 
 Extract the climate data at our pts of interest
@@ -110,7 +125,8 @@ we can quickly check that this applies for all points
 all(sapply(1:nrow(sites), function(x) dis_current[[x]][x] == 0))
 }}}
 
-[http://code.google.com/p/ccafs-analogues/source/browse/trunk/img/from33.png]
+http://ccafs-analogues.googlecode.com/files/from33.png
+
 == Current dissimilarities for many points with a lag ==
 
 We can extent out analysis by comparing months not only as its, but during the years for doing that we will roll over reference points, i.e. start with the first devision, second division until the last division.
