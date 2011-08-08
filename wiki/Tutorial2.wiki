@@ -219,3 +219,7 @@ plot(dis_current[[1]], dis_current_rolled[[1]], xlab="Dissimilarities without la
 http://ccafs-analogues.googlecode.com/files/effectLag.png
 
 and observe that dissimilarity values with the lagged dissimilarities are slightly lower.
+
+== Future dissimilarities ==
+Now we are interested in identifying sites that already have the climate, that our point of interest (poi) will have in the future (a.k.a. backward, we are projecting the future climate back to current conditions). 
+ 
