@@ -157,7 +157,8 @@ We can get the 10 closest points by: (n.b. we use [2:11,] to omit the first poin
 from_33[order(from_33[,4]),][2:11,]
 }}}
 We can also plot point dissimilarity versus yield in order to find a point with high yield and low dissimilarity.
-{{{plot(from_33[,4], from_33[,3], ylab="Yield", xlab="Dissimilarity", las=T, main="Dissimilarities from point 33")
+{{{
+plot(from_33[,4], from_33[,3], ylab="Yield", xlab="Dissimilarity", las=T, main="Dissimilarities from point 33")
 grid()
 }}}
 
