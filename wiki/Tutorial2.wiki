@@ -164,14 +164,14 @@ grid()
 
 http://ccafs-analogues.googlecode.com/files/from33.png
 
+Points in the upper left corner will be of greatest interest to us. 
+
 == Current dissimilarities for many points with a lag ==
 
-We can extent out analysis by comparing months not only as its, but during the years for doing that we will roll over reference points, i.e. start with the first devision, second division until the last division.
-from each run we will take the minimum, we m
-
-first we create a 'roll', which we will use a template 
+We can extent out analysis by comparing not only months as they are, varying the starting point during the years. In order to achieve that we will roll over reference points, i.e. start with the first devision, second division until the last division.
 
 === roll ===
+First we create a 'roll', which we will use as a template.
 {{{
 roll.v <- c()
 months <- 1:params$ndivisions
@@ -186,7 +186,7 @@ roll <- roll[ , params$growing.season]
 
 === Function for dissimilarities ===
 
-We will write a simple function to run ccafsMPoints for point over the roll and summarises it by taking the min
+We will write a simple function to run ccafsMPoints for a given point over the roll and summarizes the results by taking the minimum value.
 
 {{{
 ccafsMPoints_rolled <- function(pt, poi_training, poi_w, roll) {
@@ -202,7 +202,7 @@ ccafsMPoints_rolled <- function(pt, poi_training, poi_w, roll) {
 }
 }}}
 
-now we just put a for loop arround the 
+now we just apply this function to each site.
 {{{
 dis_current_rolled <- lapply(1:nrow(sites), function(pt) ccafsMPoints_rolled(pt, poi_training, poi_w, roll))
 }}}
@@ -213,7 +213,7 @@ all(sapply(1:nrow(sites), function(x) dis_current_rolled[[x]][x] == 0))
 we can plot the rolled vs not rolled
 
 {{{
-plot(dis_current[[1]], dis_current_rolled[[1]])
+plot(dis_current[[1]], dis_current_rolled[[1]], xlab="Dissimilarities without lag", ylab="Dissimilarities with lag", main="Effect of Lag")
 }}}
 
 and see that there are some differences
