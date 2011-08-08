@@ -1,4 +1,3 @@
-
 -------
 = *_ CAUTION: this is work in progress and still contains errors _* =
 ----------
@@ -110,6 +109,8 @@ we can quickly check that this applies for all points
 {{{
 all(sapply(1:nrow(sites), function(x) dis_current[[x]][x] == 0))
 }}}
+
+[http://code.google.com/p/ccafs-analogues/source/browse/trunk/img/from33.png]
 == Current dissimilarities for many points with a lag ==
 
 We can extent out analysis by comparing months not only as its, but during the years for doing that we will roll over reference points, i.e. start with the first devision, second division until the last division.
