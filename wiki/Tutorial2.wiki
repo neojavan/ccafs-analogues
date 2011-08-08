@@ -166,7 +166,7 @@ Points in the upper left corner will be of greatest interest to us.
 
 We can extent out analysis by comparing not only months as they are, varying the starting point during the years. In order to achieve that we will roll over reference points, i.e. start with the first devision, second division until the last division.
 
-=== roll ===
+=== Roll ===
 First we create a 'roll', which we will use as a template.
 {{{
 roll.v <- c()
