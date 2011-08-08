@@ -223,3 +223,23 @@ and observe that dissimilarity values with the lagged dissimilarities are slight
 == Future dissimilarities ==
 Now we are interested in identifying sites that already have the climate, that our point of interest (poi) will have in the future (a.k.a. backward, we are projecting the future climate back to current conditions). 
  
+{{{
+ccafsMPoints_rolled_future <- function(pt, poi_training, poi_w, roll, from, to) {
+  this_res <- matrix(rep(NA, nrow(roll) * nrow(poi_training[[1]])), ncol=nrow(roll))
+  for (i in 1:nrow(roll)) {
+    this_res[,i] <- ccafsMPoints(ref.t=lapply(poi_training[which(params$idx.gcms==to)], function(x) x[pt,roll[i,]]), 
+    poi.t=poi_training[which(params$idx.gcms==to)],  
+    ref.w=lapply(poi_weights[which(params$idx.gcms==to)], function(x) x[pt,roll[i,]]),
+    poi.w=poi_training[which(params$idx.gcms==to)],
+    z=2)
+  }
+  return(apply(this_res, 1, min))
+}
+}}}
+
+{{{ 
+dis_future_rolled <- list()
+for (from in 2:length(params$gcms)) {
+ dis_future_rolled[[from - 1]] <- lapply(1:nrow(sites), function(pt) ccafsMPoints_rolled_future(pt, poi_training, poi_w, roll, from=from, to=1))
+}
+}}}
