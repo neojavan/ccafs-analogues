@@ -1,9 +1,5 @@
--------
-= *_ CAUTION: this is work in progress and still contains errors _* =
-----------
-
-
-
+_beta release please report bugs to jmsigner@gmail.com_
+---------
 = Comparing multiple points =
 == Requirements ==
   * Understood tutorial 1
