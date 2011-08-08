@@ -46,14 +46,12 @@ params <- createParameters(x=76.9, y=29.7, to=NA,
 }}}
 
 == Load climate data ==
-It is a lot faster we load the climate data only once at the beginning of the analysis and reuse it again afterwards. 
-
-Since have already created a _params_ object, we can take advante of the _loadData()_ function from the analogues package.
+Since have already created a _params_ object, we can take advantage of the _loadData()_ function from the analogues package to load all data at once.
 {{{
 training_data <- loadData(params)
 }}}
+=== Some data cleaning ===
 It is likely that some sites will have coordinates that are not covered with our raster, we want to eliminate those sites
-
 {{{
 nrow(sites)
 [1] 100
@@ -64,18 +62,24 @@ sites <- sites[!is.na(extract(training_data[[1]][[1]], as.matrix(sites[, c("Long
 nrow(sites)
 [1] 95
 }}}
+== Extract training data ==
+It is a lot faster we load the climate data only once for every point of interest (poi), at the beginning of the analysis and reuse it again afterwards. 
 
-Extract the climate data at our pts of interest
 {{{
 poi_training <- lapply(training_data, function(x) extract(x, as.matrix(sites[, c("Long", "Lat")])))
 }}}
 
-This returns a list of matrixes. Each matrix has the dimension of number of points `*` 12, the list has length 9, because we have 4 gcms and two variables (2 `*` 8)
+This returns a list of matrixes. Each matrix has the dimension of number of points `*` 12, the list has length 8, because we have 4 gcms and two variables (2 `*` 8)
 
-loading the weights, this is slightly more complicated
+== Loading weights ==
+
 {{{
 weights_data <- loadWeights(params)
+}}}
 
+== Extracting weights ==
+Extracting weights is a little bit more difficult. Because grids can be weighted by an other grid or by a constant value.
+{{{
 poi_weights <- list()
 
 for (i in 1:length(weights_data)) {
@@ -87,7 +91,7 @@ for (i in 1:length(weights_data)) {
 }
 }}}
 == Current disimilarity for one point ==
-To calculate current dissimilaritiy, we can make use of the underlying ccafsMPoints() function
+To calculate current dissimilaritiy, we can make use of the underlying _ccafsMPoints()_ function
 
 E.g. to calculate dissimilarities from the first point to all points
 {{{
@@ -115,14 +119,46 @@ dis_current[[n]]
 e.g.
 {{{
 dis_current[[23]]
+ [1]  3395.1337 10280.4005   675.1275  3116.8990  3259.5874  4423.6284
+ [7]  3116.8990  3859.2165  3277.7336  5103.3787  3858.8737  6151.5272
+[13]  3222.2635  3470.0988  2246.4836  3979.5468  3589.7453  6388.2515
+[19]  3236.8243  3038.3087  4445.3497  3192.5736     0.0000  3787.5123
+[25]  3470.0988  3282.7151  2032.7642  3410.1311  4293.4085  4363.6686
+[31]  3226.4886  3807.9293  4019.8943  3282.7151  5441.3842 21767.4184
+[37]  3731.5949  5933.4108  2738.5438  3395.1337  5658.0872  7333.4043
+[43]  3981.5042  5154.4351  8418.1029  3832.0010  2670.9966  8361.4731
+[49]  3695.8744  3541.8455  3050.4915  4202.3001  3326.6342  4152.3145
+[55] 10280.4005  3979.5468  2848.3014  3588.1453  3307.3742  3776.8307
+[61]  4415.0584  3561.4933  2268.6822  6138.4543  3251.0059  3076.2044
+[67]  4097.7051  4857.5163  3480.4072  3407.6777  7848.1491  4480.0725
+[73]  5582.2977  5704.9711  3267.9974  3717.9343  3845.2540  3106.8596
+[79]  4219.0669  3329.9383  4601.8583  4415.0584 12122.1920  4299.7627
+[85]  3188.7487  1688.5925 15501.6915  2467.3005  3614.0378  5132.5505
+[91]  5023.3430  3276.2368  3116.8990   640.2563  2962.3671
+
 }}}
 and it should have a dissimilarity of 0 to with itself
 {{{
 dis_current[[23]][23] == 0
+[1] TRUE
 }}}
 we can quickly check that this applies for all points
 {{{
 all(sapply(1:nrow(sites), function(x) dis_current[[x]][x] == 0))
+[1] TRUE
+}}}
+
+We might be interested in points that a very similar to point 33.
+{{{
+from_33 <- cbind(sites, dis_current[[33]])
+}}}
+We can get the 10 closest points by: (n.b. we use [2:11,] to omit the first point, which is point 44)
+{{{
+from_33[order(from_33[,4]),][2:11,]
+}}}
+We can also plot point dissimilarity versus yield in order to find a point with high yield and low dissimilarity.
+{{{plot(from_33[,4], from_33[,3], ylab="Yield", xlab="Dissimilarity", las=T, main="Dissimilarities from point 33")
+grid()
 }}}
 
 http://ccafs-analogues.googlecode.com/files/from33.png
