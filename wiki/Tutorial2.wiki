@@ -207,15 +207,15 @@ now we just apply this function to each site.
 dis_current_rolled <- lapply(1:nrow(sites), function(pt) ccafsMPoints_rolled(pt, poi_training, poi_w, roll))
 }}}
 
-we can test again the results for consitency
+We can test again the results for consitency
+{{{
 all(sapply(1:nrow(sites), function(x) dis_current_rolled[[x]][x] == 0))
-
-we can plot the rolled vs not rolled
-
+[1] TRUE
+}}}
+Now we can plot the rolled vs not rolled results:
 {{{
 plot(dis_current[[1]], dis_current_rolled[[1]], xlab="Dissimilarities without lag", ylab="Dissimilarities with lag", main="Effect of Lag")
 }}}
+http://ccafs-analogues.googlecode.com/files/effectLag.png
 
-and see that there are some differences
-
-Finally we want to apply, everything to different futur scenarios to do so we modify our function
+and observe that dissimilarity values with the lagged dissimilarities are slightly lower.
