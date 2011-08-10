@@ -12,7 +12,7 @@ R CMD INSTALL analogues_x.x.x.tar.gz
 == Windows ==
 Start R and install the package with:
 {{{
-install.packages("analogues.zip", repos=NULL")
+install.packages("analogues.zip", repos="NULL")
 }}}
 == Climate Data ==
 We provide a limited set of climate data also in the download section of this repository. This contains global data (at 0.5 degree resolution) for the monthly mean temperature (tmean), monthly temperature range (dtr) and the monthly precipitation (prec). The data is provided for current climate and for 24 GCMS of the SRES A1B for 2030. 
