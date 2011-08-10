@@ -126,7 +126,7 @@ res1_sum_mean_cropped <- cropInteractive(res1_sum$mean)
 
 == Applying a threshold ==
 If we are not interested in the full extent of dissimilarity, we can apply a threshold. This can be done either with the a percentage of terrestrial pixels within a raster or with a range of values.
-We will first threshold pixels with a dissimilarity between 0 and 500:
+We will first threshold pixels with a dissimilarity between 0 and 100:
 {{{
 res1_sum_mean_cropped_th100 <- applyThreshold(res1_sum_mean_cropped,range=c(0,100))
 }}}
