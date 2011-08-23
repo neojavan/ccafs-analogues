@@ -234,7 +234,7 @@ from, to, roll, poi.where=NA) {
         cat("calc dissimilarity starting with ")
         
         
-	      this.res <- matrix(rep(NA, (params$ndivisions * nrow(this.poi.t[[1]]))), ncol=params$ndivisions)
+        this.res <- matrix(rep(NA, (params$ndivisions * nrow(this.poi.t[[1]]))), ncol=params$ndivisions)
 
 	      for (i in 1:nrow(roll)) { 
 	
@@ -267,13 +267,16 @@ from, to, roll, poi.where=NA) {
         for (i in 1:nrow(roll)) {
           cat(roll[i, 1], " ")
           mad <- applyHalThreshold(madMPoints(
-            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), this.poi.t), 
+            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), 
+            lapply(1:nvars, function(x) this.poi.t[[x]][,roll[i,]])),
             params$hal.mad)
           mrd <- applyHalThreshold(mrdMPoints(
-            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), this.poi.t), 
+            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), 
+            lapply(1:nvars, function(x) this.poi.t[[x]][,roll[i,]])), 
             params$hal.mrd)
           rad <- applyHalThreshold(radMPoints(
-            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), this.poi.t), 
+            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), 
+            lapply(1:nvars, function(x) this.poi.t[[x]][,roll[i,]])), 
             params$hal.rad)
           
           # Sum everything up
@@ -289,7 +292,7 @@ from, to, roll, poi.where=NA) {
       cat("\n")
       } 
       
-      return(this.res)    
+      return(this.res)
 }
 
 # ---------------------------------------------------------------------------- #
@@ -300,7 +303,6 @@ applyHalThreshold <- function(obj, th) {
       obj[[i]] <- ifelse(obj[[i]] <= th[[i]], 1, 0)
     } else {
       obj[[i]] <- ifelse(is.na(obj[[i]]), NA, 0)
-
     }
   }
   return(obj)

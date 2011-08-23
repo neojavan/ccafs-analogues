@@ -1,15 +1,15 @@
 Package: analogues
-Type: Package
-Title: Calculate climate analogues
-Version: 0.0.5
-Date: 2011-08-01
-Author: Josh Hooker, Julian Ramirez, Johannes Signer
 Maintainer: Johannes Signer <jmsigner@gmail.com>
-Description: Calculate climate analogues
 License: GPL3
+Title: Calculate climate analogues
+Type: Package
 LazyLoad: yes
-Collate: 'applyThreshold.R' 'ccafsMPointsPercentDiff.R'
-    'ccafsMPoints.R' 'ccafsPoint.R' 'createParameters.R'
-    'cropInteractive.R' 'dissimilarity.R' 'halMPoints.R'
-    'loadDataGrass.R' 'loadData.R' 'loadGridsFromFile.R'
-    'loadWeights.R' 'report.R' 'summary.R' 'util.R'
+Author: Josh Hooker, Julian Ramirez, Johannes Signer
+Description: Calculate climate analogues
+Version: 0.0.6
+Date: 2011-08-23
+Collate: 'applyThreshold.R' 'ccafsMPoint.R' 'ccafsMPoints.R'
+    'ccafsMPointsPercentDiff.R' 'ccafsPoint.R' 'createParameters.R'
+    'cropInteractive.R' 'dissimilarity.R' 'halMPoints.R' 'loadData.R'
+    'loadDataGrass.R' 'loadGridsFromFile.R' 'loadWeights.R' 'report.R'
+    'summary.R' 'util.R'

@@ -13,7 +13,7 @@ radMPoints <- function(ref.t, poi.t) {
   nvars <- length(ref.t)
  
   # sum refernce values
-  ref.sum <- lapply(ref.t,sum)   
+  ref.sum <- lapply(ref.t,sum)
 
   # sum projecting values and substract reference values
   rad <- lapply(1:nvars, function(x) abs(rowSums(poi.t[[x]]) - ref.sum[[x]]))
