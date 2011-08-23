@@ -1,4 +1,4 @@
-makeRoll <- function(parmas) {
+makeRoll <- function(params) {
     
   # create roll
   roll.v <- c()
