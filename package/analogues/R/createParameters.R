@@ -90,7 +90,7 @@ createParameters <- function(x=10,
                   y=y,
                   to=to,
                   method=method,
-                  scenario=gcms,
+                  scenario=scenario,
                   hal.rad=hal.rad,
                   hal.mad=hal.mad,
                   hal.mrd=hal.mrd,
@@ -100,7 +100,7 @@ createParameters <- function(x=10,
                   across.year=across.year,
                   growing.season=growing.season,
                   keep.lag=keep.lag,
-                  env.data=climate.data,
+                  env.data=env.data,
                   vars=vars,
                   weights=weights,
                   normalise=normalise,
@@ -109,9 +109,9 @@ createParameters <- function(x=10,
                   
   # add idxs
   # indexing vars, ie saying to which gcm each variable belongs
-  params$idx.gcms <- rep(1:(length(params$gcms)),each=length(params$vars)) 
+  params$idx.gcms <- rep(1:(length(params$scenario)),each=length(params$vars)) 
 
-  params$idx.vars <- rep(1:(length(params$vars)),length(params$gcms)) 
+  params$idx.vars <- rep(1:(length(params$vars)),length(params$scenario)) 
   
   
   # load logos for plots
