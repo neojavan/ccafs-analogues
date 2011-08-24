@@ -14,7 +14,7 @@ loadWeights <- function(params) {
   rweights <- list()
   
   # path to grids, only division (e.g. month is added later)
-  paths <- as.vector(t(outer(str_c(params$climate.data,"/",params$gcms,"_"),
+  paths <- as.vector(t(outer(str_c(params$env.data,"/",params$scenario,"_"),
     str_c(params$weights,"_"), FUN="str_c")))
   
   
