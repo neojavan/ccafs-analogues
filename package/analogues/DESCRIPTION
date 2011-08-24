@@ -6,10 +6,11 @@ Type: Package
 LazyLoad: yes
 Author: Josh Hooker, Julian Ramirez, Johannes Signer
 Description: Calculate climate analogues
-Version: 0.0.6
-Date: 2011-08-23
+Version: 0.0.7
+Date: 2011-08-24
 Collate: 'applyThreshold.R' 'ccafsMPoint.R' 'ccafsMPoints.R'
     'ccafsMPointsPercentDiff.R' 'ccafsPoint.R' 'createParameters.R'
     'cropInteractive.R' 'dissimilarity.R' 'halMPoints.R' 'loadData.R'
     'loadDataGrass.R' 'loadGridsFromFile.R' 'loadWeights.R' 'report.R'
-    'summary.R' 'util.R'
+    'summary.R' 'util.R' 'loadDataPoints.R' 'loadWeightsPoints.R'
+    'dissimilarityPoints.R'

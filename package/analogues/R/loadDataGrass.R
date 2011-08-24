@@ -7,7 +7,6 @@
 #' @examples
 #' load <- xy
 
-
 loadDataGRASS <- function(params) {
   grass_params <- params$grass_params
 
@@ -23,7 +22,7 @@ loadDataGRASS <- function(params) {
 
   training <- list()
   count <- 1
-  for (gcm in params$gcms) {
+  for (gcm in params$scenario) {
     for (var in params$vars) {
       tmp <- execGRASS("r.what", parameters=list(input=str_c(var,1:params$ndivisions), east_north=sites, fs=","), intern=TRUE)
       tmp <- ldply(str_c(tmp, ","))[,-(1:3)] # skip first three columns
@@ -62,7 +61,7 @@ loadWeightsGRASS <- function(params) {
 
   weigths <- list()
   count <- 1
-  for (gcm in params$gcms) {
+  for (gcm in params$scenario) {
     for (weight in params$weights) {
       if (!is.na(as.numeric(weight))) {
         tmp <- execGRASS("r.what", parameters=list(input=str_c(weight,1:params$ndivisions), east_north=sites, fs=","), intern=TRUE)

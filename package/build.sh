@@ -8,15 +8,16 @@
 PACKAGE=$1
 VERSION=$(awk -F": +" '/^Version/ { print $2 }' ${PACKAGE}/DESCRIPTION)
 
-R --no-restore --slave <<EOR
-  library(roxygen)
-  roxygenize(package.dir="${PACKAGE}",
-             roxygen.dir="${PACKAGE}",
-             use.Rd2=TRUE,
-             overwrite=TRUE,
-             copy.package=FALSE,
-             unlink.target=FALSE)
-EOR
+##NO MORE ROXYGENIZE!!!!... I DECIDED TO FIX ALL THE DOCUMENTATION PROPERLY!
+#R --no-restore --slave <<EOR
+#  library(roxygen)
+#  roxygenize(package.dir="${PACKAGE}",
+#             roxygen.dir="${PACKAGE}",
+#             use.Rd2=TRUE,
+#             overwrite=TRUE,
+#             copy.package=FALSE,
+#             unlink.target=FALSE)
+#EOR
 
 R CMD build ${PACKAGE}
 # R CMD check ${PACKAGE}_${VERSION}.tar.gz

@@ -109,7 +109,7 @@ report <- function(models=list(list(params, training, results, r.lab, m.lab)), p
           pushViewport(viewport(layout.pos.col=2, layout.pos.row=rowpos))
           mtbg()
           
-	        if (length(this.params$gcms) > 2) {
+	        if (length(this.params$scenario) > 2) {
             textbox(str_c("Summary for ",this.params$vars[var]), 
               str_c("current mean: ", 
               round(mean(this.ref.t[[which(this.params$idx.vars==var & this.params$idx.gcms==1)]]),2), 
@@ -117,11 +117,11 @@ report <- function(models=list(list(params, training, results, r.lab, m.lab)), p
               round(sd(this.ref.t[[which(this.params$idx.vars==var & this.params$idx.gcms==1)]]),2),
               "\n",
               "\nfuture mean: ", 
-              round(mean(sapply(2:length(this.params$gcms), 
+              round(mean(sapply(2:length(this.params$scenario), 
               function(x) mean(this.ref.t[[which(this.params$idx.vars==var & params$idx.gcms==x)]]))),2),
-              "\nfuture sd: ", round(mean(sapply(2:length(params$gcms), 
+              "\nfuture sd: ", round(mean(sapply(2:length(params$scenario), 
               function(x) sd(this.ref.t[[which(params$idx.vars==var & params$idx.gcms==x)]]))),2),
-              "\nfuture sd among gcms: ", round(sd(sapply(2:length(this.params$gcms), 
+              "\nfuture sd among gcms: ", round(sd(sapply(2:length(this.params$scenario), 
               function(x) mean(this.ref.t[[which(this.params$idx.vars==var & this.params$idx.gcms==x)]]))),2)
             ))
         } else {
@@ -239,7 +239,7 @@ cfplot <- function(params, ref.t, var){
     # extract futur climate
     res <- data.frame(x=rep(NA,200))
     
-      if (length(params$gcms) > 1) {
+      if (length(params$scenario) > 1) {
         has.future=TRUE
       } else {
         has.future=FALSE
@@ -247,7 +247,7 @@ cfplot <- function(params, ref.t, var){
 
       
       if (has.future) {
-        for (i in 2:length(params$gcms)) {
+        for (i in 2:length(params$scenario)) {
           # inter polate future
           ll <- aspline(y=ref.t[[which(params$idx.vars==var & params$idx.gcms==i)]],x=ipoints,n=200)
         
@@ -319,7 +319,7 @@ cfplot <- function(params, ref.t, var){
 
     # check whether deviation in the future needs to be plotted
     
-    if (length(params$gcms) > 1) {
+    if (length(params$scenario) > 1) {
       has.future=TRUE
     } else {
       has.future=FALSE

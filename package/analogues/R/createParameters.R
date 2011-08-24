@@ -45,11 +45,11 @@ createParameters <- function(x=10,
   hal.mrd=c(1,NA),           
   # hal.ncond=2,  # commented out by jsigner, for simplicity, if it works ok, remove
   z=2,
-  gcms=c("current"),
+  scenario=c("current"),
   vars=c("tmean", "prec"),        
   weights=c("dtr",1),
   ndivisions=12,                  
-  climate.data=".",              
+  env.data=".",              
   ext="asc",
   direction="backwd",             
   growing.season=1:12,           
@@ -80,13 +80,17 @@ createParameters <- function(x=10,
     stop("Variables and weights don't match")
   }
   
+  #check method is correct
+  if (!method %in% c("ccafs","hal")) {
+    stop("Available methods are only ccafs and hal")
+  }
   
   # Make a list with all parameters
   params <- list(x=x,
                   y=y,
                   to=to,
                   method=method,
-                  gcms=gcms,
+                  scenario=gcms,
                   hal.rad=hal.rad,
                   hal.mad=hal.mad,
                   hal.mrd=hal.mrd,
@@ -96,7 +100,7 @@ createParameters <- function(x=10,
                   across.year=across.year,
                   growing.season=growing.season,
                   keep.lag=keep.lag,
-                  climate.data=climate.data,
+                  env.data=climate.data,
                   vars=vars,
                   weights=weights,
                   normalise=normalise,
@@ -108,7 +112,7 @@ createParameters <- function(x=10,
   params$idx.gcms <- rep(1:(length(params$gcms)),each=length(params$vars)) 
 
   params$idx.vars <- rep(1:(length(params$vars)),length(params$gcms)) 
-
+  
   
   # load logos for plots
   data(logos)
