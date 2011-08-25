@@ -33,7 +33,7 @@ library(analogues)
 
 == Initialise a model ==
 
-We always need to set some parameters for each model. To do this, we make use of the `createParameters()` function.
+We always need to set some parameters for each model. To do this, we make use of the `createParameters()` function. Note that few things were changed from version 0.0.5 to 0.0.7. Namely, the path to climate data is no longer specified as `climate.data` but rather `env.data`, as often you not only have climate but also other relevant environmental data, and the climate scenarios was changed from `gcms` to `scenario`, as it is not actually GCMs what you're typing in, but rather a set of climate scenarios.
 
 {{{
 params <- createParameters(x=10,   
@@ -44,11 +44,11 @@ params <- createParameters(x=10,
   hal.mad=c(NA,0.3),            
   hal.mrd=c(1,NA),           
   z=2,
-  gcms=c("current", "a1b_2020_2049_miroc3_2_hires", "a1b_2020_2049_gfdl_cm2_1"),
+  scenario=c("current", "a1b_2020_2049_miroc3_2_hires", "a1b_2020_2049_gfdl_cm2_1"),
   vars=c("tmean", "prec"),        
   weights=c("dtr",1),
   ndivisions=12,                  
-  climate.data="current_a1b_2030",              
+  env.data="current_a1b_2030",              
   ext=".asc",
   direction="backwd",             
   growing.season=c(8:12,1:2),           
