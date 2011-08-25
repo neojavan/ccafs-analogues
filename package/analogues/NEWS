@@ -3,6 +3,11 @@ Version 0.0.5 (Thu Aug  4 11:09:08 EDT 2011)
 --------------------------------------------
 * fixed ext parameter in createParameters(), so the '.' is needs to be supplied by user. 
 
-Version 0.0.7 (Thu Aug  4 11:09:08 EDT 2011)
+Version 0.0.7 (Wed Aug  24 11:09:08 EDT 2011)
+--------------------------------------------
 * JRV: added a wrapper function to calculate dissimilarities on a point basis.
 * JRV: fixed and updated documentation. No more roxygenize, pls
+
+Version 0.0.8 (Thu Aug  25 11:09:08 EDT 2011)
+--------------------------------------------
+* JRV: changed summariseRuns() documentation.
