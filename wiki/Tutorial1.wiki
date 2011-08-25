@@ -33,7 +33,9 @@ library(analogues)
 
 == Initialise a model ==
 
-We always need to set some parameters for each model. To do this, we make use of the `createParameters()` function. Note that few things were changed from version 0.0.5 to 0.0.7. Namely, the path to climate data is no longer specified as `climate.data` but rather `env.data`, as often you not only have climate but also other relevant environmental data, and the climate scenarios was changed from `gcms` to `scenario`, as it is not actually GCMs what you're typing in, but rather a set of climate scenarios.
+We always need to set some parameters for each model. To do this, we make use of the `createParameters()` function. 
+
+*Note* that few things were changed from version 0.0.5 to 0.0.7. Namely, the path to climate data is no longer specified as `climate.data` but rather `env.data`, as often you not only have climate but also other relevant environmental data, and the climate scenarios was changed from `gcms` to `scenario`, as it is not actually GCMs what you're typing in, but rather a set of climate scenarios.
 
 {{{
 params <- createParameters(x=10,   
