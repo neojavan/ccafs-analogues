@@ -129,14 +129,14 @@ callDissimilarityPoints <- function(params,from,to,training.p,weights.p=NA)  {
       ref.training <- list() #1:2 in training or weights refer to current
       k <- 1
       for (i in from.varlist) {
-        ref.training[[k]] <- training.p[[i]][p,this.roll]
+        ref.training[[k]] <- training.p[[i]][p,params$growing.season]
         k <- k+1
       }
       #Target points training data
       poi.training <- list()
       k <- 1
       for (i in to.varlist) {
-        poi.training[[i]] <- training.p[[i]][,params$growing.season]
+        poi.training[[i]] <- training.p[[i]][,this.roll]
         k <- k+1
       }
       #only get weights for the ccafs method
@@ -145,14 +145,14 @@ callDissimilarityPoints <- function(params,from,to,training.p,weights.p=NA)  {
         ref.weights <- list()
         k <- 1
         for (i in from.varlist) {
-          ref.weights[[i]] <- weights.p[[i]][p,this.roll] #1 referes to the first point (n)
+          ref.weights[[i]] <- weights.p[[i]][p,params$growing.season] #1 refers to the first point (n)
           k <- k+1
         }
         #Target points weights
         poi.weights <- list()
         k <- 1
         for (i in to.varlist) {
-          poi.weights[[i]] <- weights.p[[i]][,params$growing.season]
+          poi.weights[[i]] <- weights.p[[i]][,this.roll]
           k <- k+1
         }
       }

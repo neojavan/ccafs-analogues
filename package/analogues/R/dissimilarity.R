@@ -205,55 +205,68 @@ from, to, roll, poi.where=NA) {
       this.res <- matrix(NA, ncol=nrow(roll), nrow=nrow(poi.t[[1]]))
       nvars <- length(params$vars)
       
+      #get the data for the reference point (it'd be only one vector)
       this.ref.t <- lapply(poi.t[which(params$idx.gcms==to)], function(x) {
         as.vector(x[ref.where,])
       })
       
+      #get the data for the target points. All pixels within a given study area.
       this.poi.t <- poi.t[which(params$idx.gcms==from)]
       
+      #if we have a params$to point, then discard all other pixels and keep only that one
       if (is.matrix(params$to)) {
         this.poi.t <- lapply(poi.t[which(params$idx.gcms==to)], function(x) x[poi.where, , drop=FALSE])
       }
       
-      
       # Weights are only needed for ccafs method
       if (params$method == "ccafs" | params$method == "ccafsp1") {
-         
+        
+        #get weights for the reference point
         this.ref.w <- lapply(poi.w[which(params$idx.gcms==to)], function(x) {
           as.vector(x[ref.where,])
         })
-      
+        
+        #get weights for the target points
         this.poi.w <- poi.w[which(params$idx.gcms==from)]
         
-          if (is.matrix(params$to)) {
-            this.poi.w <- lapply(poi.w[which(params$idx.gcms==to)], function(x) x[poi.where, , drop=FALSE])
-          }
-      
+        #if we have a params$to point, then discard all other pixels and keep only that one
+        if (is.matrix(params$to)) {
+          this.poi.w <- lapply(poi.w[which(params$idx.gcms==to)], function(x) x[poi.where, , drop=FALSE])
+        }
+        
+        #get z value from params
         this.z <- params$z
         
         cat("calc dissimilarity starting with ")
         
-        
+        #empty matrix to store outputs, filled all with NA, with params$ndivisions columns
+        #and nrows=number of pixels
         this.res <- matrix(rep(NA, (params$ndivisions * nrow(this.poi.t[[1]]))), ncol=params$ndivisions)
-
+        
+        #looping through the lagging roll
 	      for (i in 1:nrow(roll)) { 
-	
+	        
           cat(roll[i, 1], " ")
           
+          #get this particular roll
           this.roll <- roll[i,]          
           
           if (params$method == "ccafs") {
           
-  	      this.res[,i] <- ccafsMPoints(ref.t=lapply(this.ref.t, function(y) y[this.roll]), 
-                poi.t=lapply(this.poi.t, function(y) y[,params$growing.season]), 
-                ref.w=lapply(this.ref.w, function(y) y[this.roll]), 
-                poi.w=lapply(this.poi.w, function(y) y[,params$growing.season]), 
+          #Calling point-based dissimilarity calculation. Keep in mind that
+          #the reference point's growing seasons MUST NOT VARY at all
+          #it is the target point's growing season the one that should rotate to match
+          #the other!!!!
+  	      this.res[,i] <- ccafsMPoints(ref.t=lapply(this.ref.t, function(y) y[params$growing.season]), 
+                poi.t=lapply(this.poi.t, function(y) y[,this.roll]), 
+                ref.w=lapply(this.ref.w, function(y) y[params$growing.season]), 
+                poi.w=lapply(this.poi.w, function(y) y[,this.roll]), 
                 params$z)   
           } else {
-            this.res[,i] <- ccafsMPointsPercentDiff(ref.t=lapply(this.ref.t, function(y) y[this.roll]), 
-                poi.t=lapply(this.poi.t, function(y) y[,params$growing.season]), 
-                ref.w=lapply(this.ref.w, function(y) y[this.roll]), 
-                poi.w=lapply(this.poi.w, function(y) y[,params$growing.season]), 
+            this.res[,i] <- ccafsMPointsPercentDiff(ref.t=lapply(this.ref.t, function(y) y[params$growing.season]), 
+                poi.t=lapply(this.poi.t, function(y) y[,this.roll]), 
+                ref.w=lapply(this.ref.w, function(y) y[params$growing.season]), 
+                poi.w=lapply(this.poi.w, function(y) y[,this.roll]), 
                 params$z) 
                 
           }
@@ -267,16 +280,16 @@ from, to, roll, poi.where=NA) {
         for (i in 1:nrow(roll)) {
           cat(roll[i, 1], " ")
           mad <- applyHalThreshold(madMPoints(
-            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), 
-            lapply(1:nvars, function(x) this.poi.t[[x]][,roll[i,]])),
+            ref.t=lapply(1:nvars, function(x) this.ref.t[[x]][params$growing.season]), 
+            poi.t=lapply(1:nvars, function(x) this.poi.t[[x]][,roll[i,]])),
             params$hal.mad)
           mrd <- applyHalThreshold(mrdMPoints(
-            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), 
-            lapply(1:nvars, function(x) this.poi.t[[x]][,roll[i,]])), 
+            ref.t=lapply(1:nvars, function(x) this.ref.t[[x]][params$growing.season]), 
+            poi.t=lapply(1:nvars, function(x) this.poi.t[[x]][,roll[i,]])), 
             params$hal.mrd)
           rad <- applyHalThreshold(radMPoints(
-            lapply(1:nvars, function(x) this.ref.t[[x]][roll[i, ]]), 
-            lapply(1:nvars, function(x) this.poi.t[[x]][,roll[i,]])), 
+            ref.t=lapply(1:nvars, function(x) this.ref.t[[x]][params$growing.season]), 
+            poi.t=lapply(1:nvars, function(x) this.poi.t[[x]][,roll[i,]])), 
             params$hal.rad)
           
           # Sum everything up
