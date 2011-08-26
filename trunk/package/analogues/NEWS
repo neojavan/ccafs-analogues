@@ -1,13 +1,18 @@
 
 Version 0.0.5 (Thu Aug  4 11:09:08 EDT 2011)
 --------------------------------------------
-* fixed ext parameter in createParameters(), so the '.' is needs to be supplied by user. 
+* JS: fixed ext parameter in createParameters(), so the '.' is needs to be supplied by user. 
 
-Version 0.0.7 (Wed Aug  24 11:09:08 EDT 2011)
+Version 0.0.7 (Wed Aug  24 20:09:08 EDT 2011)
 --------------------------------------------
 * JRV: added a wrapper function to calculate dissimilarities on a point basis.
 * JRV: fixed and updated documentation. No more roxygenize, pls
 
-Version 0.0.8 (Thu Aug  25 11:09:08 EDT 2011)
+Version 0.0.8 (Thu Aug  25 22:09:08 EDT 2011)
 --------------------------------------------
 * JRV: changed summariseRuns() documentation.
+
+Version 0.0.9 (Fri Aug  26 11:50:08 EDT 2011)
+--------------------------------------------
+* JRV: there was an important bug in the code in the way growing seasons were lagged. Growing season of reference point should keep constant, and it is the target point one that is rotated to match the reference.
+* JRV: there were important differences between the results with the previous and this version (about 10-20% in values for temperature, but of 100% in some areas for rainfall).

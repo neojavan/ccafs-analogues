@@ -13,7 +13,7 @@ Create a report
 }
 
 \value{
-prints a report and save it as pdf
+A \code{list} of \code{RasterLayers}
 }
 \arguments{
 \item{results}{A list with rasters, they all need to have the same extent}
