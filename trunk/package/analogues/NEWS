@@ -16,3 +16,8 @@ Version 0.0.9 (Fri Aug  26 11:50:08 EDT 2011)
 --------------------------------------------
 * JRV: there was an important bug in the code in the way growing seasons were lagged. Growing season of reference point should keep constant, and it is the target point one that is rotated to match the reference.
 * JRV: there were important differences between the results with the previous and this version (about 10-20% in values for temperature, but of 100% in some areas for rainfall).
+
+Version 0.0.10 (Sat Aug  27 13:08:00 EDT 2011)
+--------------------------------------------
+* JRV: Bug fix. There was an error in how the operations were done when across.year=F. Hopefully fixed now.
+* JRV: Bug fix. Report was failing in the conversion of a raster to a SpatialPointsDataFrame. Fixed.
