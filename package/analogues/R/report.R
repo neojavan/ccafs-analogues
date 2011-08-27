@@ -382,7 +382,7 @@ rast.plot <- function(r,params, r.lab, rowpos){
     width <- 1/height
     height <- 1
   }
-    
+  
   # get online of the world for the plotting reagion      
   m <- map("world", xlim=c(xmin, xmax), ylim=c(ymin,ymax),plot=FALSE, wrap=TRUE)
   
@@ -390,8 +390,9 @@ rast.plot <- function(r,params, r.lab, rowpos){
   m.w <- map("world",plot=FALSE)
   
   # get coordinates of pixels, gotta be a more direct way
-  rr <- as.data.frame(as(as(r, "SpatialPixelsDataFrame"), "SpatialPointsDataFrame"))
-
+  rr <- as.data.frame(rasterToPoints(r,spatial=T))
+  names(rr) <- c("values","x","y")
+  
   # make colors
   r.vu  <- unique(rr$values)
   r.vu  <- r.vu[order(r.vu)]
@@ -459,7 +460,7 @@ rast.plot <- function(r,params, r.lab, rowpos){
       grid.text(ceiling(seq(min(r.vu),max(r.vu),length.out=len_labels)), 
         x=where,
         y=0.6,just=c("center","bottom"),
-        gp=gpar(cex=0.7))
+        gp=gpar(cex=0.3))
   upViewport(2)
       
   # push the actual raster map     

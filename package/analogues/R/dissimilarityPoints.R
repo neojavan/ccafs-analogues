@@ -183,8 +183,12 @@ callDissimilarityPoints <- function(params,from,to,training.p,weights.p=NA)  {
     if (params$method == "ccafs") {
       res.dis[[p]] <- apply(this.rolled,1,min)
     } else if (params$method == "hal") {
-      this.rolled <- apply(this.rolled,1,sum)
-      res.dis[[p]] <- ifelse(this.rolled > 0,1,0)
+      if (nrow(roll) > 1) {
+        this.rolled <- apply(this.rolled,1,sum)
+        res.dis[[p]] <- ifelse(this.rolled > 0,1,0)
+      } else {
+        res.dis[[p]] <- this.rolled
+      }
     }
   }
   return(res.dis)

@@ -156,7 +156,7 @@ dissimilarity <- function(params,training, weights) {
         res.all <- lapply(res.all, function(x) setValues(training[[1]][[1]],x))      
       } else {
         # TODO make function dynamic
-        if (length(roll) > 1) {
+        if (nrow(roll) > 1) {
           cat("aggregating lag\n")
           res.all <- lapply(res.all, function(x) apply(x,1,sum))
           res.all <- lapply(res.all, function(x) ifelse(x > 0,1,0))
@@ -187,7 +187,7 @@ dissimilarity <- function(params,training, weights) {
         } else {
           # TODO make function dynamic
           cat("aggregating lag\n")
-          if (length(roll) > 1) {
+          if (nrow(roll) > 1) {
              res.all <- lapply(res.all, function(x) apply(x,1,sum))
              res.all <- lapply(res.all, function(x) ifelse(x > 0,1,0))
           }
@@ -201,7 +201,8 @@ dissimilarity <- function(params,training, weights) {
 # ---------------------------------------------------------------------------- #
 callDissimilarity <- function(params, ref.where, poi.t, poi.w, 
 from, to, roll, poi.where=NA) {
-        
+      
+      #this.res <- matrix(rep(NA, (params$ndivisions * nrow(this.poi.t[[1]]))), ncol=params$ndivisions)
       this.res <- matrix(NA, ncol=nrow(roll), nrow=nrow(poi.t[[1]]))
       nvars <- length(params$vars)
       
@@ -241,7 +242,7 @@ from, to, roll, poi.where=NA) {
         
         #empty matrix to store outputs, filled all with NA, with params$ndivisions columns
         #and nrows=number of pixels
-        this.res <- matrix(rep(NA, (params$ndivisions * nrow(this.poi.t[[1]]))), ncol=params$ndivisions)
+        #this.res <- matrix(rep(NA, (params$ndivisions * nrow(this.poi.t[[1]]))), ncol=params$ndivisions)
         
         #looping through the lagging roll
 	      for (i in 1:nrow(roll)) { 
@@ -249,7 +250,7 @@ from, to, roll, poi.where=NA) {
           cat(roll[i, 1], " ")
           
           #get this particular roll
-          this.roll <- roll[i,]          
+          this.roll <- roll[i,]
           
           if (params$method == "ccafs") {
           
@@ -261,7 +262,7 @@ from, to, roll, poi.where=NA) {
                 poi.t=lapply(this.poi.t, function(y) y[,this.roll]), 
                 ref.w=lapply(this.ref.w, function(y) y[params$growing.season]), 
                 poi.w=lapply(this.poi.w, function(y) y[,this.roll]), 
-                params$z)   
+                params$z)
           } else {
             this.res[,i] <- ccafsMPointsPercentDiff(ref.t=lapply(this.ref.t, function(y) y[params$growing.season]), 
                 poi.t=lapply(this.poi.t, function(y) y[,this.roll]), 
