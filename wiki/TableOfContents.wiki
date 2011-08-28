@@ -1,0 +1,30 @@
+#summary One-sentence summary of this page.
+#labels analogues,R
+
+ * General Information
+   * [Description]   
+ * Getting started with R
+   * [WhyR Why R?]
+   * [DownloadR Downloading R and R Studio]
+   * [InstallLibraries Installing libraries]
+   * [BasicCalcs Perform basic calculations]
+   * [GeoDataR Use of geographic data in R: raster package]
+ * Downloading and formatting weather data
+   * [DataSources Sources of climate data]
+   * [DownUseData Downloading and using these data]
+   * [InterpolateData Interpolation of daily weather data: weatherData package]   
+ * The `analogues` R-package
+   * [AnaloguesInstall Description]
+   * [ParamsObject The `params` object and the loading of data]   
+   * [DissimFunction Function `dissimilarity()` and first example analysis]   
+   * [EffectsDirection Understanding the effects of direction]
+   * [EffectsLocation Understanding the effects of location]
+   * [EffectsVariables Understanding the effects of using different variables]
+   * [EffectsLag Understanding the effects of lag]
+   * [EffectsGS Understanding the effects of growing season]
+   * [EffectsScenarios Understanding the effects of using different scenarios]
+   * [ThresholdCCAFS Selecting candidate analogues via thresholding]
+   * [UncertaintyQuant Uncertainty quantification]
+   * [AgroAnalogues Agriculturally meaningful analyses]
+   
+   
