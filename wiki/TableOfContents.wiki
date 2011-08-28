@@ -1,5 +1,5 @@
 #summary Table of contents.
-#labels analogues,R
+#labels Featured
 
  * General Information
    * [Description]   
@@ -14,7 +14,7 @@
    * [DownUseData Downloading and using these data]
    * [InterpolateData Interpolation of daily weather data: weatherData package]   
  * The `analogues` R-package
-   * [AnaloguesInstall Description]
+   * [AnaloguesInstall Installing the analogues package]
    * [ParamsObject The `params` object and the loading of data]   
    * [DissimFunction Function `dissimilarity()` and first example analysis]   
    * [EffectsDirection Understanding the effects of direction]
