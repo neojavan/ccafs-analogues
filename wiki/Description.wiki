@@ -1,5 +1,5 @@
-#summary What is the `analogues` tool
-#labels analogues,description
+#summary What is the analogues tool
+#labels 
 #sidebar TableOfContents
 
 == Introduction ==

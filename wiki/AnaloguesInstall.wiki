@@ -1,4 +1,5 @@
-#A first tutorial on how to use the analogues tool
+#summary A first tutorial on how to use the analogues tool
+#sidebar TableOfContents
 
 = Installing the package =
 

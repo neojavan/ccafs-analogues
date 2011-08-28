@@ -1,3 +1,6 @@
+#summary A first tutorial on how to use the analogues tool
+#sidebar TableOfContents
+
 _beta release please report bugs to jmsigner@gmail.com_
 ---------
 = Comparing multiple points =
