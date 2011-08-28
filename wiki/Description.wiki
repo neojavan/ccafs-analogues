@@ -1,5 +1,5 @@
-#summary What is the analogues tool
-#labels 
+#summary What do we mean when we say "analogues"?
+#labels Featured
 #sidebar TableOfContents
 
 = Introduction =
@@ -67,23 +67,19 @@ We have made use of two different measures of dissimilarity: one we term “CCAF
 
 Future and present climates are described as vectors of _m_ sequential mean values for _v_ variables (_V_) and _v_ weights (_W_). Dissimilarity is then calculated as a weighted Euclidean distance between the variables’ vectors for reference (_f_) and target (_p_) scenario. In the calculation (Eq. 1), each variable difference is weighted (i.e. multiplied) with its corresponding weight; this affects the relative importance of the variable in the dissimilarity value, to account for differences in the scales:
 
-http://ccafs-analogues.googlecode.com/svn/wiki/img/equation1.PNG
-_[Equation 1]_
+http://ccafs-analogues.googlecode.com/svn/wiki/img/equation1.PNG           _Equation 1_
 
 Where _z_ is a parameter (that when equal to two produces Euclidean distances) and can be changed to perform sensitivity analyses. Weights can be either single numbers or a rate of change in other climate variable (_X_) with the same time step (_m_). In that case, the weight is defined as the division of the reference value for that variable (_X_) and its respective target value (Eq. 2).
 
-http://ccafs-analogues.googlecode.com/svn/wiki/img/equation2.PNG
-_[Equation 2]_
+http://ccafs-analogues.googlecode.com/svn/wiki/img/equation2.PNG           _Equation 2_
 
 Not all locations experience the same seasonal variation (i.e. the rainy season in Southern Africa does not occur at the same time as it does in the Mediterranean, for example). To account for that, the minimum dissimilarity is searched for across all m time steps using a time lag (_lag_, Eq. 3).
 
-http://ccafs-analogues.googlecode.com/svn/wiki/img/equation3.PNG
-_[Equation 3]_
+http://ccafs-analogues.googlecode.com/svn/wiki/img/equation3.PNG           _Equation 3_
 
 To illustrate the above, we will assume that we have data for the present day as the target scenario (_p_), and data for a given future scenario (reference scenario, _f_), for rainfall, mean temperatures and diurnal temperature range, for 12 months (average climatology for both scenarios). We want to calculate dissimilarity using monthly rainfall (_P_) and temperature (_T_), and we will weight _P_ with a factor of 1, and _T_ using the diurnal temperature range (_DTR_). As we are analyzing 12 months, then _m=12_. Again, z is a parameter that can be varied, and we will also account for the lag. Replacing Eq. 1 and 2 into Eq. 3, we would have our CCAFS dissimilarity calculation (Eq. 4).
 
-http://ccafs-analogues.googlecode.com/svn/wiki/img/equation4.PNG
-_[Equation 4]_
+http://ccafs-analogues.googlecode.com/svn/wiki/img/equation4.PNG           _Equation 4_
 
 We use the term ‘dissimilarity’ instead of ‘similarity’ only for the convenience in the scaling of the CCAFS measure: the higher the value, the more dissimilar the pair of sites are for that particular pair of climate scenarios.
 
@@ -93,18 +89,15 @@ Hallegatte et al. (2007) defined a method to identify present analogues for citi
 
  * _Relative difference between total values < a_
 
-http://ccafs-analogues.googlecode.com/svn/wiki/img/equation5.PNG
-_[Equation 5]_
+http://ccafs-analogues.googlecode.com/svn/wiki/img/equation5.PNG           _Equation 5_
 
  * _Mean absolute relative differences between m steps means < b_
 
-http://ccafs-analogues.googlecode.com/svn/wiki/img/equation6.PNG
-_[Equation 6]_
+http://ccafs-analogues.googlecode.com/svn/wiki/img/equation6.PNG           _Equation 6_
 
  * _Mean absolute difference between m steps totals < c_
 
-http://ccafs-analogues.googlecode.com/svn/wiki/img/equation7.PNG
-_[Equation 7]_
+http://ccafs-analogues.googlecode.com/svn/wiki/img/equation7.PNG           _Equation 7_
 
 In the original Hallegatte et al. (2007) analysis, they used the first two conditions (Eq. 5 and 6) for monthly rainfall totals, with _a=0.15_ and _b=0.3_, and used the third condition only for mean monthly temperature, with _c=1_. In our approach, we decided to make it generic enough for it to be used with any variable. Therefore, a site would be an analogue site of another if the selected conditions are met (conditions can also be switched of in our approach). This adds some flexibility to the method.
 
