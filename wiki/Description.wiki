@@ -1,9 +1,6 @@
-#summary What is ITA data filtering tool
-#labels Phase-Implementation
+#summary What is the `analogues` tool
+#labels analogues,description
 #sidebar TableOfContents
-
-[http://code.google.com/p/iabin-threats/wiki/Description?wl=en http://iabin-threats.googlecode.com/svn/wiki/resources/gb.gif]
-[http://code.google.com/p/iabin-threats/wiki/Description?wl=es http://iabin-threats.googlecode.com/svn/wiki/resources/es.gif]
 
 == Introduction ==
 
