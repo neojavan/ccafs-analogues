@@ -43,6 +43,7 @@ dissimilarity <- function(params,training, weights) {
     roll <- roll[1, , drop=FALSE]
   }
   
+  #verify that roll is a matrix
   if (length(roll)==1) {
     roll <- matrix(roll, nrow=1)
   }

@@ -23,7 +23,7 @@ Prints a report and saves it as pdf
   \item{training}{A list with the input data used for the calculation}
   \item{results}{A list of rasters to be included in the PDF plots}
   \item{m.lab}{General label of the pdf, i.e. 2030}
-  \item{m.lab}{A vector of labels corresponding to \code{results}. Must be of equal length as \code{results}}
+  \item{r.lab}{A vector of labels corresponding to \code{results}. Must be of equal length as \code{results}}
   \item{pdf.name}{path and name to output pdf}
 }
 
