@@ -1,153 +1,135 @@
-#summary A first tutorial on how to use the analogues tool
+#summary Installing, and getting started with analogues
 #sidebar TableOfContents
 
-= Installing the package =
+= Installing the package, viewing help files, storing accompanying climate data, understanding accompanying climate data =
 
-Download the package from the download section of this repository. 
+In this tutorial you will learn:
+ # where to get the latest update of the analogues package,
+ # how to download it, 
+ # how to install it on your computer,
+ # how to load the package, 
+ # how to browse the package’s help,
+ # how to get accompanying climate data, and
+ # what is the accompanying climate data,
 
-== Unix ==
-Use the command line and type:
-{{{ 
-R CMD INSTALL analogues_x.x.x.tar.gz 
-}}}
-== Windows ==
-Start R and install the package with:
-{{{
-install.packages("analogues.zip", repos="NULL")
-}}}
-== Climate Data ==
-We provide a limited set of climate data also in the download section of this repository. This contains global data (at 0.5 degree resolution) for the monthly mean temperature (tmean), monthly temperature range (dtr) and the monthly precipitation (prec). The data is provided for current climate and for 24 GCMS of the SRES A1B for 2030. 
+What do you need to complete this tutorial?
+ # Either a Windows or Linux operating system,
+ # the latest version of R installed on your computer,
+ # a basic understanding of R,
+ # internet connection and an internet browser (i.e. Firefox, Google Chrome, Internet Explorer, or any other),
+ # a software to decompress zip files, and
+ # a basic understanding of geographic gridded data
 
-= Looking for analogues sites =
 
-Start *R* and make sure your have the following library installed: `raster`, `stringr`, `maptools`, `maps`, `spgrass6`, `akima`, `grid`, `rimage`. 
+== 1. Where to get the latest version of the analogues R-package? ==
 
-If you are not sure that you have all packages installed just run: 
-{{{
-install.packages(c("raster", "stringr", "maptools", "maps", "spgrass6", "akima", "grid", "rimage"))
-}}}
+The analogue package exists as an online Google code project, at
+http://code.google.com/p/ccafs-analogues/
 
-Next load the analogues packages:
+The latest version can be downloaded at
+http://code.google.com/p/ccafs-analogues/downloads/list
+
+There you will see a list of files available for download (Figure 1). We are interested in the latest version of the library (in this case 0.0.11) for whichever Operating System (i.e. Linux, Windows) you have (both versions are circled red in Fig. 1). 
+
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig1-3.1.PNG
+_*Figure 1* Downloads section in the Google code repository_
+
+== 2. How to download it? ==
+
+Clicking on the corresponding file of Figure 1 will guide you to a new webpage (Figure 2), in which you will be able to see the name of the file and a brief description. It is important that you read the description, as this would inform you on the major modifications and/or improvements done to the package.
+
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig2-3.1.PNG
+_*Figure 2* Downloading the latest version of the package_
+
+Clicking on the link to the file would lead prompt a message asking you where to save this file (though this depends on the configuration of your browser) (Figure 3). You will select on “Save File”, and then click on “OK”.
+
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig3-3.1.PNG
+_*Figure 3* Saving the package file_
+
+A new window will prompt, asking you the specific location where to put this file. You will go to “C:/” and will create a folder named “analogues” (Figure 4A), inside which you will create another folder called “package” (Figure 4B). There you will store this file by clicking on “Save” (Figure 4C).
+
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig4-3.1.PNG
+_*Figure 4* Creating analogues folder and saving the package file_
+
+In this particular case, we have provided you with the latest package update in a CD-ROM. You can copy and paste it into the analogues folder.
+
+== 3. How to install it onto your computer? ==
+
+To do this, you will need to open the R interface, either from the Desktop shortcut or by clicking Start > All Programs > R > R 2.13.1 (or whichever version you might have). This will take you to the R Graphical User Interface (Gui) and the respective R Console (Figure 5), you now need to click on the “Packages” menu in the menu toolbar and then click on “Install package(s) from local zip files…” (Highlighted in blue in Figure 5).
+
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig5-3.1.PNG
+_*Figure 5* The R Gui and console, and the Packages menu_
+
+A new window will prompt and you will be able to search for files. Go to the location where you stored the analogues package as downloaded from internet or copied from the CD and click on "Open". This will install the package as a library in your current R installation folder. Now you can load the package.
+
+== 4. How to load the package in R? ==
+
+Once you have installed the package, you can load the library ‘analogues’ by typing in the R console:
+
 {{{
 library(analogues)
 }}}
 
-== Initialise a model ==
+This will take less than a second to load, and you won’t notice any difference. You will know the loading did not fail, as you will not get any error message.
 
-We always need to set some parameters for each model. To do this, we make use of the `createParameters()` function. 
+== 5. How to browse the package’s help? ==
 
-*Note* that few things were changed from version 0.0.5 to 0.0.7. Namely, the path to climate data is no longer specified as `climate.data` but rather `env.data`, as often you not only have climate but also other relevant environmental data, and the climate scenarios was changed from `gcms` to `scenario`, as it is not actually GCMs what you're typing in, but rather a set of climate scenarios.
-
-{{{
-params <- createParameters(x=10,   
-  y=48, 
-  to=NA,                       
-  method="ccafs",                
-  hal.rad=c(NA,0.15),                    
-  hal.mad=c(NA,0.3),            
-  hal.mrd=c(1,NA),           
-  z=2,
-  scenario=c("current", "a1b_2020_2049_miroc3_2_hires", "a1b_2020_2049_gfdl_cm2_1"),
-  vars=c("tmean", "prec"),        
-  weights=c("dtr",1),
-  ndivisions=12,                  
-  env.data="current_a1b_2030",              
-  ext=".asc",
-  direction="backwd",             
-  growing.season=c(8:12,1:2),           
-  across.year=T,
-  keep.lag=F,
-  normalise=F)
-}}}
-The meaning of each arguments is not discussed in more details here. To get more information about each argument use `?createParameters`. 
-
-== Load Data ==
-Once we created an object holding all parameters, here we called it `params`, we can load the required data. We will create to more variables. The first one called `training` will hold all the rasters required to train the model. In our case these are mean temperature and precipitation. And a second variable called `weights` storing weights for each variable.
-{{{
-training <- loadData(params)
-weights <- loadWeights(params)
-}}}
-
-== Looking for dissimilarities ==
-Finally we can calculate global dissimilarities and store the list in `res1`
-{{{
-res1 <- dissimilarity(params,training, weights)
-}}}
-
-== Looking for dissimilarities using Hallegates method ==
-
-If we just want want to start from a different point, use a different growing season or method, we can change that accordingly within the parameters object. Here we want to calculate the same analysis, but with Hallegates method. 
+If you want to browse the package’s available help you can type in the R console:
 
 {{{
-params$method <- "hal"
-res2 <- dissimilarity(params,training, weights)
+help(package="analogues")
 }}}
 
-== Structure of resutls ==
-The `dissimilarity` function returns a list of `RasterLayers` or `RasterBricks`. We can inspect the results by:
-{{{
-> res1
-[[1]]
-class       : RasterBrick 
-dimensions  : 300, 720, 1  (nrow, ncol, nlayers)
-resolution  : 0.5, 0.5  (x, y)
-extent      : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
-projection  : NA 
-values      : in memory
-min values  : 16 
-max values  : 2088 
+This will open a small window showing you the main characteristics of the package (Figure 6), including the maintainer(s), the authors, version, and date released, and also an index of all the functions and methods within the package.
 
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig6-3.1.PNG
+_*Figure 6* Help of the analogue package_
 
-[[2]]
-class       : RasterBrick 
-dimensions  : 300, 720, 1  (nrow, ncol, nlayers)
-resolution  : 0.5, 0.5  (x, y)
-extent      : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
-projection  : NA 
-values      : in memory
-min values  : 18 
-max values  : 2052 
-}}}
-Since we used current climate, two future gcms and as a method backward, each of the two elements of `res1` are the dissimilarities between our site and the two future gcms. That means, the lower the value in a raster cell is, the more similar is the current climate of this cell to our cells future climate. 
-
-== Summarising results ==
-To summarise the results over the two gcms we make use of the `summariseRuns()` function.
-{{{
-res1_sum <- summariseRuns(res1)
-}}}
-The `summariseRuns()` function takes list of rasters as an argument and returns a list with the mean, standard deviation and coefficient of variation. We can either provide it directly with the `res1` list, that resulted from the dissimilarity calculations or we could also provide a set of separate rasters, as long as they have the same extent.
-{{{
-res1_sum1 <- summariseRuns(list(res1[[1]], res1[[1]], res1[[2]]))
-}}}
-In the above example we make use of the same `res1` list, but by providing the first element twice, we weight the first result twice as much as the second one. 
-
-== Cropping Results to area of interest ==
-If we are only interested in a specific region of interest we can crop the results to that region. This can either be done interactively with the `cropInteractive()` function or with the `crop()` function from the raster package. Here we will crop the the mean prediction interactively and then make use of this extent to apply it to all other results.
-{{{
-res1_sum_mean_cropped <- cropInteractive(res1_sum$mean)
-}}}
-
-== Applying a threshold ==
-If we are not interested in the full extent of dissimilarity, we can apply a threshold. This can be done either with the a percentage of terrestrial pixels within a raster or with a range of values.
-We will first threshold pixels with a dissimilarity between 0 and 100:
-{{{
-res1_sum_mean_cropped_th100 <- applyThreshold(res1_sum_mean_cropped,range=c(0,100))
-}}}
-and the best 5% of pixels within this raster:
-{{{
-res1_sum_mean_cropped_th5p <- applyThreshold(res1_sum_mean_cropped, best=0.05)
-}}}
-
-== Creating a report ==
-(not 100 % working yet)
-Once we have run one or more models, we can create a report. The report function takes a list of models. Each model consists of params, training data, results, caption of the model and caption of each results). 
+If you want to see more specific help (i.e. on a particular function) you need to type in the R console:
 
 {{{
-model1 <- list(params=params, training=training, results=list(res1_sum$mean, res1_sum_mean_cropped_th5p, res1_sum_mean_cropped), m.lab="2030", r.lab=c("mean", "cropped: 5% best", "only cropped"))
-report(list(model1), "report1.pdf")
+help(topic)
 }}}
-== Export an ESRI ascii Grid for further use in any GIS ==
-In order to export dissimilarities as a grid, we can make use of the `writeRaster` function of the `raster` package.  
+
+Where `topic` can be any of the functions or objects that are documented in the package help files. For instance, if you want to see the documentation of the function `createParameters()`, then you type:
+
 {{{
-writeRaster(res_sum_mean_cropped_th100, filename="analogues.asc", format="ascii")
+help(createParamters)
 }}}
+
+This would open a new tab or window in your default browser with that function’s documentation.
+
+== 6. How to download the accompanying climate data? ==
+
+To get the accompanying climate data of this R-package you need to go again to the downloads section of the Google code repository (Figure 1):
+http://code.google.com/p/ccafs-analogues/downloads/list
+
+In that list, you need to search for the “Sample climate data (updated)”, the file is named “current_a1b_2030.zip”. Following the same procedure as in 2 you will download this file and store it into your ‘analogues’ folder, inside a folder named ‘climate-data’. After downloading the file, you will decompress it using any unzipping software. We suggest 7-zip (freely available at http://www.7-zip.org/), or just unzip them with the default Windows unzipping explorer-based tool.
+
+Else, you can grab these data from the CD we provided, copy it to the required folder (i.e. C:/analogues/climate-data) and unzip it.
+
+== 7. What are the accompanying sample climate data? ==
+
+After you unzip these files you will see that many different files will appear on your climate-data folder. These are geographically referenced gridded datasets, in a format called ESRI-ASCII, in a Geographic Coordinate System with datum WGS-1984.
+
+Each of the gridded files contains data for the whole globe land areas (from 180ºW to 180ºE in longitude and from 60ºS to 90ºN in latitude), every 50 kilometers (0.5 degree) and can be read into R using the ‘raster’ package. These can be simply referred to as ‘grids’ or ‘rasters’. 
+
+There are two types of climate data in our set of files: present-day (referred to as “current” hereafter) and future climates (combination of 1 SRES emissions scenario, one period, and 24 different Global Climate Models). Current climate data are named as:
+
+  _*current_{variable name}_[time step].asc*_
+
+Where ‘variable name’ can be either tmean (for mean temperature), prec (for rainfall), and bio_1 to bio_19 for the 19 bioclimatic indices we calculated from monthly data (Table 1). For tmean and prec there are 12 time steps (corresponding to the 12 months of the year), and for each of the 19 bioclimatic indices, there is only one time step, as they represent seasonal trends or yearly averages of temperatures or rainfall.
+
+_*Table 1* List of bioclimatic indices_
+http://ccafs-analogues.googlecode.com/svn/wiki/img/tab1-3.1.PNG
+
+Future climate data are named as:
+
+	{SRES}_{period}_[GCM]_{variable name}_{time step}.asc
+
+In this case the SRES emissions scenario is A1B (a1b), the period is 2030s (average of the 30 year period between 2020 and 2049, that is, 2020_2049), the 24 different GCMs are listed in Table 2, the variables are the same as for the current climate.
+
+_*Table 2* List of Global Circulation Models (GCMs) for which the data is provided_
+http://ccafs-analogues.googlecode.com/svn/wiki/img/tab2-3.1.PNG
+
+
