@@ -29,7 +29,7 @@ The different parameters of the analogues tool to be specified when calling the 
 
 *{{{y}}}*: Longitude or coordinate Y of the reference site when performing grid-based calculations, or a vector of length equal to the number of sites containing the longitudes or coordinates Y of the sites being analyzed when performing point-based analyses. These must be in the same coordinate system of `x` and in the same coordinate system in which the raster data are.
 
-*{{{method}}}*: Method to be used for the dissimilarity calculation. Currently, there are two methods to calculate dissimilarity: `ccafs`, and `hal`, referring to CCAFS and Hallegate method, respectively.
+*{{{method}}}*: Method to be used for the dissimilarity calculation. Currently, there are two methods to calculate dissimilarity: `"ccafs"`, and `"hal"`, referring to CCAFS and Hallegate method, respectively.
 
 *{{{hal.rad}}}*: Maximum tolerable relative annual difference. Only needs to be specified when `method="hal"`, can be one single value or a vector of various values (length equal to the number of variables included). If set to `NA` the condition will not be taken into account for the dissimilarity calculation
 
