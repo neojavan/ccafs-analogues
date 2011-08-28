@@ -26,6 +26,6 @@
    * [ThresholdCCAFS Selecting candidate analogues via thresholding]
    * [UncertaintyQuant Uncertainty quantification]
    * [AgroAnalogues Agriculturally meaningful analyses]
- * [IssueReport Reporting bugs, issues or features]
+ * [IssueReport Reporting bugs, issues or new features]
    
    
