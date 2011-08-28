@@ -1,0 +1,49 @@
+#summary Core functions of the package
+#sidebar TableOfContents
+
+= Exercise 3.2: =
+== Understanding the basics of the analogue R-library: the `createParameters()` function and functions for loading data and weights  ==
+
+In this tutorial you will learn:
+ # what are the different parameters and data required for an analogue run,
+ # how to set up a given run,
+ # how to load data once a run is configured,
+ # how to load weights once a run is configured
+
+What do you need to complete this tutorial?
+ # Either a Windows or Linux operating system,
+ # the latest version of R installed on your computer,
+ # to have completed tutorial 3.1 successfully,
+ # to understand the concept of analogues and the underlying principles and equations,
+
+
+== 1. What are the required parameters and data for an analogue run? ==
+
+In our analogue library there are a number of parameters (i.e. variables) that need to be specified in order to be able to perform a given analogue run. There are a total of 19 different parameters that can be specified in our tool. So it is worth spending some time going through each of them.
+
+But before we get into the parameters, we need to know how these parameters are stored in R. To store the parameters we have created a function named `createParameters()`, in which the 19 different parameters can be specified. Once the 19 (sometimes less) parameters are specified, these are stored (by the function) as an object of type `list` in the RAM memory of your computer. 
+
+The different parameters of the analogues tool to be specified when calling the function `createParameters()` are:
+
+{{{`x`}}}: Longitude or coordinate X of the reference site when performing grid-based calculations, or a vector of length equal to the number of sites containing the longitudes or coordinates X of the sites being analyzed when performing point-based analyses. These must be in the same coordinate system of y and in the same coordinate system in which the raster data are.
+
+== 2. How to download it? ==
+
+
+
+
+== 3. How to install it onto your computer? ==
+
+
+
+
+== 4. How to load the package in R? ==
+
+
+
+
+== 5. How to browse the package's help? ==
+
+
+
+
