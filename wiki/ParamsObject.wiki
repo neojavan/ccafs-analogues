@@ -39,7 +39,7 @@ The different parameters of the analogues tool to be specified when calling the 
 
 *{{{z}}}*: Exponent for the CCAFS dissimilarity equation. Default value is 2. Only needs to be provided when `method="ccafs"`
 
-*{{{scenario}}}*: A vector listing the various climate scenarios to be used. The first element of this vector is always assumed the current climate scenario, others are targets. You can specify as many scenarios as you have climate data for. The name of a scenario should be quoted ("scenario") and should be a combination of an SRES, a period and a GCM, or otherwise should be the current climate (however it is called in your file system or in your computer’s memory).
+*{{{scenario}}}*: A vector listing the various climate scenarios to be used. The first element of this vector is always assumed the current climate scenario, others are targets. You can specify as many scenarios as you have climate data for. The name of a scenario should be quoted ("scenario") and should be a combination of an SRES, a period and a GCM, or otherwise should be the current climate (however it is called in your file system or in your computer's memory).
 
 *{{{vars}}}*: A vector listing the different variables to be used in the analysis. These should exist either in your file system (in your climate data folder) or as objects in memory if you're performing a point-based analysis. All variables need to have the same time step (i.e. monthly, daily, yearly).
 
@@ -118,7 +118,7 @@ training <- loadDataPoints(params)
 
 For point based calculations.
 
-If the loading fails it will give you an error message on the specific problem. Sometimes it's because you are pointing wrongly to the `env.data` folder, or due to a misspelling in one or more of the parameters in the ‘params’ object. In any case, if this function fails it means your `params` object is not properly set up, and hence you need to re-initialize the object by executing the command `createParameters()` again. 
+If the loading fails it will give you an error message on the specific problem. Sometimes it's because you are pointing wrongly to the `env.data` folder, or due to a misspelling in one or more of the parameters in the `params` object. In any case, if this function fails it means your `params` object is not properly set up, and hence you need to re-initialize the object by executing the command `createParameters()` again. 
 
 The variables data (object `training`) are loaded as a list of length equal to the number of variables times the number of scenarios. Thus the first item in the list is the first variable of the first scenario, the second is the second variable of the first scenario, and so on, until all variables and scenarios are present. For grid based calculations each element would be a `RasterLayer` or a `RasterStack` (conjunction of `RasterLayers`), whereas for point-based calculations the elements would be matrices.
 
@@ -142,7 +142,7 @@ For point based calculations.
 
 If the command fails it will give you an error message on the specific problem. Sometimes it's because you are pointing wrongly to the `env.data` folder, or due to a misspelling in one or more of the parameters in the `params` object. In any case, if this function fails it means your `params` object is not properly set up, and hence you need to re-initialize the object by executing the command `createParameters()` again.
 
-The weights data are loaded as a list with number of elements equal to the variables data (`training`) as loaded in the previous step. Depending on the type of weighting the type of elements will vary. For gridded based calculations with variables weighted by numbers the elements would be matrices, but if the variables are weighted using other variables (such as when mean temperature is weighted by diurnal temperature range) the elements in the weights list would be a RasterLayer or a RasterStack (conjunction of `RasterLayers`).
+The weights data are loaded as a list with number of elements equal to the variables data (`training`) as loaded in the previous step. Depending on the type of weighting the type of elements will vary. For gridded based calculations with variables weighted by numbers the elements would be matrices, but if the variables are weighted using other variables (such as when mean temperature is weighted by diurnal temperature range) the elements in the weights list would be a `RasterLayer` or a `RasterStack` (conjunction of `RasterLayers`).
 
 == 5. Structure of weights and variable data? ==
 
