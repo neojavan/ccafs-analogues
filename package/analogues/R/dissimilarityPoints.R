@@ -217,10 +217,14 @@ rollCreate <- function(params) {
        roll.v <- c(roll.v,(months[c(i:length(months),0:(i-1))]))  
     }
     roll <- matrix(data=roll.v, ncol=length(months), byrow=TRUE)
-    # cut roll to the actual growin period
-    roll <- roll[ , params$growing.season]
   } else {
     roll <- matrix(1:12,ncol=params$ndivisions,nrow=1)
+  }
+  # cut roll to the actual growin period
+  roll <- roll[ , params$growing.season]
+  #if roll turned out to not be a matrix, then make a matrix from it
+  if (!is.matrix(roll)) {
+    roll <- matrix(roll,nrow=1)
   }
   return(roll)
 }
