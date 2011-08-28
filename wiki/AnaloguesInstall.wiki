@@ -1,157 +1,152 @@
-#labels 
-#sidebar TableOfContents
-
-User Manual Tool ITA Navigation Project
-
-[http://code.google.com/p/iabin-threats/wiki/UserManualNavigationTool?wl=en http://iabin-threats.googlecode.com/svn/wiki/resources/gb.gif]
-[http://code.google.com/p/iabin-threats/wiki/UserManualNavigationTool?wl=es http://iabin-threats.googlecode.com/svn/wiki/resources/es.gif]
-
-<wiki:toc />
-== Home ==
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/inicio.png
-
-
-The home page consists of:
-
-1.	Main Menu located in the upper left, http://iabin-threats.googlecode.com/svn/wiki/resources/hide.png  this menu has a hide button to hide the menu and have more display space, when pressed hide the menu is a button which will show name show menu again, http://iabin-threats.googlecode.com/svn/wiki/resources/show.png also sustained by clicking on the image http://iabin-threats.googlecode.com/svn/wiki/resources/move.png  menu can be placed in the desired location on the map.
-The menu is divided into the following sections:
-
-Threats, Bioclim, Species and Summaries.
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/menu.png
-
-2.	Map type control located on the top right of the map, this control lets you change the map type, has four options: map, terrain, satellite and satellite cloud without labels.
-
-3.	Zoom control, located on the bottom right of the map, this control lets you change the zoom the map in two ways by clicking on it or the mouse scroll is displayed from the zoom zoom 0 to 7.
-
-== Threats Menu  ==
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/threats-menu.png
-
-Threats option contains:
-
-1.	Clear button to clear the menu options Threats and clean the map.
-
-2.  8 radio buttons that correspond to 8 threats: 
-
-Population accessiblity, Conversion to agriculture, Fires, Grazing pressure,Infrastructure, Oil/Gas, Recent conversion and Aggregate threat.
-You can select one layer at a time to be displayed.	 
-Once you select the layer you want to view, display the map layer with an initial 50% opacity. And on the right side of the selected option will appear  http://iabin-threats.googlecode.com/svn/wiki/resources/threatoption.png   this control to hide and show the image of scale and opacity control.
-
-3.  Image scale ranges from 0 to 3.
-
-4.  Opacity bar where you can change the opacity of the selected layer from 0% to 100%. 
-
-== Bioclim Menu  ==
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/menu-bioclim.png
-
-Bioclim option contains:
-
-1.	Clear button to clear the menu options Threats and clean the map.
-
-2.  19 radio buttons corresponding to 19 bioclimatic variables:
- 
-P1 Annual mean temperature (ºC), P2 Mean diurnal temperature range (ºC), P3 Isothermality N/A, P4 Temperature seasonality (standard deviation) (ºC), P5 Maximum temperature of warmest month (ºC), P6 Minimum temperature of coldest month (ºC), P7   Temperature annual range ºC, P8   Mean temperature of wettest quarter ºC, P9   Mean temperature of driest quarter ºC, P10 Mean temperature of warmest quarter ºC, P11 Mean temperature of coldest quarter ºC, P12 Annual precipitation mm, P13 Precipitation of wettest month mm, P14 Precipitation of driest month mm, P15 Precipitation seasonality (coefficient of variation) %, P16 Precipitation of wettest quarter mm, P17 Precipitation of driest quarter mm, P18 Precipitation of warmest quarter mm, P19 Precipitation of coldest quarter mm .
-
-You can select one layer at a time to be displayed.
-Once you select the layer you want to view, display the map layer with an initial 50% opacity. And on the right side of the selected option will appear  http://iabin-threats.googlecode.com/svn/wiki/resources/bioclimoption.png   this control to hide and show the image of scale and opacity control.
-
-           
-3.  Scale image.
-
-4.  Opacity bar where you can change the opacity of the selected layer from 0% to 100%.
-
-== Species Menu ==
-
-Species Option initially contains a button for search http://iabin-threats.googlecode.com/svn/wiki/resources/search-button.png of the species you wish to view. When clicking on this button opens a popup which are the following:
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/menuspecies.png
-
-1.	Search for species, which enter the name or part of the name of the species you want to search.
-
-2.	Menu type initial tree species.
-
-3.	Close the popup and return to the map and main menu.
-
-Below are the two types of searches you can perform on the popup menu of species:
-
-== Menu search tree species using ==
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/menu-species-tree.png
-
-You can make the search for a species using the species tree each time you select an option will display the information it contains, to reach the kind that needs to view, click once on it will close the popup and A menu like the following:
-
-== Data visualization of the species ==
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/dataspecie.png
-
-1.	Search button, open the popup again to search for a new species.
-
-2.	Show info button opens a new window showing the information of the species, details of modeling, threat status, condition and ecosystems where it is.
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/specieInfo.png
-
-(1)	control to show and hide information ecosystems.
-
-3.  Clear button, clean Species menu options and map.
-
-4.  Option that displays the occurrences (kml points) of the selected species on the map.
-
-5.  Option that shows the convex hull (polygon kml) of selected species on the map.
-
-6.  Option that shows the convex hull buffer (polygon kml) of selected species on the map.
-
-7.  Option that displays a png layer on the map of the distribution of the species limited by the convex hull.
-
-8.  Control to display and hide the image of scale and opacity control.
-
-9.  Scale image.
-
-10. Opacity bar where you can change the opacity of the selected layer from 0% to 100%.
-
-11. Option that displays a png layer on the map of the distribution of the species.
-
-12. Option that displays a png layer on the threshold map for the species.
-Also you can search for a species using the form, this will enter the full name and click on search.
-
-== Menu Finder species using species ==
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/searchspecie.png
-
-Depending on what you type into the search, the query can yield a specific species or may lead to a tree where there may be family, genus and species where we can select the one you want to view and click in the species ending popup menu species and return to the main menu with different display options. See [http://code.google.com/p/iabin-threats/wiki/UserManualNavigationTool?wl=en#Data_visualization_of_the_species Data visualization of the species]
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/searchspeciebutton.png
-
-== Summaries Menu ==
-
-Summaries option contains data visualization protected areas and species richness.
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/summaries.png
-
-1.	Button clear, clean Summaries menu options and map.
-
-2.	Option for display of protected areas.
-
-3.	Display options for png layer of species richness, show the following layers:
-
-Plant species richness, Mammal species richness, Reptile species richness, Amphibian species richness, Insect species richness, Bird species richness, Total species richnness.
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/pasummaries.png
-
-1.  Clear button, clear the checkbox of protected areas and the map.
-
-2.	When you select the option of Protected Areas, shows a png layer on the map with different areas of information protected and icons are displayed from 5 zoom for better viewing. If you want to know the information of a specific protected area should be to click on the icon and you'll see a bubble with information about it.
-
-http://iabin-threats.googlecode.com/svn/wiki/resources/richness.png
-
-When you select a choice of species richness, is shown on the map of wealth png layer selected with a starting opacity of 50% and have the following elements:
-
-1.	Control to display and hide the image of the bar scale and opacity.
-
-2.	Scale image layer selected wealth.
-
-3.	Control layer opacity selected wealth, ranging from 0% to 100%.
-
-
+#A first tutorial on how to use the analogues tool
+
+= Installing the package =
+
+Download the package from the download section of this repository. 
+
+== Unix ==
+Use the command line and type:
+{{{ 
+R CMD INSTALL analogues_x.x.x.tar.gz 
+}}}
+== Windows ==
+Start R and install the package with:
+{{{
+install.packages("analogues.zip", repos="NULL")
+}}}
+== Climate Data ==
+We provide a limited set of climate data also in the download section of this repository. This contains global data (at 0.5 degree resolution) for the monthly mean temperature (tmean), monthly temperature range (dtr) and the monthly precipitation (prec). The data is provided for current climate and for 24 GCMS of the SRES A1B for 2030. 
+
+= Looking for analogues sites =
+
+Start *R* and make sure your have the following library installed: `raster`, `stringr`, `maptools`, `maps`, `spgrass6`, `akima`, `grid`, `rimage`. 
+
+If you are not sure that you have all packages installed just run: 
+{{{
+install.packages(c("raster", "stringr", "maptools", "maps", "spgrass6", "akima", "grid", "rimage"))
+}}}
+
+Next load the analogues packages:
+{{{
+library(analogues)
+}}}
+
+== Initialise a model ==
+
+We always need to set some parameters for each model. To do this, we make use of the `createParameters()` function. 
+
+*Note* that few things were changed from version 0.0.5 to 0.0.7. Namely, the path to climate data is no longer specified as `climate.data` but rather `env.data`, as often you not only have climate but also other relevant environmental data, and the climate scenarios was changed from `gcms` to `scenario`, as it is not actually GCMs what you're typing in, but rather a set of climate scenarios.
+
+{{{
+params <- createParameters(x=10,   
+  y=48, 
+  to=NA,                       
+  method="ccafs",                
+  hal.rad=c(NA,0.15),                    
+  hal.mad=c(NA,0.3),            
+  hal.mrd=c(1,NA),           
+  z=2,
+  scenario=c("current", "a1b_2020_2049_miroc3_2_hires", "a1b_2020_2049_gfdl_cm2_1"),
+  vars=c("tmean", "prec"),        
+  weights=c("dtr",1),
+  ndivisions=12,                  
+  env.data="current_a1b_2030",              
+  ext=".asc",
+  direction="backwd",             
+  growing.season=c(8:12,1:2),           
+  across.year=T,
+  keep.lag=F,
+  normalise=F)
+}}}
+The meaning of each arguments is not discussed in more details here. To get more information about each argument use `?createParameters`. 
+
+== Load Data ==
+Once we created an object holding all parameters, here we called it `params`, we can load the required data. We will create to more variables. The first one called `training` will hold all the rasters required to train the model. In our case these are mean temperature and precipitation. And a second variable called `weights` storing weights for each variable.
+{{{
+training <- loadData(params)
+weights <- loadWeights(params)
+}}}
+
+== Looking for dissimilarities ==
+Finally we can calculate global dissimilarities and store the list in `res1`
+{{{
+res1 <- dissimilarity(params,training, weights)
+}}}
+
+== Looking for dissimilarities using Hallegates method ==
+
+If we just want want to start from a different point, use a different growing season or method, we can change that accordingly within the parameters object. Here we want to calculate the same analysis, but with Hallegates method. 
+
+{{{
+params$method <- "hal"
+res2 <- dissimilarity(params,training, weights)
+}}}
+
+== Structure of resutls ==
+The `dissimilarity` function returns a list of `RasterLayers` or `RasterBricks`. We can inspect the results by:
+{{{
+> res1
+[[1]]
+class       : RasterBrick 
+dimensions  : 300, 720, 1  (nrow, ncol, nlayers)
+resolution  : 0.5, 0.5  (x, y)
+extent      : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
+projection  : NA 
+values      : in memory
+min values  : 16 
+max values  : 2088 
+
+
+[[2]]
+class       : RasterBrick 
+dimensions  : 300, 720, 1  (nrow, ncol, nlayers)
+resolution  : 0.5, 0.5  (x, y)
+extent      : -180, 180, -60, 90  (xmin, xmax, ymin, ymax)
+projection  : NA 
+values      : in memory
+min values  : 18 
+max values  : 2052 
+}}}
+Since we used current climate, two future gcms and as a method backward, each of the two elements of `res1` are the dissimilarities between our site and the two future gcms. That means, the lower the value in a raster cell is, the more similar is the current climate of this cell to our cells future climate. 
+
+== Summarising results ==
+To summarise the results over the two gcms we make use of the `summariseRuns()` function.
+{{{
+res1_sum <- summariseRuns(res1)
+}}}
+The `summariseRuns()` function takes list of rasters as an argument and returns a list with the mean, standard deviation and coefficient of variation. We can either provide it directly with the `res1` list, that resulted from the dissimilarity calculations or we could also provide a set of separate rasters, as long as they have the same extent.
+{{{
+res1_sum1 <- summariseRuns(list(res1[[1]], res1[[1]], res1[[2]]))
+}}}
+In the above example we make use of the same `res1` list, but by providing the first element twice, we weight the first result twice as much as the second one. 
+
+== Cropping Results to area of interest ==
+If we are only interested in a specific region of interest we can crop the results to that region. This can either be done interactively with the `cropInteractive()` function or with the `crop()` function from the raster package. Here we will crop the the mean prediction interactively and then make use of this extent to apply it to all other results.
+{{{
+res1_sum_mean_cropped <- cropInteractive(res1_sum$mean)
+}}}
+
+== Applying a threshold ==
+If we are not interested in the full extent of dissimilarity, we can apply a threshold. This can be done either with the a percentage of terrestrial pixels within a raster or with a range of values.
+We will first threshold pixels with a dissimilarity between 0 and 100:
+{{{
+res1_sum_mean_cropped_th100 <- applyThreshold(res1_sum_mean_cropped,range=c(0,100))
+}}}
+and the best 5% of pixels within this raster:
+{{{
+res1_sum_mean_cropped_th5p <- applyThreshold(res1_sum_mean_cropped, best=0.05)
+}}}
+
+== Creating a report ==
+(not 100 % working yet)
+Once we have run one or more models, we can create a report. The report function takes a list of models. Each model consists of params, training data, results, caption of the model and caption of each results). 
+
+{{{
+model1 <- list(params=params, training=training, results=list(res1_sum$mean, res1_sum_mean_cropped_th5p, res1_sum_mean_cropped), m.lab="2030", r.lab=c("mean", "cropped: 5% best", "only cropped"))
+report(list(model1), "report1.pdf")
+}}}
+== Export an ESRI ascii Grid for further use in any GIS ==
+In order to export dissimilarities as a grid, we can make use of the `writeRaster` function of the `raster` package.  
+{{{
+writeRaster(res_sum_mean_cropped_th100, filename="analogues.asc", format="ascii")
+}}}
