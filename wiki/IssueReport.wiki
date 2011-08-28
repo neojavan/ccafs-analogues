@@ -9,7 +9,7 @@ If you want to report *an issue*, please as much as possible sending us an email
 
 To report an issue, you need to go to this project's issue tab here:
 
- *http://code.google.com/p/ccafs-analogues/issues/list*
+*http://code.google.com/p/ccafs-analogues/issues/list*
 
 There you will find a list of pending issues. If you click in the *"New issue"* button, on the right left of the page, you will go a form, in which you can select a template:
 
