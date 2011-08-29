@@ -30,7 +30,11 @@ http://code.google.com/p/ccafs-analogues/
 The latest version can be downloaded at
 http://code.google.com/p/ccafs-analogues/downloads/list
 
-There you will see a list of files available for download (Figure 1). We are interested in the latest version of the library (in this case 0.0.11) for whichever Operating System (i.e. Linux, Windows) you have (both versions are circled red in Fig. 1). 
+There you will see a list of files available for download (Figure 1). We are interested in the latest version of the library (in this case 0.0.12) for whichever Operating System (i.e. Linux, Windows) you have (both versions are circled red in Fig. 1).
+
+*Note:* to realise what the latest version of the package is, just go to the project's homepage, there you will see the latest version, the date released and some other details (http://code.google.com/p/ccafs-analogues/).
+
+For older versions of the package, you need to go to the downloads section and browse the "Deprecated" downloads.
 
 http://ccafs-analogues.googlecode.com/svn/wiki/img/fig1-3.1.PNG
 
@@ -81,6 +85,29 @@ R CMD INSTALL /path-to-package/analogues_0.0.11.tar.gz
 }}}
 
 In such a case you must have the *Unix* version of the library, also available in the downloads section of this project.
+
+=== Important Installing depdendencies!!! ===
+
+The *`analogues`* package depends on a number of other packages, some of them are already part of the standard R installation, so you don't need to worry about them, but others are not, so you will need to install them. You will need an internet connection to do this. These packages are:
+
+ * `rgdal`
+ * `sp`
+ * `raster`
+ * `stringr`
+ * `maptools`
+ * `maps`
+ * `spgrass6`
+ * `akima`
+ * `grid` (already in the standard R installation)
+ * `rimage`
+
+To install these packages type in your R console:
+
+{{{
+install.packages(c("sp","raster","rgdal","stringr","maptools","maps","spgrass","akima","rimage"))
+}}}
+
+You will be prompted to choose a repository: choose the closest to your location and click *`OK`*. This should take between few minutes to install all the packages, though that depends on your internet connection. If the command fails (i.e. the communication fails) try the command again. If it keeps failing and no packages are installed, check your proxy configuration, and your internet connection. If it still does not work, download the packages from *"http://www.r-project.org"* and install them manually from the R Gui.
 
 == 4. How to load the package in R? ==
 

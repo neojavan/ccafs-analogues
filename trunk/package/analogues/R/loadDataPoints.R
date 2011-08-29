@@ -17,12 +17,16 @@ loadDataPoints <- function(params) {
       #Check for NAs
       nas <- which(is.na(to.load))
       if (length(nas) > 0) {
-        stop("NAs found in ",paste(params$vars[v],".",params$scenario[g],sep=""),". Please check your input data.")
+        stop("analogues: NAs found in ",paste(params$vars[v],".",params$scenario[g],sep=""),". Please check your input data.")
       }
       #get the object into the list
       training.p[[k]] <- to.load
       k <- k+1
     }
+  }
+  #Check if length(x) = ncol(input variables)
+  if (nrow(training.p[[1]]) != length(params$x)) {
+    stop("analogues: length of x and y in parameters does not coincide with your data matrices")
   }
   return(training.p)
 }

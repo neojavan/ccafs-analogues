@@ -18,7 +18,7 @@ ccafsMPoints <- function(ref.t, poi.t, ref.w, poi.w, z=2) {
   
   # Validity testing
   if (length(ref.t) != length(poi.t)) {
-    stop(str_c("ref has ", length(ref.t), " elements and poi has ", 
+    stop("analogues:",str_c("ref has ", length(ref.t), " elements and poi has ", 
       length(poi.t), " elements, they need to be equal"))
   }
   
