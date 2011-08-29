@@ -3,6 +3,8 @@
 #sidebar TableOfContents
 
 http://ccafs-analogues.googlecode.com/svn/wiki/img/ccafs_logo.png
+http://ccafs-analogues.googlecode.com/svn/wiki/img/walker_logo.PNG
+http://ccafs-analogues.googlecode.com/svn/wiki/img/logo_tif.jpg
 
 = 1. Introduction =
 
