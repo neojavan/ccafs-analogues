@@ -168,8 +168,8 @@ Eike Luedeling, from the World Agroforestry Centre is also an R-developer with a
 
 http://ccafs-analogues.googlecode.com/svn/wiki/img/logo_walker.PNG
 http://ccafs-analogues.googlecode.com/svn/wiki/img/logo_tif.jpg
-http://ccafs-analogues.googlecode.com/svn/wiki/img/leeds_logo.jpg
-http://ccafs-analogues.googlecode.com/svn/wiki/img/icraf_logo.jpg
+http://ccafs-analogues.googlecode.com/svn/wiki/img/cig_logo.PNG
+http://ccafs-analogues.googlecode.com/svn/wiki/img/icraf_logo.PNG
 
 = 5. Future applications =
 
