@@ -18,7 +18,7 @@ What do you need to complete this tutorial?
 
 == 1. Perform analogue runs using different variables with the CCAFS measure ==
 
-Sometimes dissimilarities might be more influenced by certain variables than others for certain sites, and this might also alter the degree at which these dissimilarities are relevant to agricultural systems. To test for the influence of using different variables when calculating dissimilarities we will calculate dissimilarities using three different types of variables: monthly temperature (weighted by temperature range), monthly rainfall, and 19 bioclimatic indices. We will use the “backward” direction and will calculate dissimilarities.
+Sometimes dissimilarities might be more influenced by certain variables than others for certain sites, and this might also alter the degree at which these dissimilarities are relevant to agricultural systems. To test for the influence of using different variables when calculating dissimilarities we will calculate dissimilarities using three different types of variables: monthly temperature (weighted by temperature range), monthly rainfall, and 19 bioclimatic indices. We will use the `"backward"` direction and will calculate dissimilarities.
 
 First, you will now configure an analogue run using the CCAFS method, only with temperature as variable, weighted by diurnal temperature range, with 12 time steps (monthly), no lag, no standardization, using two climate scenarios (current climate and one GCM) and using the same reference site as in exercise 3.4.
 
@@ -80,8 +80,10 @@ params <- createParameters(x=87.224,
 
 training <- loadData(params)
 weights <- loadWeights(params)
+
 res2ccafs <- dissimilarity(params,training,weights)
 plot(res2ccafs[[1]],col=rainbow(20))
+
 writeRaster(res2ccafs[[1]],
             "C:/analogues/results/3.6.ccafs.prec.asc",
             format='ascii')
@@ -129,6 +131,7 @@ Now we will load the data and weights, and will run the function `dissimilarity(
 {{{
 training <- loadData(params)
 weights <- loadWeights(params)
+
 res3ccafs <- dissimilarity(params,training,weights)
 plot(res3ccafs[[1]],col=rainbow(20))
 writeRaster(res3ccafs[[1]],
@@ -168,7 +171,8 @@ params <- createParameters(x=87.224,
 
 training <- loadData(params)
 weights <- loadWeights(params)
-res1hal <- dissimilarity(params.him,training,weights)
+
+res1hal <- dissimilarity(params,training,weights)
 writeRaster(res1hal[[1]],
            "C:/analogues/results/3.6.hal.prec.asc",
            format='ascii')
@@ -181,7 +185,7 @@ And we now do the same with temperature, we will change the hal.rad parameter in
 params$hal.rad <- c(0.15,NA)
 }}}
 
-And now we run the function (we do not have to re-load the variables data or the weights):
+*Note* that if you were going to switch more conditions ON, that is, increasing the number of Hallegatte conditions, you would need to re-configure the `params` object. Now we run the function (we do not have to re-load the variables data or the weights):
 
 {{{
 res2hal <- dissimilarity(params,training,weights)
