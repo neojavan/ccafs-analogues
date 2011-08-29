@@ -2,6 +2,8 @@
 #labels Featured
 #sidebar TableOfContents
 
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig1-3.3.PNG
+
 = 1. Introduction =
 
 The *analogues* approach is a novel way of supporting modeled policy recommendations with on-the-ground empirical testing. Analogues refer to sites or years that experience conditions with statistical similarity, primarily in terms of current or future climate, but they can also include additional factors such as soils, crops, and socioeconomic characteristics. This helps link top-down global models with targeted field trials or visits. In essence, the approach locates a site whose climate today is similar to the given future of a place of interest (i.e. where can we find today the future climate of Nairobi, Kenya?), or vice-versa. 
