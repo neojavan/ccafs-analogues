@@ -1,7 +1,7 @@
 #summary Effects of direction
 #sidebar TableOfContents
 
-= Exercise 3.8: =
+= Exercise 3.9: =
 == Understanding the effects of using different climate scenarios ==
 
 In this tutorial you will learn:
