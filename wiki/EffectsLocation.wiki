@@ -18,7 +18,7 @@ What do you need to complete this tutorial?
 
 == 1. Perform analogue runs for two locations with different seasonal patterns using the CCAFS measure ==
 
-To the moment, you have learnt how to run analogues in different directions, using a target site and a pair of climate scenarios; however, it is also interesting to analyze dissimilarities in different climate types. To do that we will take the same site as in exercise 3.3 (Himalaya), but we will also perform the analysis with another site in the very core of the Amazon forest (longitude= -67.1 and latitude= –1.7). 
+To the moment, you have learnt how to run analogues in different directions, using a target site and a pair of climate scenarios; however, it is also interesting to analyze dissimilarities in different climate types. To do that we will take the same site as in exercise 3.3 (Himalaya), but we will also perform the analysis with another site in the very core of the Amazon forest (longitude= -67.1 and latitude= -1.7). 
 
 We will use mean temperatures (weighted by diurnal temperature range) and total rainfall at a monthly level, and perform a `"backward"` analysis based on current climate and only 1 GCM. We will use the CCAFS measure.
 
@@ -26,29 +26,29 @@ First, we will create our `params` object, we will then load the variables data 
 
 {{{
 params.him <- createParameters(x=87.224,
-                           y=26.62,
-                           method="ccafs",
-                           hal.rad=NA,
-                           hal.mad=NA,
-                           hal.mrd=NA,
-                           z=2,
-                           scenario=c("current","a1b_2020_2049_bccr_bcm2_0"),
-                           vars=c("tmean","prec"),
-                           weights=c("dtr",1),
-                           ndivisions=12,
-                           env.data="C:/analogues/climate-data/current_a1b_2030",
-                           ext=".asc",
-                           direction="backwd",
-                           growing.season=c(1:12),
-                           across.year=F,
-                           normalise=F,
-                           keep.lag=F)
+                               y=26.62,
+                               method="ccafs",
+                               hal.rad=NA,
+                               hal.mad=NA,
+                               hal.mrd=NA,
+                               z=2,
+                               scenario=c("current","a1b_2020_2049_bccr_bcm2_0"),
+                               vars=c("tmean","prec"),
+                               weights=c("dtr",1),
+                               ndivisions=12,
+                               env.data="C:/analogues/climate-data/current_a1b_2030",
+                               ext=".asc",
+                               direction="backwd",
+                               growing.season=c(1:12),
+                               across.year=F,
+                               normalise=F,
+                               keep.lag=F)
 
 training <- loadData(params)
 weights <- loadWeights(params)
 }}}
 
-Note that the name of the usual ‘params’ object was changed by `params.him`; this was done to differentiate the Himalayas run from the Amazon run. Now we will perform the `dissimilarity()` function, plot and save our resultant raster using this configuration,
+Note that the name of the usual `params` object was changed by `params.him`; this was done to differentiate the Himalayas run from the Amazon run. Now we will perform the `dissimilarity()` function, plot and save our resultant raster using this configuration,
 
 {{{
 him <- dissimilarity(params.him,training,weights)
@@ -93,23 +93,23 @@ Now we can do the same as we just, but this time using the Hallegatte measure. W
 
 {{{
 params.him <- createParameters(x=87.224,
-                           y=26.62,
-                           method="hal",
-                           hal.rad=c(NA,0.15),
-                           hal.mad=c(NA,NA),
-                           hal.mrd=c(NA,NA),
-                           z=NA,
-                           scenario=c("current","a1b_2020_2049_bccr_bcm2_0"),
-                           vars=c("tmean","prec"),
-                           weights=c(1,1),
-                           ndivisions=12,
-                           env.data="C:/analogues/climate-data/current_a1b_2030",
-                           ext=".asc",
-                           direction="backwd",
-                           growing.season=c(1:12),
-                           across.year=F,
-                           normalise=F,
-                           keep.lag=F)
+                               y=26.62,
+                               method="hal",
+                               hal.rad=c(NA,0.15),
+                               hal.mad=c(NA,NA),
+                               hal.mrd=c(NA,NA),
+                               z=NA,
+                               scenario=c("current","a1b_2020_2049_bccr_bcm2_0"),
+                               vars=c("tmean","prec"),
+                               weights=c(1,1),
+                               ndivisions=12,
+                               env.data="C:/analogues/climate-data/current_a1b_2030",
+                               ext=".asc",
+                               direction="backwd",
+                               growing.season=c(1:12),
+                               across.year=F,
+                               normalise=F,
+                               keep.lag=F)
 
 training <- loadData(params)
 weights <- loadWeights(params)
