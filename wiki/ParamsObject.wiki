@@ -25,41 +25,25 @@ But before we get into the parameters, we need to know how these parameters are 
 
 The different parameters of the analogues tool to be specified when calling the function `createParameters()` are:
 
-*{{{x}}}*: Longitude or coordinate X of the reference site when performing grid-based calculations, or a vector of length equal to the number of sites containing the longitudes or coordinates X of the sites being analyzed when performing point-based analyses. These must be in the same coordinate system of `y` and in the same coordinate system in which the raster data are.
-
-*{{{y}}}*: Longitude or coordinate Y of the reference site when performing grid-based calculations, or a vector of length equal to the number of sites containing the longitudes or coordinates Y of the sites being analyzed when performing point-based analyses. These must be in the same coordinate system of `x` and in the same coordinate system in which the raster data are.
-
-*{{{method}}}*: Method to be used for the dissimilarity calculation. Currently, there are two methods to calculate dissimilarity: `"ccafs"`, and `"hal"`, referring to CCAFS and Hallegate method, respectively.
-
-*{{{hal.rad}}}*: Maximum tolerable relative annual difference. Only needs to be specified when `method="hal"`, can be one single value or a vector of various values (length equal to the number of variables included). If set to `NA` the condition will not be taken into account for the dissimilarity calculation
-
-*{{{hal.mad}}}*: Maximum tolerable mean absolute difference. Only needs to be specified when `method="hal"`, can be one single value or a vector of various values (length equal to the number of variables included). If set to NA the condition will not be taken into account for the dissimilarity calculation
-
-*{{{hal.mrd}}}*: Maximum tolerable mean absolute relative difference. Only needs to be specified when `method="hal"`, can be one single value or a vector of various values (length equal to the number of variables included). If set to NA the condition will not be taken into account for the dissimilarity calculation
-
-*{{{z}}}*: Exponent for the CCAFS dissimilarity equation. Default value is 2. Only needs to be provided when `method="ccafs"`
-
-*{{{scenario}}}*: A vector listing the various climate scenarios to be used. The first element of this vector is always assumed the current climate scenario, others are targets. You can specify as many scenarios as you have climate data for. The name of a scenario should be quoted ("scenario") and should be a combination of an SRES, a period and a GCM, or otherwise should be the current climate (however it is called in your file system or in your computer's memory).
-
-*{{{vars}}}*: A vector listing the different variables to be used in the analysis. These should exist either in your file system (in your climate data folder) or as objects in memory if you're performing a point-based analysis. All variables need to have the same time step (i.e. monthly, daily, yearly).
-
-*{{{weights}}}*: A vector listing the different weights to be used for the variables, with the same length of the vector vars. The position of each weight MUST match the position of the variable. For instance, the variable in position 1 in vars will be weighted with the weight in position 1 in weights. Variable names (that must exist in your file system or in memory) or single numbers can be provided for weighting the variables.
-
-*{{{ndivisions}}}*: Number of time steps in your variables. For example, if monthly, this would equal 12, if daily then 365, if quarterly then 4. 
-
-*{{{env.data}}}*: Directory in your file system in which your climate data is stored  (for grid-based analyses). For point-based analyses this can be set to `NA`.
-
-*{{{ext}}}*: Extension of your raster files. Only needs to be provided for grid-based analyses.
-
-*{{{direction}}}*: Type of analysis to perform. This would tell to analogues what scenario is being taken as reference. If you use `"backward"` it will use the future climate as a reference and will look for analogues in the current climate; if you use `"forward"` it will use the current climate as a reference and will look for analogues in the future climate; whereas if you use `"none"` it will use the same scenario as reference and target for finding analogues.
-
-*{{{growing.season}}}*: Period during which dissimilarities are being analyzed, specified as a vector of one or more time steps.
-
-*{{{across.year}}}*: Switch for lag. If set to `TRUE` then the lag is accounted and the minimum dissimilarity of all the possible combinations of reference to target scenarios is used as the result, whereas if set to `FALSE`, only the corresponding growing season is compared
-
-*{{{normalise}}}*: Switch for normalization. If set to `TRUE` the variables and weights will be scaled to have a mean of 0 and an standard deviation of 1 for all climate scenarios.
-
-*{{{keep.lag}}}*: Switch for keeping or not keeping lagged grids. Switch this to `FALSE` to avoid memory overload.
+|| Parameter || Description ||
+|| *{{{x}}}* || Longitude or coordinate X of the reference site when performing grid-based calculations, or a vector of length equal to the number of sites containing the longitudes or coordinates X of the sites being analyzed when performing point-based analyses. These must be in the same coordinate system of `y` and in the same coordinate system in which the raster data are. ||
+|| *{{{y}}}* || Longitude or coordinate Y of the reference site when performing grid-based calculations, or a vector of length equal to the number of sites containing the longitudes or coordinates Y of the sites being analyzed when performing point-based analyses. These must be in the same coordinate system of `x` and in the same coordinate system in which the raster data are. ||
+|| *{{{method}}}* || Method to be used for the dissimilarity calculation. Currently, there are two methods to calculate dissimilarity: `"ccafs"`, and `"hal"`, referring to CCAFS and Hallegate method, respectively. ||
+|| *{{{hal.rad}}}* || Maximum tolerable relative annual difference. Only needs to be specified when `method="hal"`, can be one single value or a vector of various values (length equal to the number of variables included). If set to `NA` the condition will not be taken into account for the dissimilarity calculation. ||
+|| *{{{hal.mad}}}* || Maximum tolerable mean absolute difference. Only needs to be specified when `method="hal"`, can be one single value or a vector of various values (length equal to the number of variables included). If set to NA the condition will not be taken into account for the dissimilarity calculation. ||
+|| *{{{hal.mrd}}}* || Maximum tolerable mean absolute relative difference. Only needs to be specified when `method="hal"`, can be one single value or a vector of various values (length equal to the number of variables included). If set to NA the condition will not be taken into account for the dissimilarity calculation. ||
+|| *{{{z}}}* || Exponent for the CCAFS dissimilarity equation. Default value is 2. Only needs to be provided when `method="ccafs"` ||
+|| *{{{scenario}}}* || A vector listing the various climate scenarios to be used. The first element of this vector is always assumed the current climate scenario, others are targets. You can specify as many scenarios as you have climate data for. The name of a scenario should be quoted ("scenario") and should be a combination of an SRES, a period and a GCM, or otherwise should be the current climate (however it is called in your file system or in your computer's memory). ||
+|| *{{{vars}}}* || A vector listing the different variables to be used in the analysis. These should exist either in your file system (in your climate data folder) or as objects in memory if you're performing a point-based analysis. All variables need to have the same time step (i.e. monthly, daily, yearly). ||
+|| *{{{weights}}}* || A vector listing the different weights to be used for the variables, with the same length of the vector vars. The position of each weight MUST match the position of the variable. For instance, the variable in position 1 in vars will be weighted with the weight in position 1 in weights. Variable names (that must exist in your file system or in memory) or single numbers can be provided for weighting the variables. ||
+|| *{{{ndivisions}}}* || Number of time steps in your variables. For example, if monthly, this would equal 12, if daily then 365, if quarterly then 4. ||
+|| *{{{env.data}}}* || Directory in your file system in which your climate data is stored  (for grid-based analyses). For point-based analyses this can be set to `NA`. ||
+|| *{{{ext}}}* || Extension of your raster files. Only needs to be provided for grid-based analyses. ||
+|| *{{{direction}}}* || Type of analysis to perform. This would tell to analogues what scenario is being taken as reference. If you use `"backward"` it will use the future climate as a reference and will look for analogues in the current climate; if you use `"forward"` it will use the current climate as a reference and will look for analogues in the future climate; whereas if you use `"none"` it will use the same scenario as reference and target for finding analogues. ||
+|| *{{{growing.season}}}* || Period during which dissimilarities are being analyzed, specified as a vector of one or more time steps. ||
+|| *{{{across.year}}}* || Switch for lag. If set to `TRUE` then the lag is accounted and the minimum dissimilarity of all the possible combinations of reference to target scenarios is used as the result, whereas if set to `FALSE`, only the corresponding growing season is compared. ||
+|| *{{{normalise}}}* || Switch for normalization. If set to `TRUE` the variables and weights will be scaled to have a mean of 0 and an standard deviation of 1 for all climate scenarios. ||
+|| *{{{keep.lag}}}* || Switch for keeping or not keeping lagged grids. Switch this to `FALSE` to avoid memory overload. ||
 
 
 == 2. How to set up an analogue run? ==
