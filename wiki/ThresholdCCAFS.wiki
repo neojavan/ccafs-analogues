@@ -7,7 +7,7 @@
 In this tutorial you will learn:
  # how to select the most likely analogue sites from a particular CCAFS measure analogue run using a range of values,
  # how to select the most likely analogue sites from a particular Hallegatte  measure analogue run using a probability threshold,
- # understand the importance of a well-calibrated way of selecting “likely” analogue sites,
+ # understand the importance of a well-calibrated way of selecting "likely" analogue sites,
 
 What do you need to complete this tutorial?
  # Either a Windows or Linux operating system,
