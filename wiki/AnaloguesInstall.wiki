@@ -68,6 +68,20 @@ _*Figure 5* The R Gui and console, and the Packages menu_
 
 A new window will prompt and you will be able to search for files. Go to the location where you stored the analogues package as downloaded from internet or copied from the CD and click on "Open". This will install the package as a library in your current R installation folder. Now you can load the package.
 
+*Note:* Alternatively, you could type in your R console:
+
+{{{
+install.packages("C:/analogues/package/analogues_0.0.11.zip",repos=NULL)
+}}}
+
+And this will also install the package (change the path to the library and the version to your needs). In *UNIX* systems you will type (in the bash, sh or ksh console):
+
+{{{
+R CMD INSTALL /path-to-package/analogues_0.0.11.tar.gz
+}}}
+
+In such a case you must have the *Unix* version of the library, also available in the downloads section of this project.
+
 == 4. How to load the package in R? ==
 
 Once you have installed the package, you can load the library 'analogues' by typing in the R console:
