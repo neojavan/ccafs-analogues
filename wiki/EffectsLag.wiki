@@ -2,7 +2,7 @@
 #sidebar TableOfContents
 
 = Exercise 3.7: =
-== Understanding the effects of using different variables ==
+== Understanding the effects of lag ==
 
 In this tutorial you will learn:
  # how to account for lag and not when performing analogue runs with the CCAFS method,
