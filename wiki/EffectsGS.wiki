@@ -1,4 +1,4 @@
-#summary Effects of direction
+#summary Effects of growing season
 #sidebar TableOfContents
 
 = Exercise 3.8: =

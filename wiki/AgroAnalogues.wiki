@@ -1,253 +1,210 @@
-#summary A first tutorial on how to use the analogues tool
+#summary Agriculture and analogues
 #sidebar TableOfContents
 
-_beta release please report bugs to jmsigner@gmail.com_
----------
-= Comparing multiple points =
-== Requirements ==
-  * Understood tutorial 1
-  * Some familiarity with R
-  * Not affraid of `*`pply
+= Exercise 3.12: =
+== Agriculturally meaningful point-based analyses of dissimilarity ==
 
-== Preparing Data ==
+In this tutorial you will learn:
+ # how to quantify dissimilarity using specific points using the CCAFS measure,
+ # how to relate dissimilarity values with agricultural yields in the context of adaptation,
+ # understand the importance of contextualizing analogue analyses results with adaptation,
+
+What do you need to complete this tutorial?
+ # Either a Windows or Linux operating system,
+ # the latest version of R installed on your computer,
+ # to have completed tutorial 3.1 to 3.3 successfully,
+ # to know how to extract data from `RasterLayers` and `RasterStacks` using the `raster` package, and
+ # to understand the concept of analogues and the underlying principles and equations,
 
 
-{{{
-library(analogues)
-sites <- read.csv("http://ccafs-analogues.googlecode.com/files/crops.csv")
+== 1. Calculating dissimilarity over a number of points using the CCAFS measure ==
 
-str(sites)
-'data.frame':	100 obs. of  3 variables:
- $ Lat  : num  39.7 10.3 -13.1 -25.8 34.7 ...
- $ Long : num  22.6 -84.3 -76.2 -65 32 ...
- $ yield: int  46 163 85 44 69 43 129 141 5 142 ...
+All previous tutorials have focused on performing dissimilarity analyses using gridded datasets; however, at some point agricultural research needs to go down to the field scale, for which most of the times gridded datasets are either not available, not necessary, inaccurate, or not enough. For such purposes, we have also developed functions within our analogues R-package that allow users to analyze dissimilarities using field-scale data.
 
-head(sites)
-        Lat       Long yield
-1  39.66667   22.58333    46
-2  10.26667  -84.26667   163
-3 -13.11667  -76.20000    85
-4 -25.80000  -64.96667    44
-5  34.71667   32.05000    69
-6  20.68333 -103.33333    43
-}}}
+The data can be, as for the gridded data, for any set of variable with any given time-step, as long as they are consistent. For instance, the time-step of all variables needs to be the same. Weighting variables can also be included, and all the same features that are available for grid-based analyses are also available for point-based analyses. As you might guess, there are some differences in the way the analyses are carried out. These differences are inevitably inherent to the format in which the data is read.
 
-Make use of the analogues model
+Thereby, we created three functions: `loadDataPoints()`, `loadWeightsPoints()` and `dissimilarityPoints()`, as you might already know. When performing point-based analyses with the analogue tool the input data must be present in your R session (i.e. in your computer's memory) rather than in different files in your computer. These data need to be matrices, with the following characteristics
 
-{{{
-params <- createParameters(x=76.9, y=29.7, to=NA,
-   method="ccafs", hal.rad=c(NA, 0.15),
-   hal.mad=c(NA,0.3), hal.mrd=c(1, NA), z=2,
-   gcms=c("current","a1b_2020_2049_ukmo_hadgem1","a1b_2020_2049_miroc3_2_hires", "a1b_2020_2049_ipsl_cm4"),
-   vars=c("tmean", "prec"), weights=c("dtr",1), ndivisions=12,
-   climate.data="../analogues_data/current_a1b_2030", ext=".asc", direction="backwd",
-   growing.season=1:12, across.year=T, keep.lag=F, normalise=F)
-}}}
+ * Number of columns is equal to the number of time steps of your variable
+ * Number of rows is equal to the number of points you are analyzing. Must be greater than 1.
 
-== Load climate data ==
-Since have already created a _params_ object, we can take advantage of the _loadData()_ function from the analogues package to load all data at once.
-{{{
-training_data <- loadData(params)
-}}}
-=== Some data cleaning ===
-It is likely that some sites will have coordinates that are not covered with our raster, we want to eliminate those sites
-{{{
-nrow(sites)
-[1] 100
-}}}
-For each site we check whether or not a value is available for the first grid. If there is a value available for the first gird, all other grids should be fine too, since they all have the same extent.
-{{{
-sites <- sites[!is.na(extract(training_data[[1]][[1]], as.matrix(sites[, c("Long", "Lat")]))), ]
-nrow(sites)
-[1] 95
-}}}
-== Extract training data ==
-It is a lot faster we load the climate data only once for every point of interest (poi), at the beginning of the analysis and reuse it again afterwards. 
+There must be a *`matrix`* in your R session for each scenario-variable or scenario-weight (if the weight is another variable) combination. For example, if you are working with two scenarios: `"current"` and `"a1b_2020_2049_ukmo_hadcm3"`, two variables: `"tmean"` and `"prec"`, and two different weights: `"dtr"` and 1, for 12 months, and 30 sites. This means, you need to have 6 objects of type (*`matrix`*) loaded in your R session, whose names should be:
+
+ * `tmean.current`
+ * `prec.current`
+ * `dtr.current`
+ * `tmean.a1b_2020_2049_ukmo_hadcm3`
+ * `prec.a1b_2020_2049_ukmo_hadcm3`
+ * `dtr.a1b_2020_2049_ukmo_hadcm3`
+
+Each of which *MUST* consist in 30 rows and 12 months and *MUST* have no missing data (i.e. `NA`). You can potentially have all these data stored in any format (i.e. comma-separated values, Fortran-formatted, tab-delimited, space-delimited), as long as you know how to load them properly in your R session.
+
+You can extract these data from raster datasets using a function called *`extract()`* from the raster package. Hence, if you want to analyze dissimilarities for your points but the data for such points is in a gridded dataset, you can extract it and store it either in your computer’s memory or in a file in your hard drive.
+
+We have provided some example data (on the CD it should be in "./analogues/tutorials/", whereas on the web should be at http://code.google.com/p/ccafs-analogues/downloads/list. The file is named *tutorial-3.12-data.zip*. You need to decompress these data inside your ‘C:/analogues/tutorials’ folder. If you want, you could open these files in excel or any text editor to see what their structure is.
+
+You will find a number of .csv (comma-separated values) files, each referring to a different variable and climate scenario, plus a file named *"yields.csv"*. You will notice that there are data for mean temperatures (tmean), total rainfall (prec), and diurnal temperature range (dtr), for current climates (current) and the UKMO-HadCM3 climate model for SRES-A1B emissions scenario and the 30 year mean 2020-2049 period (a1b_2020_2049_ukmo_hadcm3). So you will now load the yields.csv file into an object called `siteData`. To do so we will type in the R console,
 
 {{{
-poi_training <- lapply(training_data, function(x) extract(x, as.matrix(sites[, c("Long", "Lat")])))
+siteData <- read.csv("C:/analogues/tutorials/3.12-data/yields.csv")
 }}}
 
-This returns a list of matrixes. Each matrix has the dimension of number of points `*` 12, the list has length 8, because we have 4 gcms and two variables (2 `*` 8)
+You could type `str(siteData)` to see what the structure and variables contained in your new object (of type *`data.frame`*) are. The data you just have loaded consists in average yields of 221 different trials performed at different sites across the world, in the data you have an `id` column, as well as columns for longitude (`x`), latitude (`y`) and yield (`yield`).
 
-== Loading weights ==
+As we are interested in observing the yields, we will plot a histogram of our yield data by typing in the R console,
 
 {{{
-weights_data <- loadWeights(params)
+hist(siteData$yield,breaks=20,main=NA,xlab="Yield (kg)")
 }}}
 
-== Extracting weights ==
-Extracting weights is a little bit more difficult. Because grids can be weighted by an other grid or by a constant value.
-{{{
-poi_weights <- list()
+This will give rise to Figure 1, in which you can observe the large variability of the yields across the 221 sites. This variability might arise either from the agronomic management, varieties, experimental design and environmental conditions at each of the sites (weather, soils).
 
-for (i in 1:length(weights_data)) {
-  if (is.numeric(weights_data[[i]]) | is.character(weights_data[[i]])) {
-    poi_weights[[i]] <- matrix(rep(as.numeric(weights_data[[i]]), (nrow(sites) * nlayers(training_data[[1]]))), ncol=nlayers(training_data[[1]]))
-  } else {
-    poi_weights[[i]] <- extract(weights_data[[i]],as.matrix(sites[, c("Long", "Lat")]))
-  }
-}
-}}}
-== Current disimilarity for one point ==
-To calculate current dissimilaritiy, we can make use of the underlying _ccafsMPoints()_ function
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig1-3.12.PNG
 
-E.g. to calculate dissimilarities from the first point to all points
-{{{
-dis_from_pt_1 <- ccafsMPoints(ref.t=lapply(poi_training[1:2], function(x) x[1,]), 
- poi.t=poi_training[1:2],  
- ref.w=lapply(poi_weights[1:2], function(x) x[1,]),
- poi.w=poi_training[1:2],
- z=2)
-}}}
-== Current dissimilarity for many points ==
-we can easily apply this function to all points 
+_*Figure 1* Histogram of yield of all trials in the dataset, note that despite referring to the same crop, there is large variability in yield that can be partly attributed to climate, and partly to agronomic management_
+
+In this exercise we are interested in assessing the potential usage of analogues for climate adaptation. Therefore, we will assume that a low-yielding trial is a site that might require some strategies to fill that yield-gap. These strategies can be transferred from other sites (sites that are close analogues). We will first look for a very low yielding site within our trials, by typing in the R console,
 
 {{{
-dis_current <- lapply(1:nrow(sites), function(pt) ccafsMPoints(ref.t=lapply(poi_training[1:2], function(x) x[pt,]), 
- poi.t=poi_training[1:2],  
- ref.w=lapply(poi_weights[1:2], function(x) x[pt,]),
- poi.w=poi_training[1:2],
- z=2))
-}}}
- 
-we can obtain the dissimilarities from point n to all other points by:
-{{{
-dis_current[[n]]
-}}}
-e.g.
-{{{
-dis_current[[23]]
- [1]  3395.1337 10280.4005   675.1275  3116.8990  3259.5874  4423.6284
- [7]  3116.8990  3859.2165  3277.7336  5103.3787  3858.8737  6151.5272
-[13]  3222.2635  3470.0988  2246.4836  3979.5468  3589.7453  6388.2515
-[19]  3236.8243  3038.3087  4445.3497  3192.5736     0.0000  3787.5123
-[25]  3470.0988  3282.7151  2032.7642  3410.1311  4293.4085  4363.6686
-[31]  3226.4886  3807.9293  4019.8943  3282.7151  5441.3842 21767.4184
-[37]  3731.5949  5933.4108  2738.5438  3395.1337  5658.0872  7333.4043
-[43]  3981.5042  5154.4351  8418.1029  3832.0010  2670.9966  8361.4731
-[49]  3695.8744  3541.8455  3050.4915  4202.3001  3326.6342  4152.3145
-[55] 10280.4005  3979.5468  2848.3014  3588.1453  3307.3742  3776.8307
-[61]  4415.0584  3561.4933  2268.6822  6138.4543  3251.0059  3076.2044
-[67]  4097.7051  4857.5163  3480.4072  3407.6777  7848.1491  4480.0725
-[73]  5582.2977  5704.9711  3267.9974  3717.9343  3845.2540  3106.8596
-[79]  4219.0669  3329.9383  4601.8583  4415.0584 12122.1920  4299.7627
-[85]  3188.7487  1688.5925 15501.6915  2467.3005  3614.0378  5132.5505
-[91]  5023.3430  3276.2368  3116.8990   640.2563  2962.3671
-
-}}}
-and it should have a dissimilarity of 0 to with itself
-{{{
-dis_current[[23]][23] == 0
-[1] TRUE
-}}}
-we can quickly check that this applies for all points
-{{{
-all(sapply(1:nrow(sites), function(x) dis_current[[x]][x] == 0))
-[1] TRUE
+which(siteData$yield == min(siteData$yield))
 }}}
 
-We might be interested in points that a very similar to point 33.
-{{{
-from_33 <- cbind(sites, dis_current[[33]])
-}}}
-We can get the 10 closest points by: (n.b. we use [2:11,] to omit the first point, which is point 44)
-{{{
-from_33[order(from_33[,4]),][2:11,]
-}}}
-We can also plot point dissimilarity versus yield in order to find a point with high yield and low dissimilarity.
-{{{
-plot(from_33[,4], from_33[,3], ylab="Yield", xlab="Dissimilarity", las=T, main="Dissimilarities from point 33")
-grid()
-}}}
-
-http://ccafs-analogues.googlecode.com/files/from33.png
-
-Points in the upper left corner will be of greatest interest to us. 
-
-== Current dissimilarities for many points with a lag ==
-
-We can extent out analysis by comparing not only months as they are, varying the starting point during the years. In order to achieve that we will roll over reference points, i.e. start with the first devision, second division until the last division.
-
-=== Roll ===
-First we create a 'roll', which we will use as a template.
-{{{
-roll.v <- c()
-months <- 1:params$ndivisions
-for (i in 1:length(months)) {
-   roll.v <- c(roll.v,(months[c(i:length(months),0:(i-1))]))  
-}
-roll <- matrix(data=roll.v, ncol=length(months), byrow=TRUE)
-  
-# cut roll to the actual growin period
-roll <- roll[ , params$growing.season]
-}}}
-
-=== Function for dissimilarities ===
-
-We will write a simple function to run ccafsMPoints for a given point over the roll and summarizes the results by taking the minimum value.
+This should drop *`71`* as an answer. This means that the site with the poorest yield is the site in row 71, which data we can see if we type,
 
 {{{
-ccafsMPoints_rolled <- function(pt, poi_training, poi_w, roll) {
-  this_res <- matrix(rep(NA, nrow(roll) * nrow(poi_training[[1]])), ncol=nrow(roll))
-  for (i in 1:nrow(roll)) {
-    this_res[,i] <- ccafsMPoints(ref.t=lapply(poi_training[1:2], function(x) x[pt,roll[i,]]), 
-    poi.t=poi_training[1:2],  
-    ref.w=lapply(poi_weights[1:2], function(x) x[pt,roll[i,]]),
-    poi.w=poi_training[1:2],
-    z=2)
-  }
-  return(apply(this_res, 1, min))
-}
+siteData[71,]
 }}}
 
-now we just apply this function to each site.
+This should show us that it is in `row=79`, has an `id=84`, `country=NA` (missing), `site=Site.71`, `y= –6.73`, `x=23.93`, `alt= .` (missing), and `yield=28.62` (kg).
+
+We will assume that under future conditions this yield might drop even more or see very little improvement; in whichever case the site needs new technologies. We are thus interested in looking at dissimilarities from site 71 (S71 hereafter) future conditions to all other sites current conditions, using current climates and those predicted by the *`"ukmo_hadcm3"`* model (*`"a1b_2020_2049"`*). We will use our available data, and will configure an analogue run with monthly mean temperature (weighted by diurnal temperature range) and total annual rainfall, we will use the 12 months as growing period (as we don’t know what crop is this so we don't know what the growing season is).
+
+First, we will load the data,
+
 {{{
-dis_current_rolled <- lapply(1:nrow(sites), function(pt) ccafsMPoints_rolled(pt, poi_training, poi_w, roll))
+tmean.current <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/tmean.current.csv"))
+dtr.current <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/dtr.current.csv"))
+prec.current <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/prec.current.csv"))
 }}}
 
-We can test again the results for consitency
+For current climates, and
+
 {{{
-all(sapply(1:nrow(sites), function(x) dis_current_rolled[[x]][x] == 0))
-[1] TRUE
+tmean.a1b_2020_2049_ukmo_hadcm3 <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/tmean.a1b_2020_2049_ukmo_hadcm3.csv "))
+dtr.a1b_2020_2049_ukmo_hadcm3 <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/dtr.a1b_2020_2049_ukmo_hadcm3.csv "))
+prec.a1b_2020_2049_ukmo_hadcm3 <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/prec.a1b_2020_2049_ukmo_hadcm3.csv "))
 }}}
-Now we can plot the rolled vs not rolled results:
+
+For our future scenario. Now you need to configure the `params` object so that the later functions, namely, `loadDataPoints()` and `loadWeightsPoints()`, you will type,
+
 {{{
-plot(dis_current[[1]], dis_current_rolled[[1]], xlab="Dissimilarities without lag", ylab="Dissimilarities with lag", main="Effect of Lag")
+params <- createParameters(x=siteData$x,
+                           y=siteData$y,
+                           method="ccafs",
+                           hal.rad=NA,
+                           hal.mad=NA,
+                           hal.mrd=NA,
+                           z=2,
+                           scenario=c("current","a1b_2020_2049_ukmo_hadcm3"),
+                           vars=c("tmean","prec"),
+                           weights=c("dtr",1),
+                           ndivisions=12,
+                           env.data=NA,
+                           ext=NA,
+                           direction="backwd",
+                           growing.season=c(1:12),
+                           across.year=F,
+                           normalise=F,
+                           keep.lag=F)
 }}}
-http://ccafs-analogues.googlecode.com/files/effectLag.png
 
-and observe that dissimilarity values with the lagged dissimilarities are slightly lower.
+Note that in this case *`env.data=NA`*, and *`ext=NA`*. This is because we are not loading data from the file system but rather taking it from the R session. To load the data into our `training` and `weights` object we type,
 
-== Future dissimilarities ==
-Now we are interested in identifying sites that already have the climate, that our point of interest (poi) will have in the future (a.k.a. backward, we are projecting the future climate back to current conditions). 
- 
 {{{
-ccafsMPoints_rolled_future <- function(pt, poi_training, poi_w, roll, from, to) {
-  this_res <- matrix(rep(NA, nrow(roll) * nrow(poi_training[[1]])), ncol=nrow(roll))
-  for (i in 1:nrow(roll)) {
-    this_res[,i] <- ccafsMPoints(ref.t=lapply(poi_training[which(params$idx.gcms==to)], function(x) x[pt,roll[i,]]), 
-    poi.t=poi_training[which(params$idx.gcms==to)],  
-    ref.w=lapply(poi_weights[which(params$idx.gcms==to)], function(x) x[pt,roll[i,]]),
-    poi.w=poi_training[which(params$idx.gcms==to)],
-    z=2)
-  }
-  return(apply(this_res, 1, min))
-}
+training <- loadDataPoints(params)
+weights <- loadWeightsPoints(params)
 }}}
-== Backward ==
-{{{ 
-dis_future_rolled_bckwd <- list()
-for (from in 2:length(params$gcms)) {
- dis_future_rolled_bckwd[[from - 1]] <- lapply(1:nrow(sites), function(pt) ccafsMPoints_rolled_future(pt, poi_training, poi_w, roll, from=from, to=1))
-}
-}}}
-This returns a list of length three (three gcms) and each list contains an other list of length 95 (95 points of interest).
 
-== Forward ==
-{{{ 
-dis_future_rolled_fwd <- list()
-for (to in 2:length(params$gcms)) {
- dis_future_rolled_fwd[[from - 1]] <- lapply(1:nrow(sites), function(pt) ccafsMPoints_rolled_future(pt, poi_training, poi_w, roll, from=1, to=to))
-}
+This would create two objects that can be further used in your dissimilarity calculation, which is done as follows,
+
+{{{
+result <- dissimilarityPoints(params,training,weights)
 }}}
+
+This object is a list of 221 elements, each being a vector of 221 values. Each element in the list is the dissimilarity between that point's future climate and all the others current climates. Thus, if we want to know the dissimilarities between our S71's future climates to all other points’ current climates we need to access the element number 71 of that list. To illustrate the last sentence, we will plot a histogram of the dissimilarities from S71 to all other points by typing,
+
+{{{
+hist(result[[71]],breaks=20,main=NA,xlab="Dissimilarity from point 71's future")
+}}}
+
+This will produce Figure 2. You will notice that there is a considerable variability in the outcome, with some sites showing very low dissimilarity (hence being highly analogous) and others showing high values in the dissimilarity index.
+
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig2-3.12.PNG
+
+_*Figure 2* Histogram of dissimilarity from point-71 (low yielding point) to all other points. Note that there are some points with low dissimilarity values, meaning these hold similar environmental conditions to point-71_
+
+Dissimilarities of other points' future climates to the others' current climates can be accessed, and plotted in the same way. You can save all that data in files using the `write.csv` or `write.table` commands in R.
+
+== 2. Relating the outcomes of the dissimilarity function with agricultural yields ==
+
+In this part we will try to take some conclusions out from the analyses we just carried out. We want to find sites that have high yields and low dissimilarity values to S71. To achieve that, we will find the four quartiles of our yield and dissimilarity index,
+
+{{{
+yield.q <- quantile(siteData$yield,probs=c(0.25,0.5,0.75,1))
+diss.q <- quantile(result[[71]],probs=c(0.25,0.5,0.75,1))
+}}}
+
+This will result in two vectors, each with four values, with all quartiles for yields (*`yield.q`*) and dissimilarity (*`diss.q`*). Now you will plot your points by typing in the R console,
+
+{{{
+plot(x=result[[71]],y=siteData$yield,
+     pch=20,cex=0.8,
+     xlab="Dissimilarity from point 71's future",
+     ylab="Yield (kg)")
+}}}
+
+A new plot should have appeared. Don't look at it yet as we're not done. We will do some further plotting on this very same plot that just appeared. This is the magic of R. In this case the _x-axis_ will be dissimilarity and the _y-axis_ will be yield. We will now plot four horizontal lines using R's *`abline()`* command, one line for each yield quartile. This will give us an idea of where are the statistically-high yielding sites,
+
+{{{
+abline(h=yield.q[1],col="red")
+abline(h=yield.q[2],col="blue")
+abline(h=yield.q[3],col="dark green")
+abline(h=yield.q [4],col="black")
+}}}
+
+The first quartile will be plotted in red, the second (the median) in blue, the third in green and the fourth in black. Now we do the same for dissimilarities, this time plotting vertical lines,
+
+{{{
+abline(v=diss.q[1],col="red",lty=2)
+abline(v=diss.q[2],col="blue",lty=2)
+abline(v=diss.q[3],col="dark green",lty=2)
+abline(v=diss.q [4],col="black",lty=2)
+}}}
+
+This will plot each of the quartiles as vertical lines; this time the lines will be dashed (lty=2). We will now select and plot the points that are in our upper most quantile of yields and bottom most quantile of dissimilarity. First we select the data,
+
+{{{
+disTop <- result[[71]][which(result[[71]] < diss.q[1])]
+yieTop <- siteData$yield[which(siteData$yield > yield.q[3])]
+}}}
+
+And now we plot them using red crosses,
+
+{{{
+points(disTop,yieTop,pch="+",cex=1,col="red")
+}}}
+
+Finally, we plot S71 as a big blue asterisk, by 
+
+{{{
+points(results[[71]][71],siteData$yield[71],pch="*",cex=2.5,col="blue")
+}}}
+
+We will finally have Figure 3. There you can see the degree of variability in the analogue results for the different areas of the globe. The red crosses are sites in the lowest quartile of dissimilarity and in the top-most quartile of yield. Similar analyses can be done with higher probabilities (i.e. not splitting the data each 25% -quartiles, but doing so each 10%, or 5%). 
+
+Either management practices, varieties, and other technologies from those sites with high yield could be potentially (1) tested and (2) transferred to S71 to decrease the yield gap. These and other more complex analyses are the type of analyses that agricultural researchers should aim at when using the analogues tool.
+
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig3-3.12.PNG
+
+_*Figure 3* Dissimilarity from S71 (very low yielding point) future climates to all other points' current climates (_x-axis_) and yield of each of those points (_y-axis_). The blue asterisk is point-71, the red, blue, green and black lines are the first, second (median), third quartile, and 100% of the data for yield (continuous lines) and dissimilarities (dashed lines). Red crosses show points above the top 75% in each variable; these are trials of interest for point-71: high yield and low dissimilarity._
+

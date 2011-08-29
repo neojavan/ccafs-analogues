@@ -1,4 +1,4 @@
-#summary Effects of direction
+#summary Effects of lag
 #sidebar TableOfContents
 
 = Exercise 3.7: =
