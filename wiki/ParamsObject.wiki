@@ -25,7 +25,7 @@ But before we get into the parameters, we need to know how these parameters are 
 
 The different parameters of the analogues tool to be specified when calling the function `createParameters()` are:
 
-|| Parameter || Description ||
+|| *Parameter* || *Description* ||
 || *{{{x}}}* || Longitude or coordinate X of the reference site when performing grid-based calculations, or a vector of length equal to the number of sites containing the longitudes or coordinates X of the sites being analyzed when performing point-based analyses. These must be in the same coordinate system of `y` and in the same coordinate system in which the raster data are. ||
 || *{{{y}}}* || Longitude or coordinate Y of the reference site when performing grid-based calculations, or a vector of length equal to the number of sites containing the longitudes or coordinates Y of the sites being analyzed when performing point-based analyses. These must be in the same coordinate system of `x` and in the same coordinate system in which the raster data are. ||
 || *{{{method}}}* || Method to be used for the dissimilarity calculation. Currently, there are two methods to calculate dissimilarity: `"ccafs"`, and `"hal"`, referring to CCAFS and Hallegate method, respectively. ||
