@@ -145,7 +145,7 @@ writeRaster(ama[[1]],
 
 These two results can be seen in Figure 2.
 
-http://ccafs-analogues.googlecode.com/svn/wiki/img/fig2-3.4.PNG
+http://ccafs-analogues.googlecode.com/svn/wiki/img/fig2-3.5.PNG
 
 _*Figure 2* Dissimilarity result for a location in the Himalayas (top figure) and the Amazon (bottom) using the Hallegatte measure. Reference points are marked with black circles_
 
