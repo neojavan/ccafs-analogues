@@ -1,0 +1,22 @@
+Analogues: a glimpse of tomorrow's climates, today
+
+The analogues approach is a novel way of supporting modeled policy recommendations with on-the-ground empirical testing. Analogues refer to sites or years that experience conditions with statistical similarity, primarily in terms of current or future climate, but they can also include additional factors such as soils, crops, and socioeconomic characteristics. This helps link top-down global models with targeted field trials or visits. In essence, the approach locates a site whose climate today is similar to the given future of a place of interest (i.e. where can we find today the future climate of Nairobi, Kenya?), or vice-versa.
+
+Here you will find a core R package to find climate analogues between a reference site and a number of other sites or a raster, within current or future climate. There are some accompanying data (downloads section) and a number of tutorials in our project wiki.
+
+This project is supported by the CGIAR Research Program on Climate Change, Agriculture and Food Security (CCAFS). 
+
+This project is maintained by:
+
+Johannes Signer
+Visiting Researcher
+Decision and Policy Analysis (DAPA) program
+International Center for Tropical Agriculture (CIAT), Cali, Colombia
+
+Julian Ramirez-Villegas
+PhD Scholar and Researcher
+Institute for Climatic and Atmospheric Science, School of Earth and Environment, University of Leeds, Leeds, UK
+CGIAR Research Program on Climate Change, Agriculture and Food Security (CCAFS), Cali, Colombia
+Decision and Policy Analysis (DAPA) program, International Center for Tropical Agriculture (CIAT), Cali, Colombia
+
+(c) All rights reserved

@@ -38,25 +38,25 @@
 
 createParameters <- function(x=10,   
   y=48, 
-  to=NA,                       
+  to=NA, #probably no longer necessary a code update is needed to remove useless code
   method="ccafs",                
   hal.rad=c(NA,0.15),                    
   hal.mad=c(NA,0.3),            
   hal.mrd=c(1,NA),           
   # hal.ncond=2,  # commented out by jsigner, for simplicity, if it works ok, remove
   z=2,
-  scenario=c("current"),
+  scenario=c("current","any"),
   vars=c("tmean", "prec"),        
   weights=c("dtr",1),
   ndivisions=12,                  
   env.data=".",              
-  ext="asc",
+  ext=".asc",
   direction="backwd",             
   growing.season=1:12,           
   across.year=T,
   keep.lag=F,
   normalise=F){
-
+  
   # required packages
   require(raster)
   require(stringr)
@@ -66,23 +66,156 @@ createParameters <- function(x=10,
   require(akima)
   require(grid)
   require(rimage)
-
   
-  # check wether point is terrestrial or not
+  # ----- massive verification of parameters
+  #check if x and y have the same length
+  if (length(x) != length(y)) {
+    stop("analogues: length of your x's and y's is not equal")
+  }
+  
+  #across.year must be F when ndivisions=1, or when length(growing.season=1)
+  if (ndivisions == 1 | length(growing.season) == 1) {
+    if (across.year) {
+      stop("analogues: across.year must be FALSE when ndivisions=1 or length of growing.season=1")
+    }
+  }
+  
+  #if ext is not NA then it must be character and have a point
+  if (!is.na(ext)) {
+    if (!is.character(ext)) {
+      stop("analogues: ext must be a character variable")
+    }
+    
+    #looking for point
+    if (length(grep(".",ext,fixed=T)) == 0) {
+      stop("analogues: ext must contain a prefixing dot")
+    }
+  }
+  
+  #check if x and y are numeric
+  if (!is.numeric(x)) {
+    stop("analogues: x must be numeric")
+  } else if (!is.numeric(y)) {
+    stop("analogues: y must be numeric")
+  }
+  
+  # ---- growing.season verifications
+  #growing season must not have any NAs
+  if (length(which(is.na(growing.season))) > 0) {
+    stop("analogues: growing.season cannot have missing values")
+  }
+  
+  #growing.season must be numeric
+  if (!is.numeric(growing.season)) {
+    stop("analogues: growing.season must be numeric")
+  }
   
   # growing season needs to be <= ndivisions
   if (length(growing.season) > ndivisions) {
-    stop("Growing season > ndivision")
+    stop("analogues: length of growing.season > ndivisions")
+  }
+  
+  #growing.season must be within 1 and ndivisions
+  ndv <- c(1:ndivisions)
+  gs.no <- length(which(!growing.season %in% ndv))
+  if (gs.no != 0) {
+    stop("analogues: your growing season must be between 1 and ndivisions")
+  }
+  
+  #growing.season must be continuous
+  gs.fake <- c(min(growing.season):max(growing.season))
+  if (length(gs.fake) != length(growing.season)) {
+    #if they dont match it means there is a value in growing.season == ndivisions
+    #(otherwise it means there is an error. We find that value
+    where.ndv <- which(growing.season == ndivisions)
+    #if there is no such value then error
+    if (length(where.ndv) != 1) {
+      stop("analogues: growing.season must be a continuous series")
+    }
+    
+    #now, take all values one position after where.ndv and sum ndivisions to them
+    gs.fake2 <- growing.season
+    gs.fake2[(where.ndv+1):length(gs.fake2)] <- gs.fake2[(where.ndv+1):length(gs.fake2)] + ndivisions
+    
+    #now create a continous series and see if it matches with the 
+    #length of the growing.season selected
+    gs.fake3 <- c(min(gs.fake2):max(gs.fake2))
+    if (length(gs.fake3) != length(growing.season)) {
+      stop("analogues: growing.season must be a continuous series")
+    }
+  }
+  
+  #----------direction verifications
+  #direction must be either forward, forwd, backward, backwd, none, or no
+  if (!direction %in% c("forward","forwd","backward","backwd","none","no")) {
+    stop("analogues: direction not recognised")
+  }
+  
+  #when direction is backward or forward length(scenario) > 1
+  if (direction == "backwd" | direction == "backward" | direction == "forward" | direction == "forwd") {
+    if (length(scenario) < 2) {
+      stop("analogues: forward or backward direction require at least two scenarios")
+    }
+  }
+  
+  #z must be numeric
+  if (!is.numeric(z)) {
+    stop("analogues: z parameter must be numeric")
   }
   
   # each variable needs a weight
   if (length(weights) != length(vars)) {
-    stop("Variables and weights don't match")
+    stop("analogues: variables and weights don't match")
   }
   
   #check method is correct
   if (!method %in% c("ccafs","hal")) {
-    stop("Available methods are only ccafs and hal")
+    stop("analogues: available methods are only ccafs and hal")
+  }
+  
+  #hal checks
+  if (method == "hal") {
+    #conditions must be at least 1
+    hal.nc <- length(which(!is.na(c(hal.mad,hal.mrd,hal.rad))))
+    if (hal.nc == 0) {
+      stop("analogues: at least one of Hallegatte thresholds needs to be switched on")
+    }
+    
+    #none of the hal conditions can be zero
+    hal.nz <- length(which(c(hal.mad,hal.mrd,hal.rad) == 0))
+    if (hal.nz != 0) {
+      stop("analogues: none of Hallegatte conditions should equal zero")
+    }
+    
+    #there must be one condition per variable
+    if (length(vars) != length(hal.mad)) {
+      stop("analogues: hal conditions and variables don't match")
+    } else if (length(vars) != length(hal.mrd)) {
+      stop("analogues: hal conditions and variables don't match")
+    } else if (length(vars) != length(hal.rad)) {
+      stop("analogues: hal conditions and variables don't match")
+    }
+    
+    #non-numeric weights make no sense for hal
+    if (!is.numeric(weights)) {
+      stop("analogues: non-numeric weights not necessary when method=hal")
+    }
+  }
+  
+  #normalise, across.year, keep.lag are logical
+  if (!is.logical(across.year)) {
+    stop("analogues: across.year must be logical")
+  } else if (!is.logical(keep.lag)) {
+    stop("analogues: keep.lag must be logical")
+  } else if (!is.logical(normalise)) {
+    stop("analogues: normalise must be logical")
+  }
+  
+  #normalise=F when method="hal"
+  if (method == "hal") {
+    if (normalise) {
+      stop("analogues: normalise should be FALSE when method=hal")
+    }
   }
   
   # Make a list with all parameters
@@ -113,9 +246,8 @@ createParameters <- function(x=10,
 
   params$idx.vars <- rep(1:(length(params$vars)),length(params$scenario)) 
   
-  
-  # load logos for plots
-  data(logos)
+  # load logos for plots in PDF reports
+  #data(logos)
     
   return(params)
 }

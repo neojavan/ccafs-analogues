@@ -26,3 +26,8 @@ Version 0.0.11 (Sun Aug  28 21:19:00 EDT 2011)
 --------------------------------------------
 * JRV: Bug fix. Small error in generating the roll for point analyses dissimilarityPoints() when the growing season was shorter than 12 months and the params$across.year=F
 * JRV: Error in documentation fixed (report.Rd), m.lab appeared twice, not it was changed by r.lab and m.lab, respectively.
+
+Version 0.0.12 (Mon Aug  29 17:31:00 EDT 2011)
+--------------------------------------------
+* JRV: Added user-input error verification in some functions, namely createParameters(), dissimilarity(), loadDataPoints(), loadWeightsPoints(), ccafsMPoints(), applyThreshold().
+* JRV: Fixed errors documentation: report.Rd and createParameters.Rd

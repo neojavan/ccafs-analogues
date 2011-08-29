@@ -9,7 +9,7 @@
 #' @export
 
 dissimilarity <- function(params,training, weights) {
-
+  
   # constants
   ngcms <- length(params$scenario)  # number of gcms
   res.all <- list()  # list with results
@@ -22,6 +22,27 @@ dissimilarity <- function(params,training, weights) {
   nlayers <- nlayers(training[[1]])
   ref.where <- cellFromXY(training[[1]], cbind(params$x, params$y))
   
+  #x and y must be within the analysis extent
+  an.ext <- extent(training[[1]])
+  if (params$x > an.ext@xmax | params$x < an.ext@xmin) {
+    stop("analogues: x must be within your geographic extent")
+  } else if (params$y > an.ext@ymax | params$y < an.ext@ymin) {
+    stop("analogues: y must be within your geographic extent")
+  }
+  
+  #check whether we are dealing with only 1 point
+  if (length(params$x) > 1) {
+    stop("analogues: for grid-based analyses only one point is needed")
+  }
+  
+  #check whether the point is terrestrial or not
+  ver.vals <- extract(training[[1]],data.frame(x=params$x,y=params$y))
+  nas <- which(is.na(ver.vals))
+  if (length(nas) > 0) {
+    stop("analogues: NAs found when extracting data, check your point is located in-land")
+  }
+  
+  #if there is a to, then focus on that one, deprecated from version 0.0.5 onwards
   if (is.matrix(params$to)) {
     poi.where <- cellFromXY(training[[1]], params$to)
   }

@@ -49,7 +49,7 @@ An object of AnalogueParameters, i.e. a \code{list}
   or a single number. Provide a vector with the name of the raster in quotes or a numeric value for weighting.}
   \item{ndivisions}{Numeric. Define how many division the variables have per year (e.g. for monthly data use 12).}
   \item{env.data}{Character. Define directory where the environmental data is located.}
-  \item{ext}{Character. Extension of raster format (must be supported by gdal).}
+  \item{ext}{Character. Extension of raster format (must be supported by gdal). You must include the point before the extension, i.e., \code{.asc} instead of merely \code{asc}}
   \item{direction}{Character. Which direction should the dissimilarity be calculated. Available options are \code{forward}, \code{backward} and \code{none}.}
   \item{growing.season}{Numeric vector. Define the growing season of the crop that is to be modelled as the consecutive series of numeric months. 
   For instance, for January to March it would be \code{c(1:3)}.}
