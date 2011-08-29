@@ -1,4 +1,5 @@
 #summary Issue reporting
+#labels Featured
 #sidebar TableOfContents
 
 = How to report issues? =
