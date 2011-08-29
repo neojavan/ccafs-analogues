@@ -2,7 +2,7 @@
 #sidebar TableOfContents
 
 = Exercise 3.11: =
-== Selecting candidate analogue sites: thresholding ==
+== Quantifying uncertainty ==
 
 In this tutorial you will learn:
  # how to use basic uncertainty quantification measures (ensemble MEAN, Standard deviation and Coefficient of Variation) for the CCAFS measure results,
