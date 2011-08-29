@@ -39,9 +39,9 @@ There must be a *`matrix`* in your R session for each scenario-variable or scena
 
 Each of which *MUST* consist in 30 rows and 12 months and *MUST* have no missing data (i.e. `NA`). You can potentially have all these data stored in any format (i.e. comma-separated values, Fortran-formatted, tab-delimited, space-delimited), as long as you know how to load them properly in your R session.
 
-You can extract these data from raster datasets using a function called *`extract()`* from the raster package. Hence, if you want to analyze dissimilarities for your points but the data for such points is in a gridded dataset, you can extract it and store it either in your computer’s memory or in a file in your hard drive.
+You can extract these data from raster datasets using a function called *`extract()`* from the raster package. Hence, if you want to analyze dissimilarities for your points but the data for such points is in a gridded dataset, you can extract it and store it either in your computer's memory or in a file in your hard drive.
 
-We have provided some example data (on the CD it should be in "./analogues/tutorials/", whereas on the web should be at http://code.google.com/p/ccafs-analogues/downloads/list. The file is named *tutorial-3.12-data.zip*. You need to decompress these data inside your ‘C:/analogues/tutorials’ folder. If you want, you could open these files in excel or any text editor to see what their structure is.
+We have provided some example data (on the CD it should be in "./analogues/tutorials/", whereas on the web should be at http://code.google.com/p/ccafs-analogues/downloads/list. The file is named *tutorial-3.12-data.zip*. You need to decompress these data inside your "C:/analogues/tutorials" folder. If you want, you could open these files in excel or any text editor to see what their structure is.
 
 You will find a number of .csv (comma-separated values) files, each referring to a different variable and climate scenario, plus a file named *"yields.csv"*. You will notice that there are data for mean temperatures (tmean), total rainfall (prec), and diurnal temperature range (dtr), for current climates (current) and the UKMO-HadCM3 climate model for SRES-A1B emissions scenario and the 30 year mean 2020-2049 period (a1b_2020_2049_ukmo_hadcm3). So you will now load the yields.csv file into an object called `siteData`. To do so we will type in the R console,
 
@@ -75,9 +75,9 @@ This should drop *`71`* as an answer. This means that the site with the poorest 
 siteData[71,]
 }}}
 
-This should show us that it is in `row=79`, has an `id=84`, `country=NA` (missing), `site=Site.71`, `y= –6.73`, `x=23.93`, `alt= .` (missing), and `yield=28.62` (kg).
+This should show us that it is in `row=79`, has an `id=84`, `country=NA` (missing), `site=Site.71`, `y= -6.73`, `x=23.93`, `alt= .` (missing), and `yield=28.62` (kg).
 
-We will assume that under future conditions this yield might drop even more or see very little improvement; in whichever case the site needs new technologies. We are thus interested in looking at dissimilarities from site 71 (S71 hereafter) future conditions to all other sites current conditions, using current climates and those predicted by the *`"ukmo_hadcm3"`* model (*`"a1b_2020_2049"`*). We will use our available data, and will configure an analogue run with monthly mean temperature (weighted by diurnal temperature range) and total annual rainfall, we will use the 12 months as growing period (as we don’t know what crop is this so we don't know what the growing season is).
+We will assume that under future conditions this yield might drop even more or see very little improvement; in whichever case the site needs new technologies. We are thus interested in looking at dissimilarities from site 71 (S71 hereafter) future conditions to all other sites current conditions, using current climates and those predicted by the *`"ukmo_hadcm3"`* model (*`"a1b_2020_2049"`*). We will use our available data, and will configure an analogue run with monthly mean temperature (weighted by diurnal temperature range) and total annual rainfall, we will use the 12 months as growing period (as we don't know what crop is this so we don't know what the growing season is).
 
 First, we will load the data,
 
@@ -90,9 +90,12 @@ prec.current <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/prec.curren
 For current climates, and
 
 {{{
-tmean.a1b_2020_2049_ukmo_hadcm3 <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/tmean.a1b_2020_2049_ukmo_hadcm3.csv "))
-dtr.a1b_2020_2049_ukmo_hadcm3 <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/dtr.a1b_2020_2049_ukmo_hadcm3.csv "))
-prec.a1b_2020_2049_ukmo_hadcm3 <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/prec.a1b_2020_2049_ukmo_hadcm3.csv "))
+tmean.a1b_2020_2049_ukmo_hadcm3 <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/
+                                                      tmean.a1b_2020_2049_ukmo_hadcm3.csv "))
+dtr.a1b_2020_2049_ukmo_hadcm3 <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/
+                                                    dtr.a1b_2020_2049_ukmo_hadcm3.csv "))
+prec.a1b_2020_2049_ukmo_hadcm3 <- as.matrix(read.csv("C:/analogues/tutorials/3.12-data/
+                                                     prec.a1b_2020_2049_ukmo_hadcm3.csv "))
 }}}
 
 For our future scenario. Now you need to configure the `params` object so that the later functions, namely, `loadDataPoints()` and `loadWeightsPoints()`, you will type,
