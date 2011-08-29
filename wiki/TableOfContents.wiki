@@ -25,6 +25,6 @@
    * [ThresholdCCAFS 3.10. Selecting candidate analogues via thresholding]
    * [UncertaintyQuant 3.11. Uncertainty quantification]
    * [AgroAnalogues 3.12. Agriculturally meaningful analyses]
- * [IssueReport *Reporting bugs, issues or new features*]
+ * *[IssueReport Reporting bugs, issues or new features]*
    
    
