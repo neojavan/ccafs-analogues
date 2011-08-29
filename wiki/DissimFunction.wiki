@@ -25,7 +25,7 @@ According to tutorial 3.2 you should already have 3 objects loaded in your R ses
 params$method
 }}}
 
-You can see any of the parameters listed in your object ‘params’ in the same way. Now, to perform your run will use the function ‘dissimilarity()’, so you type in the R console:
+You can see any of the parameters listed in your object `params` in the same way. Now, to perform your run will use the function `dissimilarity()`, so you type in the R console:
 
 {{{
 result <- dissimilarity(params,training,weights)
@@ -163,7 +163,7 @@ This list MUST contain the following elements:
 
 *{{{r.lab}}}*: Vector of names of your `RasterLayers`. Makes reference to the list of RasterLayers that you want to plot and is of the same length of the element `results` of this same list.
 
-{{{m.lab}}}*: A general label to refer to your charts, often is the year to which you are calculating, i.e. 2030.
+*{{{m.lab}}}*: A general label to refer to your charts, often is the year to which you are calculating, i.e. 2030.
 
 Once you configured this list, you just type in the R console:
 
