@@ -88,10 +88,10 @@ closest1 <- applyThreshold(result[[1]],best=0.01)
 Now, store and plot the result (Figure 2)
 
 {{{
-writeRaster(closest1[[1]],
+writeRaster(closest1,
             "C:/analogues/results/3.10.ccafs.closest1.asc",
             format='ascii')
-plot(closest,col=rainbow(20),horizontal=T)
+plot(closest1,col=rainbow(20),horizontal=T)
 }}}
 
 http://ccafs-analogues.googlecode.com/svn/wiki/img/fig2-3.10.PNG
