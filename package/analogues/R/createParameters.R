@@ -158,11 +158,6 @@ createParameters <- function(x=10,
     }
   }
   
-  #z must be numeric
-  if (!is.numeric(z)) {
-    stop("analogues: z parameter must be numeric")
-  }
-  
   # each variable needs a weight
   if (length(weights) != length(vars)) {
     stop("analogues: variables and weights don't match")
@@ -171,6 +166,13 @@ createParameters <- function(x=10,
   #check method is correct
   if (!method %in% c("ccafs","hal")) {
     stop("analogues: available methods are only ccafs and hal")
+  }
+  
+  #z must be numeric for ccafs method
+  if (method == "ccafs") {
+    if (!is.numeric(z)) {
+      stop("analogues: z parameter must be numeric")
+    }
   }
   
   #hal checks
