@@ -65,8 +65,8 @@ ranged <- applyThreshold(result[[1]],range=c(0,500))
 
 Now you can plot and save this result,
 {{{
-plot(ranged[[1]],col=rainbow(20))
-writeRaster(ranged[[1]],
+plot(ranged,col=rainbow(20))
+writeRaster(ranged,
             "C:/analogues/results/3.10.ccafs.ranged.asc",
             format='ascii')
 }}}
