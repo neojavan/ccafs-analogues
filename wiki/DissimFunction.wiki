@@ -118,7 +118,7 @@ result2 <- dissimilarity(params,training,weights)
 Which will produce a list with your result(s), that you can access using R's indexing system, in the same way you did for the CCAFS dissimilarity result. You can now plot this result, by typing:
 
 {{{
-plot(result[[1]],col=c("grey","dark green"))
+plot(result2[[1]],col=c("grey","dark green"))
 }}}
 
 And you will have produced a plot as in Figure 2, where the green areas are areas marked as analogues, and the others are marked as non-analogues, according to the Hallegatte method.

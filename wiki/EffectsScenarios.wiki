@@ -66,7 +66,7 @@ weights <- loadWeights(params)
 
 cccma <- dissimilarity(params,training,weights)
 plot(cccma[[1]],col=rainbow(20))
-writeRaster(ukmo[[1]],
+writeRaster(cccma[[1]],
             "C:/analogues/results/3.9.ccafs.cccma.asc",
             format='ascii')
 }}}

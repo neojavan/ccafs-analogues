@@ -63,9 +63,16 @@ We are not interested in plotting or saving these results, so we will now procee
 ranged <- applyThreshold(result[[1]],range=c(0,500))
 }}}
 
+As a reference, we will load the global administrative divisions map from the `maptools` R package:
+
+{{{
+data(wrld_simpl)
+}}}
+
 Now you can plot and save this result,
 {{{
 plot(ranged,col=rainbow(20))
+plot(wrld_simpl,add=T) #this would plot the global admin divisions map on top
 writeRaster(ranged,
             "C:/analogues/results/3.10.ccafs.ranged.asc",
             format='ascii')
@@ -92,6 +99,7 @@ writeRaster(closest1,
             "C:/analogues/results/3.10.ccafs.closest1.asc",
             format='ascii')
 plot(closest1,col=rainbow(20),horizontal=T)
+plot(wrld_simpl,add=T) #this would plot the global admin divisions map on top
 }}}
 
 http://ccafs-analogues.googlecode.com/svn/wiki/img/fig2-3.10.PNG

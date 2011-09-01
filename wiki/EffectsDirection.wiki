@@ -26,7 +26,7 @@ As you know, the analogues concept objective is to look at analogies in the geog
 
 The extent at which these are used to resolve science questions is up to the researcher. But each of them might be of interest in different contexts and in different disciplines.
 
-We will now perform three types of analyses using the CCAFS measure to see what the difference in the results is between the different types of analyses. We will do `"backward"`, then `"forward"` and finally `"none"` direction, using the same site as in exercise 3.3, using mean temperatures and total rainfall at the monthly level, we will weight temperature with diurnal temperature range, and we will use the current climate and only one future scenario as our scenarios. First, we will configure our ‘params’ object and load the data and weighs, by typing in the R console:
+We will now perform three types of analyses using the CCAFS measure to see what the difference in the results is between the different types of analyses. We will do `"backward"`, then `"forward"` and finally `"none"` direction, using the same site as in exercise 3.3, using mean temperatures and total rainfall at the monthly level, we will weight temperature with diurnal temperature range, and we will use the current climate and only one future scenario as our scenarios. First, we will configure our `params` object and load the data and weighs, by typing in the R console:
 
 {{{
 params <- createParameters(x=87.224,
@@ -132,7 +132,7 @@ Now you will perform you analogues run, by typing:
 
 {{{
 res1hal <- dissimilarity(params,training,weights)
-plot(res1hal[[1]],col=rainbow(20),horizontal=T,zlim=c(0,2200))
+plot(res1hal[[1]],zlim=c(0,1))
 writeRaster(res1hal[[1]],
             "C:/analogues/results/3.4.hal.backward.asc",
             format='ascii')
@@ -143,7 +143,7 @@ Now you change the direction parameter for the forward run, and will run the `di
 {{{
 params$direction <- "forward"
 res2hal <- dissimilarity(params,training,weights)
-plot(res2hal[[1]],col=rainbow(20),horizontal=T,zlim=c(0,2200))
+plot(res2hal[[1]],zlim=c(0,1))
 writeRaster(res2hal[[1]],
             "C:/analogues/results/3.4.hal.forward.asc",
             format='ascii')
@@ -154,7 +154,7 @@ And now for the no direction run:
 {{{
 params$direction <- "none"
 res3hal <- dissimilarity(params,training,weights)
-plot(res3hal[[1]],col=rainbow(20),horizontal=T,zlim=c(0,2200))
+plot(res3hal[[1]],zlim=c(0,1))
 writeRaster(res3hal[[1]],
             "C:/analogues/results/3.4.hal.none.asc",
             format='ascii')

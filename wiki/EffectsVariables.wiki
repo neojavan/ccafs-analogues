@@ -122,7 +122,7 @@ params <- createParameters(x=87.224,
                            direction="backwd",
                            growing.season=1,
                            across.year=F,
-                           normalise=F,
+                           normalise=T,
                            keep.lag=F)
 }}}
 
