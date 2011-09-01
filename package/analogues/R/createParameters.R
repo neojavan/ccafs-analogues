@@ -249,7 +249,7 @@ createParameters <- function(x=10,
   params$idx.vars <- rep(1:(length(params$vars)),length(params$scenario)) 
   
   # load logos for plots in PDF reports
-  #data(logos)
+  data(logos)
     
   return(params)
 }
