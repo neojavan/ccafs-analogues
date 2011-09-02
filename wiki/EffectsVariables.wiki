@@ -98,7 +98,7 @@ bio.list <- paste("bio_",c(1:19),sep="")
 That will generate a vector of 19 variables, from bio_1 to bio_19, as you have for all of your climate scenarios. These variables will be weighted all by 1, so we will create a vector of length equal to 19, and with all elements being 1 by typing
 
 {{{
-wei.list <- wei.list <- rep(1,times=19)
+wei.list <- rep(1,times=19)
 }}}
 
 Now we will configure our run, by calling the `createParameters()` function. Note that instead of listing manually the variables in the parameter vars we will use our variable `bio.list`, and instead of listing the weights in the parameter weights, we will use our variable `wei.list`.

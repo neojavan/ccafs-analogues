@@ -200,7 +200,7 @@ points(disTop,yieTop,pch="+",cex=1,col="red")
 Finally, we plot S71 as a big blue asterisk, by 
 
 {{{
-points(results[[71]][71],siteData$yield[71],pch="*",cex=2.5,col="blue")
+points(result[[71]][71],siteData$yield[71],pch="*",cex=2.5,col="blue")
 }}}
 
 We will finally have Figure 3. There you can see the degree of variability in the analogue results for the different areas of the globe. The red crosses are sites in the lowest quartile of dissimilarity and in the top-most quartile of yield. Similar analyses can be done with higher probabilities (i.e. not splitting the data each 25% -quartiles, but doing so each 10%, or 5%). 
