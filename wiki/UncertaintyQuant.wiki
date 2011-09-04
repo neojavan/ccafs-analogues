@@ -209,10 +209,10 @@ In the first part of this for loop and object named *`rs`* is created from each 
 Next, a new object (*`th`*) is created from the object *`rs`* (a clone of that object), and then is assigned 0 for those values of *`rs`* that are above *`b1`*, else assigned 1. Next, a new object is created that contains the sum of each *`th`* object, hence producing an object in which each pixel would total the number of times that pixel is below *`b1`*, that is, within the closest 1% sites. Plotting the results you will have Figure 2,
 
 {{{
-> writeRaster(out,
-              "C:/analogues/results/3.11.ccafs.agreement.asc",
-              format='ascii')
-> plot(out,col=c("grey",rev(heat.colors(24))))
+writeRaster(out,
+            "C:/analogues/results/3.11.ccafs.agreement.asc",
+            format='ascii')
+plot(out,col=c("grey",rev(heat.colors(24))))
 }}}
 
 
