@@ -13,4 +13,4 @@
 system(paste("R CMD build","analogues"))
 
 #compile the package for windows
-system(paste("R CMD build","--binary","analogues"))
+system(paste("R CMD INSTALL","--build","analogues"))
