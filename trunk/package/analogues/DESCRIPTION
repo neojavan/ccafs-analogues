@@ -1,13 +1,13 @@
 Package: analogues
-Maintainer: Johannes Signer <jmsigner@gmail.com>
+Maintainer: David Arango <d.arango@cgiar.org>
 License: GPL3
 Title: Calculate climate analogues
 Type: Package
 LazyLoad: yes
-Author: Josh Hooker, Julian Ramirez, Johannes Signer
+Author: Josh Hooker, Julian Ramirez, Johannes Signer, David Arango
 Description: Calculate climate analogues
-Version: 0.0.13
-Date: 2011-08-31
+Version: 0.0.14
+Date: 2012-04-19
 Collate: 'applyThreshold.R' 'ccafsMPoint.R' 'ccafsMPoints.R'
     'ccafsMPointsPercentDiff.R' 'ccafsPoint.R' 'createParameters.R'
     'cropInteractive.R' 'dissimilarity.R' 'halMPoints.R' 'loadData.R'

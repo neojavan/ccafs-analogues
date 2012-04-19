@@ -65,7 +65,7 @@ createParameters <- function(x=10,
   require(spgrass6)
   require(akima)
   require(grid)
-  require(rimage)
+#  require(rimage)
   
   # ----- massive verification of parameters
   #check if x and y have the same length

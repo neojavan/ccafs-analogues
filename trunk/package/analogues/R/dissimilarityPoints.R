@@ -218,7 +218,7 @@ rollCreate <- function(params) {
     }
     roll <- matrix(data=roll.v, ncol=length(months), byrow=TRUE)
   } else {
-    roll <- matrix(1:12,ncol=params$ndivisions,nrow=1)
+    roll <- matrix(1:params$ndivisions,ncol=params$ndivisions,nrow=1)
   }
   # cut roll to the actual growin period
   roll <- roll[ , params$growing.season]
